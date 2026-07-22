@@ -13,7 +13,6 @@ import { notFound } from "next/navigation";
 import type { TOCItemType } from "fumadocs-core/toc";
 import type { MDXContent } from "mdx/types";
 import { ComponentPreview } from "../../../components/component-preview";
-import { InstallCommand } from "../../../components/install-command";
 import { source } from "../../../lib/source";
 
 export default async function Page({
@@ -53,7 +52,6 @@ export default async function Page({
             Tab,
             Tabs,
             ComponentPreview,
-            InstallCommand,
           }}
         />
       </DocsBody>
