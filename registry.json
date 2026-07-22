@@ -39,6 +39,11 @@
           "path": "src/styles/liquid.css",
           "type": "registry:style",
           "target": "styles/liquid.css"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
         }
       ]
     },
@@ -78,6 +83,11 @@
           "path": "src/styles/liquid.css",
           "type": "registry:style",
           "target": "styles/liquid.css"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
         }
       ]
     },
@@ -117,6 +127,11 @@
           "path": "src/styles/liquid.css",
           "type": "registry:style",
           "target": "styles/liquid.css"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
         }
       ]
     },
@@ -167,6 +182,11 @@
           "path": "src/styles/liquid.css",
           "type": "registry:style",
           "target": "styles/liquid.css"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
         }
       ]
     }
