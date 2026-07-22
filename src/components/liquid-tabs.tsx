@@ -1,6 +1,7 @@
 import {
   forwardRef,
   useLayoutEffect,
+  useRef,
   type CSSProperties,
   type ElementRef,
 } from "react";
@@ -54,6 +55,33 @@ export const LiquidTabsList = forwardRef<
     forwardedRef,
   ) => {
     const motion = useLiquidMotion<HTMLDivElement>({ maxStretch: 12 });
+    const dragSelection = useRef<{ pointerId: number; value: string | null } | null>(null);
+
+    const selectAtPointer = (clientX: number) => {
+      const list = motion.ref.current;
+      const selection = dragSelection.current;
+      if (!list || !selection) return;
+      const triggers = Array.from(
+        list.querySelectorAll<HTMLButtonElement>('[role="tab"]:not(:disabled)'),
+      );
+      if (triggers.length === 0) return;
+
+      const listBounds = list.getBoundingClientRect();
+      if (clientX < listBounds.left || clientX > listBounds.right) return;
+
+      const target = triggers.reduce((nearest, trigger) => {
+        const nearestBounds = nearest.getBoundingClientRect();
+        const triggerBounds = trigger.getBoundingClientRect();
+        const nearestDistance = Math.abs(clientX - (nearestBounds.left + nearestBounds.width / 2));
+        const triggerDistance = Math.abs(clientX - (triggerBounds.left + triggerBounds.width / 2));
+        return triggerDistance < nearestDistance ? trigger : nearest;
+      });
+      const value = target.dataset.liquidValue ?? null;
+      if (!value || selection.value === value) return;
+      selection.value = value;
+      target.focus({ preventScroll: true });
+      target.click();
+    };
 
     useLayoutEffect(() => {
       const list = motion.ref.current;
@@ -119,18 +147,36 @@ export const LiquidTabsList = forwardRef<
         data-dragging={motion.dragging || undefined}
         style={liquidStyle}
         onPointerDown={(event) => {
+          if (event.button !== 0) {
+            onPointerDown?.(event);
+            return;
+          }
+          dragSelection.current = { pointerId: event.pointerId, value: null };
+          event.currentTarget.setPointerCapture(event.pointerId);
+          selectAtPointer(event.clientX);
           motion.pointerDown(event);
           onPointerDown?.(event);
         }}
         onPointerMove={(event) => {
           motion.pointerMove(event);
+          if (dragSelection.current?.pointerId === event.pointerId && event.buttons === 1) {
+            selectAtPointer(event.clientX);
+          }
           onPointerMove?.(event);
         }}
         onPointerUp={(event) => {
+          if (dragSelection.current?.pointerId === event.pointerId) {
+            selectAtPointer(event.clientX);
+            dragSelection.current = null;
+          }
           motion.pointerUp(event);
+          if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+          }
           onPointerUp?.(event);
         }}
         onPointerCancel={(event) => {
+          dragSelection.current = null;
           motion.pointerCancel();
           onPointerCancel?.(event);
         }}
@@ -164,6 +210,7 @@ export const LiquidTabsTrigger = forwardRef<
   <TabsPrimitive.Trigger
     ref={forwardedRef}
     className={cn("liquid-tabs__trigger", className)}
+    data-liquid-value={props.value}
     {...props}
   />
 ));

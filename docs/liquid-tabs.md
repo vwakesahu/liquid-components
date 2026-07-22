@@ -37,6 +37,8 @@ The indicator is hidden until its first valid measurement, preventing a flash at
 ## Interaction
 
 - Pointer down immediately enlarges and lifts the selected indicator.
+- Pressing anywhere on the segmented track selects the nearest enabled tab.
+- Holding and dragging across the track continuously selects the nearest enabled tab.
 - A quick selection retains the shared `380ms` material pulse.
 - Pointer velocity can stretch, squash, and lean the indicator.
 - Selection position and indicator width settle with the same spring.
@@ -76,6 +78,7 @@ import {
 - Keep trigger text above the glass layer.
 - Let Radix own selection and focus.
 - Remeasure after responsive layout and font changes.
+- Capture the active pointer so a fast drag does not lose the gesture between triggers.
 
 ## Don’t
 
@@ -84,6 +87,7 @@ import {
 - Don’t use an index multiplied by a fixed percentage for position.
 - Don’t delay label state behind semantic selection.
 - Don’t put the indicator above trigger hit targets.
+- Don’t shrink individual triggers on press; keep the outer track stable while the glass indicator expands.
 - Don’t apply spring overshoot to focus or selected state—only to visual geometry.
 
 ## Validation checklist
@@ -91,6 +95,9 @@ import {
 - [ ] The first selected indicator appears without flashing at `0,0`.
 - [ ] Different label widths morph cleanly.
 - [ ] Click, focus, and arrow navigation select the correct panel.
+- [ ] Pressing gaps in the track selects the nearest enabled tab.
+- [ ] Holding and dragging changes selection continuously.
+- [ ] The outer track does not collapse or shrink during hold.
 - [ ] Controlled and uncontrolled roots work.
 - [ ] Resizing keeps the indicator aligned.
 - [ ] Disabled triggers remain unavailable.
