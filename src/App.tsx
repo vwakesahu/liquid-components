@@ -8,6 +8,7 @@ import {
   LiquidTabsList,
   LiquidTabsTrigger,
 } from "./components/liquid-tabs";
+import { LiquidVideoPlayer } from "./components/liquid-video-player";
 
 const sourceExample = `import { LiquidSwitch } from "@/components/liquid-switch"
 
@@ -80,6 +81,7 @@ function App() {
           <a className="active" href="#component">Switch</a>
           <a href="#slider">Slider</a>
           <a href="#tabs">Tabs</a>
+          <a href="#video">Video</a>
           <a href="#anatomy">Anatomy</a>
           <a href="#source">React</a>
         </nav>
@@ -291,9 +293,26 @@ function App() {
           </div>
         </section>
 
+        <section className="video-study" id="video">
+          <div className="video-heading">
+            <div>
+              <p className="kicker">APPLE COMPONENT STUDY · 004</p>
+              <h2>Video controls,<br />refracted live.</h2>
+            </div>
+            <p>The canvas reads the playing video as a WebGL texture. Every visible control supplies a lens region, so the pixels beneath buttons and the scrubber bend without routing live video through an SVG filter.</p>
+          </div>
+          <LiquidVideoPlayer
+            src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+            crossOrigin="anonymous"
+            preload="metadata"
+            loop
+            aria-label="Flower video demonstrating live Liquid Glass controls"
+          />
+        </section>
+
         <section className="next">
           <p className="kicker">NEXT COMPONENT</p>
-          <div><span>004</span><h2>QR interaction</h2><em>Up next</em></div>
+          <div><span>005</span><h2>QR interaction</h2><em>Up next</em></div>
         </section>
       </main>
 

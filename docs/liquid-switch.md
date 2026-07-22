@@ -150,5 +150,6 @@ bunx --bun shadcn@latest add https://your-registry.example/r/liquid-switch.json
 - [ ] Controlled and uncontrolled examples both work.
 - [ ] Space and Enter toggle the switch.
 - [ ] Focus and disabled states remain visible.
+- [ ] Disabled switches cannot engage, capture a pointer, drag, or retain an active lens.
 - [ ] Reduced motion removes decorative interpolation without removing state.
 - [ ] Production and registry builds pass.

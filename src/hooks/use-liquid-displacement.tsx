@@ -54,6 +54,17 @@ export const liquidLensPresets = {
     edgeHighlight: 0.25,
     specularAngle: 45,
   },
+  video: {
+    scale: 0.075,
+    depth: 38,
+    curvature: 40,
+    splay: 1,
+    chroma: 0.45,
+    blur: 0,
+    glow: 0.1,
+    edgeHighlight: 0.25,
+    specularAngle: 45,
+  },
 } satisfies Record<string, LiquidLensOptions>;
 
 type FilterState = {

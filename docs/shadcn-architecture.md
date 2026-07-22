@@ -82,10 +82,11 @@ Registry components should preserve the corresponding shadcn/Radix API wherever 
 6. [x] Adopt slider arrays, ranges, multiple thumbs, vertical orientation, and RTL at the Radix behavior layer.
 7. [x] Create, validate, build, and dry-run the first `registry.json` items.
 8. [x] Build Liquid Tabs on Radix Tabs with one measured shared indicator.
-9. [ ] Add a clean consumer fixture with interaction and visual tests.
-10. [ ] Add per-thumb active material and vertical-axis deformation.
-11. [ ] Publish through GitHub registry URLs first.
-12. [ ] Add the stable `@liquid` namespace when hosted registry infrastructure is ready.
+9. [x] Add shared DOM displacement maps and the WebGL Liquid Video Player.
+10. [ ] Add a clean consumer fixture with interaction and visual tests.
+11. [ ] Add per-thumb active material and vertical-axis deformation.
+12. [ ] Publish through GitHub registry URLs first.
+13. [ ] Add the stable `@liquid` namespace when hosted registry infrastructure is ready.
 
 ## Compatibility rule
 

@@ -4,7 +4,7 @@ Liquid UI is an independent React component study that translates the observable
 
 The project is not an Apple rendering clone. Apple’s Liquid Glass renderer is proprietary and supplied automatically by system frameworks. This project uses browser-native layers, pointer input, and motion to recreate the important design qualities in reusable web components.
 
-The first three components are `LiquidSwitch`, `LiquidSlider`, and `LiquidTabs`. The same material and interaction system will be reused for QR interactions and media controls.
+The first four components are `LiquidSwitch`, `LiquidSlider`, `LiquidTabs`, and `LiquidVideoPlayer`. The same material and interaction system will be reused for QR interactions next.
 
 Detailed engineering context:
 
@@ -12,6 +12,7 @@ Detailed engineering context:
 - [Liquid Switch implementation guide](docs/liquid-switch.md)
 - [Liquid Tabs implementation guide](docs/liquid-tabs.md)
 - [Liquid displacement renderer](docs/liquid-displacement.md)
+- [Liquid Video Player implementation guide](docs/liquid-video-player.md)
 - [shadcn extension architecture](docs/shadcn-architecture.md)
 
 ## Design principles
@@ -320,6 +321,7 @@ import { LiquidSlider } from "./components/liquid-slider"
 
 ### Media player
 
+- Status: implemented as `LiquidVideoPlayer` with a native video element and one WebGL renderer.
 - Treat controls as one coordinated glass family over the video.
 - Share interaction lighting and motion tokens between play, skip, volume, and scrubber controls.
 - Preserve control contrast over both bright and dark frames.
@@ -350,10 +352,12 @@ src/
 ├── components/
 │   ├── glass-switch.tsx   # Radix Switch with Liquid material
 │   ├── liquid-slider.tsx  # Radix Slider with Liquid material
-│   └── liquid-tabs.tsx    # Radix Tabs with a shared Liquid indicator
+│   ├── liquid-tabs.tsx    # Radix Tabs with a shared Liquid indicator
+│   └── liquid-video-player.tsx # Native video with WebGL control lenses
 ├── hooks/
 │   ├── use-liquid-motion.ts
-│   └── use-liquid-displacement.tsx
+│   ├── use-liquid-displacement.tsx
+│   └── use-video-refraction.ts
 ├── lib/
 │   └── utils.ts
 ├── styles/

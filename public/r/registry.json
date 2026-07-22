@@ -116,6 +116,44 @@
           "target": "styles/liquid.css"
         }
       ]
+    },
+    {
+      "name": "liquid-video-player",
+      "type": "registry:ui",
+      "title": "Liquid Video Player",
+      "description": "An accessible native video player with WebGL-refraction controls and a graceful media fallback.",
+      "dependencies": [
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "src/components/liquid-video-player.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-video-player.tsx"
+        },
+        {
+          "path": "src/hooks/use-video-refraction.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-video-refraction.ts"
+        },
+        {
+          "path": "src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "src/styles/liquid.css",
+          "type": "registry:style",
+          "target": "styles/liquid.css"
+        }
+      ]
     }
   ]
 }
