@@ -82,6 +82,7 @@ export const LiquidSwitch = forwardRef<
     return (
       <SwitchPrimitive.Root
         ref={composeRefs(forwardedRef, motion.ref)}
+        data-slot="liquid-switch"
         disabled={disabled}
         checked={isChecked}
         onCheckedChange={updateChecked}
@@ -157,13 +158,13 @@ export const LiquidSwitch = forwardRef<
         }}
         {...props}
       >
-        <span className="liquid-switch__track" aria-hidden="true">
-          <span className="liquid-switch__tint" />
+        <span data-slot="liquid-switch-track" className="liquid-switch__track" aria-hidden="true">
+          <span data-slot="liquid-switch-tint" className="liquid-switch__tint" />
         </span>
-        <SwitchPrimitive.Thumb className="liquid-switch__thumb">
-          <span className="liquid-switch__lens" />
-          <span className="liquid-switch__rim" />
-          <span className="liquid-switch__light" />
+        <SwitchPrimitive.Thumb data-slot="liquid-switch-thumb" className="liquid-switch__thumb">
+          <span data-slot="liquid-switch-lens" className="liquid-switch__lens" />
+          <span data-slot="liquid-switch-rim" className="liquid-switch__rim" />
+          <span data-slot="liquid-switch-light" className="liquid-switch__light" />
         </SwitchPrimitive.Thumb>
       </SwitchPrimitive.Root>
     );

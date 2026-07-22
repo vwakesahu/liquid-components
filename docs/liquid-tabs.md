@@ -41,7 +41,8 @@ The indicator is hidden until its first valid measurement, preventing a flash at
 - Holding and dragging across the track continuously selects the nearest enabled tab.
 - A quick selection retains the shared `380ms` material pulse.
 - Pointer velocity can stretch, squash, and lean the indicator.
-- Selection position and indicator width settle with the same spring.
+- During drag, selection position follows with a `260ms` liquid curve instead of snapping in `100ms`; width catches up over `240ms`.
+- Selection position and indicator width settle with coordinated curves.
 - Arrow-key selection uses the same material feedback.
 
 Radix remains responsible for tab roles, relationships between triggers and panels, roving focus, keyboard navigation, controlled state, and automatic or manual activation.
@@ -68,7 +69,20 @@ import {
 </LiquidTabs>
 ```
 
-`LiquidTabsList` adds `size` and `tint` while retaining Radix List props. The current material is optimized for horizontal capsule lists.
+`LiquidTabsList` adds `size`, `tint`, and `indicatorClassName` while retaining Radix List props. The current material is optimized for horizontal capsule lists.
+
+Tailwind customization uses the same source component:
+
+```tsx
+<LiquidTabsList
+  className="bg-slate-950/10 dark:bg-white/10"
+  indicatorClassName="!bg-white/70 dark:!bg-slate-700/70"
+>
+  ...
+</LiquidTabsList>
+```
+
+All parts also expose stable `data-slot` attributes for Tailwind arbitrary variants or ordinary CSS selectors.
 
 ## Do
 

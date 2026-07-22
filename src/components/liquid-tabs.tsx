@@ -14,6 +14,7 @@ import "@/styles/liquid.css";
 type LiquidTabsListProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
   size?: "small" | "regular" | "large";
   tint?: string;
+  indicatorClassName?: string;
 };
 
 type TabsStyle = CSSProperties & {
@@ -26,6 +27,7 @@ export const LiquidTabs = forwardRef<
 >(({ className, ...props }, forwardedRef) => (
   <TabsPrimitive.Root
     ref={forwardedRef}
+    data-slot="liquid-tabs"
     className={cn("liquid-tabs", className)}
     {...props}
   />
@@ -43,6 +45,7 @@ export const LiquidTabsList = forwardRef<
       children,
       size = "regular",
       tint = "rgba(255, 255, 255, .72)",
+      indicatorClassName,
       onPointerDown,
       onPointerMove,
       onPointerUp,
@@ -142,6 +145,7 @@ export const LiquidTabsList = forwardRef<
     return (
       <TabsPrimitive.List
         ref={composeRefs(forwardedRef, motion.ref)}
+        data-slot="liquid-tabs-list"
         className={cn("liquid-tabs__list", `liquid-tabs__list--${size}`, className)}
         data-interacting={motion.interacting || undefined}
         data-dragging={motion.dragging || undefined}
@@ -190,10 +194,14 @@ export const LiquidTabsList = forwardRef<
         }}
         {...props}
       >
-        <span className="liquid-tabs__indicator" aria-hidden="true">
-          <span className="liquid-tabs__indicator-lens" />
-          <span className="liquid-tabs__indicator-rim" />
-          <span className="liquid-tabs__indicator-light" />
+        <span
+          data-slot="liquid-tabs-indicator"
+          className={cn("liquid-tabs__indicator", indicatorClassName)}
+          aria-hidden="true"
+        >
+          <span data-slot="liquid-tabs-indicator-lens" className="liquid-tabs__indicator-lens" />
+          <span data-slot="liquid-tabs-indicator-rim" className="liquid-tabs__indicator-rim" />
+          <span data-slot="liquid-tabs-indicator-light" className="liquid-tabs__indicator-light" />
         </span>
         {children}
       </TabsPrimitive.List>
@@ -209,6 +217,7 @@ export const LiquidTabsTrigger = forwardRef<
 >(({ className, ...props }, forwardedRef) => (
   <TabsPrimitive.Trigger
     ref={forwardedRef}
+    data-slot="liquid-tabs-trigger"
     className={cn("liquid-tabs__trigger", className)}
     data-liquid-value={props.value}
     {...props}
@@ -223,6 +232,7 @@ export const LiquidTabsContent = forwardRef<
 >(({ className, ...props }, forwardedRef) => (
   <TabsPrimitive.Content
     ref={forwardedRef}
+    data-slot="liquid-tabs-content"
     className={cn("liquid-tabs__content", className)}
     {...props}
   />

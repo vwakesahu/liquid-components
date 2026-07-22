@@ -92,6 +92,43 @@ The registry should add files and dependencies to a user project without requiri
 
 Shared utilities may be installed as registry dependencies, but every dependency must remain visible and inspectable in the registry item.
 
+## Styling compatibility
+
+shadcn is a source-code registry and is not limited to Tailwind projects. Its registry can distribute component source, CSS, variables, hooks, and other files. Liquid UI therefore uses one hybrid styling contract instead of maintaining separate Tailwind and vanilla implementations.
+
+### Portable core
+
+`styles/liquid.css` owns the geometry, layered optics, state selectors, pointer deformation, and reduced-motion behavior. These rules are too coordinated to express as a long utility string without making the component difficult to tune. A project without Tailwind can use this file unchanged.
+
+### Tailwind customization surface
+
+Every public primitive exposes:
+
+- A normal `className` prop merged with `cn()`.
+- A stable shadcn-style `data-slot` attribute.
+- State attributes supplied by Radix and Liquid UI.
+- CSS custom properties for component geometry, tint, and motion.
+- `indicatorClassName` on `LiquidTabsList` for direct indicator customization.
+
+Tailwind consumers can style the root normally or target inner slots with arbitrary variants:
+
+```tsx
+<LiquidTabsList
+  className="bg-zinc-950/10 dark:bg-white/10"
+  indicatorClassName="!bg-white/65 dark:!bg-zinc-700/70"
+>
+  ...
+</LiquidTabsList>
+```
+
+More specific internal targeting remains available without depending on generated class names:
+
+```tsx
+<LiquidSlider className="[&_[data-slot=liquid-slider-thumb]]:ring-1" />
+```
+
+Tailwind is an enhancement layer here, not a second renderer. Component behavior and Liquid material must remain identical in Tailwind and plain-CSS projects.
+
 ## References
 
 - [shadcn custom registries](https://ui.shadcn.com/docs/registry)
@@ -100,3 +137,4 @@ Shared utilities may be installed as registry dependencies, but every dependency
 - [shadcn Slider](https://ui.shadcn.com/docs/components/radix/slider)
 - [shadcn Switch](https://ui.shadcn.com/docs/components/radix/switch)
 - [shadcn Tabs](https://ui.shadcn.com/docs/components/radix/tabs)
+- [shadcn Tailwind v4 and data slots](https://ui.shadcn.com/docs/tailwind-v4)

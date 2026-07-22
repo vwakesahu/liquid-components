@@ -62,6 +62,7 @@ export const LiquidSlider = forwardRef<
     return (
       <SliderPrimitive.Root
         ref={composeRefs(forwardedRef, motion.ref)}
+        data-slot="liquid-slider"
         value={value}
         defaultValue={defaultValue}
         disabled={disabled}
@@ -96,20 +97,21 @@ export const LiquidSlider = forwardRef<
         }}
         {...props}
       >
-        <SliderPrimitive.Track className="liquid-slider__track">
-          <SliderPrimitive.Range className="liquid-slider__fill" />
+        <SliderPrimitive.Track data-slot="liquid-slider-track" className="liquid-slider__track">
+          <SliderPrimitive.Range data-slot="liquid-slider-range" className="liquid-slider__fill" />
         </SliderPrimitive.Track>
         {Array.from({ length: thumbCount }, (_, index) => (
           <SliderPrimitive.Thumb
+            data-slot="liquid-slider-thumb"
             className="liquid-slider__thumb"
             key={index}
             aria-label={props["aria-label"] ? `${props["aria-label"]}${thumbCount > 1 ? ` ${index + 1}` : ""}` : undefined}
           >
-            <span className="liquid-slider__occlusion" />
-            <span className="liquid-slider__refraction" />
-            <span className="liquid-slider__lens" />
-            <span className="liquid-slider__rim" />
-            <span className="liquid-slider__light" />
+            <span data-slot="liquid-slider-occlusion" className="liquid-slider__occlusion" />
+            <span data-slot="liquid-slider-refraction" className="liquid-slider__refraction" />
+            <span data-slot="liquid-slider-lens" className="liquid-slider__lens" />
+            <span data-slot="liquid-slider-rim" className="liquid-slider__rim" />
+            <span data-slot="liquid-slider-light" className="liquid-slider__light" />
           </SliderPrimitive.Thumb>
         ))}
       </SliderPrimitive.Root>
