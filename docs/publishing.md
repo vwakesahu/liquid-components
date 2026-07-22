@@ -40,7 +40,7 @@ gh repo create vwakesahu/liquid-components --public --source=. --remote=origin -
 The root `vercel.json` builds the nested Next.js documentation app while retaining access to the shared component source.
 
 ```bash
-vercel link --yes --team anonymous-scope --project liquid-components
+vercel link --yes --scope anonymous-scope --project liquid-components
 vercel deploy --prod --scope anonymous-scope
 ```
 

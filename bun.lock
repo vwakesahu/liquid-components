@@ -28,7 +28,7 @@
     },
     "apps/docs": {
       "name": "@liquid-ui/docs",
-      "version": "0.1.0",
+      "version": "0.0.1",
       "dependencies": {
         "@tailwindcss/postcss": "^4.3.0",
         "clsx": "^2.1.1",
