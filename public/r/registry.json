@@ -1,0 +1,73 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "liquid-ui",
+  "homepage": "https://github.com/liquid-ui/liquid-ui",
+  "items": [
+    {
+      "name": "liquid-switch",
+      "type": "registry:ui",
+      "title": "Liquid Switch",
+      "description": "A Radix-compatible switch with a responsive Liquid Glass tracker.",
+      "dependencies": [
+        "@radix-ui/react-switch",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "src/components/glass-switch.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-switch.tsx"
+        },
+        {
+          "path": "src/hooks/use-liquid-motion.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-motion.ts"
+        },
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "src/styles/liquid.css",
+          "type": "registry:style",
+          "target": "styles/liquid.css"
+        }
+      ]
+    },
+    {
+      "name": "liquid-slider",
+      "type": "registry:ui",
+      "title": "Liquid Slider",
+      "description": "A Radix-compatible slider with ranges, multiple thumbs, and an interactive refractive tracker.",
+      "dependencies": [
+        "@radix-ui/react-slider",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "src/components/liquid-slider.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-slider.tsx"
+        },
+        {
+          "path": "src/hooks/use-liquid-motion.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-motion.ts"
+        },
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "src/styles/liquid.css",
+          "type": "registry:style",
+          "target": "styles/liquid.css"
+        }
+      ]
+    }
+  ]
+}

@@ -279,7 +279,7 @@ Each component should reuse the same states and material layers, but adapt its g
 ### Slider
 
 - Status: implemented as `LiquidSlider`.
-- Uses a native range input synchronized with the custom surface.
+- Uses Radix Slider as the semantic and behavioral surface while Liquid layers decorate its track, range, and thumbs.
 - The glass tracker reveals the value underneath it.
 - The filled and unfilled rail is redrawn at a larger scale inside the active lens so engagement magnifies rather than merely blurs the background.
 - Keep the tracker as a capsule at rest and during drag.
@@ -291,8 +291,8 @@ Each component should reuse the same states and material layers, but adapt its g
 import { LiquidSlider } from "./components/liquid-slider"
 
 <LiquidSlider
-  value={volume}
-  onValueChange={setVolume}
+  value={[volume]}
+  onValueChange={([next]) => setVolume(next)}
   min={0}
   max={100}
   aria-label="Volume"
@@ -344,11 +344,17 @@ Before considering a component complete, verify:
 ```text
 src/
 ├── components/
-│   ├── glass-switch.tsx   # Reusable component and interaction physics
-│   └── liquid-slider.tsx  # Native range input and glass tracker
+│   ├── glass-switch.tsx   # Radix Switch with Liquid material
+│   └── liquid-slider.tsx  # Radix Slider with Liquid material
+├── hooks/
+│   └── use-liquid-motion.ts
+├── lib/
+│   └── utils.ts
+├── styles/
+│   └── liquid.css         # Installable material and motion system
 ├── App.tsx                # Documentation and live component study
 ├── main.tsx
-└── styles.css             # Material, motion, examples, and page styles
+└── styles.css             # Documentation-site styles
 ```
 
 ## Development
@@ -356,14 +362,21 @@ src/
 Install dependencies and start the local server:
 
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 Create a production build:
 
 ```bash
-npm run build
+bun run build
+```
+
+Validate and build the shadcn registry:
+
+```bash
+bun run registry:validate
+bun run registry:build
 ```
 
 ## References

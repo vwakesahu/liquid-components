@@ -278,22 +278,11 @@ The slider must retain:
 - Form name and value behavior
 - Reduced-motion support
 
-Future shadcn/Radix integration must preserve these requirements while adding range values, multiple thumbs, vertical orientation, and RTL behavior.
+The Radix foundation preserves these requirements while providing range values, multiple thumbs, vertical orientation, and RTL behavior.
 
-## Planned shadcn refactor
+## shadcn/Radix API
 
-The current component has a scalar API:
-
-```tsx
-<LiquidSlider
-  value={volume}
-  onValueChange={setVolume}
-  min={0}
-  max={100}
-/>
-```
-
-The shadcn-compatible version should align with Radix Slider conventions:
+The component now follows Radix Slider’s array-value convention:
 
 ```tsx
 <LiquidSlider
@@ -304,16 +293,16 @@ The shadcn-compatible version should align with Radix Slider conventions:
 />
 ```
 
-The refactor should support:
+The current behavioral foundation supports:
 
 - One or more thumbs
 - Range sliders
 - Controlled and uncontrolled arrays
 - Horizontal and vertical orientation
 - RTL
-- shadcn class names, tokens, and registry distribution
+- shadcn aliases, shared tokens, and registry distribution
 
-The optical layers should decorate Radix parts without reimplementing Radix interaction behavior.
+The optical layers decorate Radix parts without reimplementing Radix value or keyboard behavior. The next visual pass needs per-thumb active material for multiple-thumb and vertical layouts; the current shared interaction state activates all rendered thumbs together.
 
 ## Validation checklist
 

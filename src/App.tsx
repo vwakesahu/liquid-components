@@ -217,19 +217,19 @@ function App() {
             <div className="slider-panel">
               <div className="slider-control-row">
                 <div><span>Volume</span><strong>{volume}</strong></div>
-                <LiquidSlider value={volume} onValueChange={setVolume} aria-label="Volume" />
+                <LiquidSlider value={[volume]} onValueChange={([next]) => setVolume(next)} aria-label="Volume" />
               </div>
               <div className="slider-divider" />
               <div className="slider-control-row">
                 <div><span>Brightness</span><strong>{brightness}</strong></div>
-                <LiquidSlider value={brightness} onValueChange={setBrightness} tint="#ff9f0a" aria-label="Brightness" />
+                <LiquidSlider value={[brightness]} onValueChange={([next]) => setBrightness(next)} tint="#ff9f0a" aria-label="Brightness" />
               </div>
             </div>
           </div>
           <div className="slider-variants">
-            <div><span>Small</span><LiquidSlider size="small" defaultValue={30} aria-label="Small slider" /></div>
-            <div><span>Regular</span><LiquidSlider defaultValue={55} aria-label="Regular slider" /></div>
-            <div><span>Large</span><LiquidSlider size="large" defaultValue={76} tint="#af52de" aria-label="Large slider" /></div>
+            <div><span>Small</span><LiquidSlider size="small" defaultValue={[30]} aria-label="Small slider" /></div>
+            <div><span>Regular</span><LiquidSlider defaultValue={[55]} aria-label="Regular slider" /></div>
+            <div><span>Large</span><LiquidSlider size="large" defaultValue={[76]} tint="#af52de" aria-label="Large slider" /></div>
           </div>
         </section>
 

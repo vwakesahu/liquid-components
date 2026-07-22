@@ -73,16 +73,17 @@ Registry components should preserve the corresponding shadcn/Radix API wherever 
 
 ## Refactor sequence
 
-1. Preserve the current standalone prototype as a Git baseline.
-2. Extract shared motion and pointer physics from switch and slider.
-3. Add shadcn project configuration and Tailwind-compatible tokens.
-4. Rebuild `LiquidSwitch` on Radix Switch.
-5. Rebuild `LiquidSlider` on Radix Slider.
-6. Support slider arrays, ranges, multiple thumbs, vertical orientation, and RTL.
-7. Create and validate `registry.json` items.
-8. Add installation fixtures that test a clean consumer project.
-9. Publish through GitHub registry URLs first.
-10. Add the stable `@liquid` namespace when hosted registry infrastructure is ready.
+1. [x] Preserve the current standalone prototype as a Git baseline.
+2. [x] Extract shared motion and pointer physics from switch and slider.
+3. [x] Add shadcn project configuration, aliases, utilities, and shared tokens.
+4. [x] Rebuild `LiquidSwitch` on Radix Switch.
+5. [x] Rebuild `LiquidSlider` on Radix Slider.
+6. [x] Adopt slider arrays, ranges, multiple thumbs, vertical orientation, and RTL at the Radix behavior layer.
+7. [x] Create, validate, build, and dry-run the first `registry.json` items.
+8. [ ] Add a clean consumer fixture with interaction and visual tests.
+9. [ ] Add per-thumb active material and vertical-axis deformation.
+10. [ ] Publish through GitHub registry URLs first.
+11. [ ] Add the stable `@liquid` namespace when hosted registry infrastructure is ready.
 
 ## Compatibility rule
 
