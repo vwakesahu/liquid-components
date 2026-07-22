@@ -1,4 +1,4 @@
-import { forwardRef, type CSSProperties, type ElementRef } from "react";
+import { forwardRef, useEffect, useRef, useState, type CSSProperties, type ElementRef } from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 
 import { useLiquidMotion } from "@/hooks/use-liquid-motion";
@@ -35,6 +35,10 @@ export const LiquidSwitch = forwardRef<
       size = "regular",
       tint = "#34c759",
       disabled,
+      checked,
+      defaultChecked = false,
+      onCheckedChange,
+      onClick,
       onPointerDown,
       onPointerMove,
       onPointerUp,
@@ -48,13 +52,29 @@ export const LiquidSwitch = forwardRef<
   ) => {
     const motion = useLiquidMotion<HTMLButtonElement>({ maxStretch: 14 });
     const metrics = geometry[size];
+    const [uncontrolledChecked, setUncontrolledChecked] = useState(defaultChecked);
+    const drag = useRef<{ startX: number; left: number; width: number; moved: boolean } | null>(null);
+    const suppressClick = useRef(false);
+    const isControlled = checked !== undefined;
+    const isChecked = isControlled ? checked : uncontrolledChecked;
+    const travel = metrics.width - metrics.thumbWidth - metrics.inset * 2;
+
+    const updateChecked = (next: boolean) => {
+      if (!isControlled) setUncontrolledChecked(next);
+      onCheckedChange?.(next);
+    };
+
+    useEffect(() => {
+      motion.ref.current?.style.removeProperty("--thumb-x");
+    }, [isChecked]);
+
     const liquidStyle: SwitchStyle = {
       "--switch-width": `${metrics.width}px`,
       "--switch-height": `${metrics.height}px`,
       "--switch-inset": `${metrics.inset}px`,
       "--switch-tint": tint,
       "--thumb-width": `${metrics.thumbWidth}px`,
-      "--thumb-travel": `${metrics.width - metrics.thumbWidth - metrics.inset * 2}px`,
+      "--thumb-travel": `${travel}px`,
       ...motion.style,
       ...style,
     };
@@ -63,25 +83,69 @@ export const LiquidSwitch = forwardRef<
       <SwitchPrimitive.Root
         ref={composeRefs(forwardedRef, motion.ref)}
         disabled={disabled}
+        checked={isChecked}
+        onCheckedChange={updateChecked}
         className={cn("liquid-switch", `liquid-switch--${size}`, className)}
         data-interacting={motion.interacting || undefined}
         data-dragging={motion.dragging || undefined}
         style={liquidStyle}
         onPointerDown={(event) => {
+          const bounds = event.currentTarget.getBoundingClientRect();
+          drag.current = {
+            startX: event.clientX,
+            left: bounds.left,
+            width: bounds.width,
+            moved: false,
+          };
+          event.currentTarget.setPointerCapture(event.pointerId);
           motion.pointerDown(event);
           onPointerDown?.(event);
         }}
         onPointerMove={(event) => {
           motion.pointerMove(event);
+          const currentDrag = drag.current;
+          if (currentDrag) {
+            if (!currentDrag.moved && Math.abs(event.clientX - currentDrag.startX) > 2) {
+              currentDrag.moved = true;
+            }
+            if (currentDrag.moved) {
+              const usableWidth = Math.max(1, currentDrag.width - metrics.thumbWidth);
+              const progress = Math.min(
+                1,
+                Math.max(0, (event.clientX - currentDrag.left - metrics.thumbWidth / 2) / usableWidth),
+              );
+              event.currentTarget.style.setProperty("--thumb-x", `${progress * travel}px`);
+            }
+          }
           onPointerMove?.(event);
         }}
         onPointerUp={(event) => {
           motion.pointerUp(event);
+          const currentDrag = drag.current;
+          if (currentDrag?.moved) {
+            suppressClick.current = true;
+            const next = event.clientX >= currentDrag.left + currentDrag.width / 2;
+            event.currentTarget.style.setProperty("--thumb-x", next ? `${travel}px` : "0px");
+            updateChecked(next);
+          }
+          drag.current = null;
+          if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+          }
           onPointerUp?.(event);
         }}
         onPointerCancel={(event) => {
           motion.pointerCancel();
+          drag.current = null;
+          event.currentTarget.style.removeProperty("--thumb-x");
           onPointerCancel?.(event);
+        }}
+        onClick={(event) => {
+          if (suppressClick.current) {
+            suppressClick.current = false;
+            event.preventDefault();
+          }
+          onClick?.(event);
         }}
         onKeyDown={(event) => {
           motion.keyDown(event);
