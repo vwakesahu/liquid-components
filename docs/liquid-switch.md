@@ -24,6 +24,7 @@ LiquidSwitch
     ├── state track
     │   └── tint surface
     └── Radix Switch.Thumb
+        ├── displaced state-track copy
         ├── adaptive lens
         ├── specular rim
         └── interaction light
@@ -70,6 +71,8 @@ The shared `useLiquidMotion` hook separates value movement from material deforma
 - `--liquid-squash` lightly compresses height at speed.
 - `--liquid-skew` communicates directional momentum.
 - `--liquid-light-x` follows the engagement coordinate.
+
+The tracker’s state-track copy is filtered through the shared generated displacement map. `scale`, `depth`, `curvature`, `splay`, `chroma`, `blur`, `glow`, edge highlight, and specular angle are configurable through the `lens` prop; see the [Liquid Displacement Renderer](liquid-displacement.md).
 
 A quick click keeps the lens visible for at least `380ms`. A drag does not wait for that timer; it begins settling immediately on release.
 

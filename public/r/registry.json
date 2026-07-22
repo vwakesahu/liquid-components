@@ -25,6 +25,11 @@
           "target": "hooks/use-liquid-motion.ts"
         },
         {
+          "path": "src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
           "path": "src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
@@ -58,6 +63,11 @@
           "target": "hooks/use-liquid-motion.ts"
         },
         {
+          "path": "src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
           "path": "src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
@@ -89,6 +99,11 @@
           "path": "src/hooks/use-liquid-motion.ts",
           "type": "registry:hook",
           "target": "hooks/use-liquid-motion.ts"
+        },
+        {
+          "path": "src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
         },
         {
           "path": "src/lib/utils.ts",

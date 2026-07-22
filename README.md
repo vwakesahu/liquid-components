@@ -11,6 +11,7 @@ Detailed engineering context:
 - [Liquid Slider implementation guide](docs/liquid-slider.md)
 - [Liquid Switch implementation guide](docs/liquid-switch.md)
 - [Liquid Tabs implementation guide](docs/liquid-tabs.md)
+- [Liquid displacement renderer](docs/liquid-displacement.md)
 - [shadcn extension architecture](docs/shadcn-architecture.md)
 
 ## Design principles
@@ -52,7 +53,7 @@ Each interactive element uses four layers:
 | Adaptive lens | Reveals content and color beneath the active element | Translucency, `backdrop-filter`, saturation, brightness |
 | Specular rim | Defines the glass silhouette against any background | Inset highlights, subtle border, adaptive shadow |
 | Interaction light | Connects the material to the pointer or finger | Pointer-positioned radial gradient |
-| Refraction copy | Magnifies the active content beneath the lens | Enlarged, synchronized copy clipped inside the tracker |
+| Refraction target | Supplies intentional component pixels to the lens | Synchronized track or selection copy filtered by a generated displacement map |
 
 These layers belong to one component surface. Avoid applying independent glass effects to every inner child.
 
@@ -283,7 +284,7 @@ Each component should reuse the same states and material layers, but adapt its g
 - Status: implemented as `LiquidSlider`.
 - Uses Radix Slider as the semantic and behavioral surface while Liquid layers decorate its track, range, and thumbs.
 - The glass tracker reveals the value underneath it.
-- The filled and unfilled rail is redrawn at a larger scale inside the active lens so engagement magnifies rather than merely blurs the background.
+- The filled and unfilled rail is redrawn inside the active lens and bent by the shared generated displacement map rather than merely blurred.
 - Keep the tracker as a capsule at rest and during drag.
 - Use less optical distortion than the switch so values remain readable.
 - Movement must remain directly synchronized with the input value.
@@ -351,7 +352,8 @@ src/
 │   ├── liquid-slider.tsx  # Radix Slider with Liquid material
 │   └── liquid-tabs.tsx    # Radix Tabs with a shared Liquid indicator
 ├── hooks/
-│   └── use-liquid-motion.ts
+│   ├── use-liquid-motion.ts
+│   └── use-liquid-displacement.tsx
 ├── lib/
 │   └── utils.ts
 ├── styles/

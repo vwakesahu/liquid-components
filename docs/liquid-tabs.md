@@ -10,6 +10,7 @@ Do not render a separate glass background inside every active trigger. Keep one 
 Radix Tabs.Root
 └── LiquidTabsList
     ├── shared selection indicator
+    │   ├── displaced highlight target
     │   ├── lens
     │   ├── rim
     │   └── pointer light
@@ -19,6 +20,8 @@ Radix Tabs.Root
 ```
 
 This preserves visual continuity when labels have different widths: the indicator changes both position and width instead of fading one capsule out and another in.
+
+The highlighted target is processed by the shared generated displacement map. Tabs uses a medium-strength preset; every optical parameter can be overridden with `lens` on `LiquidTabsList`.
 
 ## Measurement
 

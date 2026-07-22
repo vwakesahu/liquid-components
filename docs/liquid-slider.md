@@ -30,7 +30,7 @@ LiquidSlider
     │   └── Slider.Range
     └── Slider.Thumb
         ├── occlusion layer
-        ├── enlarged refraction copy
+        ├── displaced rail target
         ├── glass lens
         ├── specular rim
         └── interaction light
@@ -81,7 +81,7 @@ Pointer down immediately:
 - Expands the tracker
 - Reveals the glass lens
 - Strengthens the rim and shadow
-- Activates the enlarged rail copy
+- Activates the displaced rail target
 - Places illumination close to the pointer coordinate
 
 A quick click guarantees a minimum `380ms` visible pulse. Without this minimum duration, pointer down and up can occur before the glass expansion becomes perceptible.
@@ -138,12 +138,13 @@ These properties must be derived from the same filtered state so the material be
 
 CSS backdrop blur alone cannot create optical magnification. It only softens pixels behind an element.
 
-The current slider therefore uses a component-specific refraction approximation:
+The current slider therefore uses a component-specific displacement target:
 
 1. The occlusion layer diffuses and hides the original thin rail beneath the transparent tracker.
 2. A synchronized copy of the filled and unfilled rail is drawn above the occlusion layer.
-3. That copy is enlarged approximately `1.35×` vertically.
-4. Lens, rim, edge color, and interaction light are rendered above the enlarged copy.
+3. A generated rounded-rectangle displacement map bends that copy through SVG `feDisplacementMap`.
+4. Separate red, green, and blue passes add restrained chromatic refraction.
+5. Glow, angled specular light, lens, rim, and interaction light complete the surface.
 
 The rendering order matters. Without occlusion, both the original thin rail and enlarged rail remain visible, producing an unwanted double line.
 
@@ -154,16 +155,16 @@ original rail
   ↓ hidden by
 occlusion blur
   ↓ replaced by
-enlarged rail copy
+displaced rail target
   ↓ covered by
 lens → rim → interaction light
 ```
 
 ### Important limitation
 
-This is a slider-aware optical approximation, not true arbitrary-background refraction. The implementation redraws the known rail inside the tracker. It does not magnify arbitrary DOM content behind the component.
+This is real displacement of a slider-aware target, not arbitrary backdrop sampling. The implementation redraws and bends the known rail inside the tracker. It does not refract unrelated DOM content behind the component.
 
-True live-content refraction requires a displacement-map renderer, SVG filtering with browser-specific constraints, or WebGL. QR and media components will likely need canvas or WebGL because their pixels cannot be safely reproduced with the same DOM-layer technique.
+Arbitrary backdrop refraction still requires control of the pixels being filtered. QR and media components will use the same generated map with WebGL because their canvas or video pixels cannot be safely reproduced with this DOM-target technique.
 
 ## Performance architecture
 

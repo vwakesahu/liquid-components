@@ -1,6 +1,11 @@
 import { forwardRef, type CSSProperties, type ElementRef } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 
+import {
+  liquidLensPresets,
+  useLiquidDisplacement,
+  type LiquidLensOptions,
+} from "@/hooks/use-liquid-displacement";
 import { useLiquidMotion } from "@/hooks/use-liquid-motion";
 import { cn, composeRefs } from "@/lib/utils";
 import "@/styles/liquid.css";
@@ -8,6 +13,7 @@ import "@/styles/liquid.css";
 type LiquidSliderProps = React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & {
   size?: "small" | "regular" | "large";
   tint?: string;
+  lens?: LiquidLensOptions;
 };
 
 const geometry = {
@@ -32,6 +38,7 @@ export const LiquidSlider = forwardRef<
       className,
       size = "regular",
       tint = "#0a84ff",
+      lens,
       value,
       defaultValue,
       disabled,
@@ -48,6 +55,10 @@ export const LiquidSlider = forwardRef<
     forwardedRef,
   ) => {
     const motion = useLiquidMotion<HTMLSpanElement>();
+    const displacement = useLiquidDisplacement<HTMLSpanElement>({
+      ...liquidLensPresets.slider,
+      ...lens,
+    });
     const metrics = geometry[size];
     const thumbCount = value?.length ?? defaultValue?.length ?? 1;
     const liquidStyle: SliderStyle = {
@@ -108,12 +119,18 @@ export const LiquidSlider = forwardRef<
             aria-label={props["aria-label"] ? `${props["aria-label"]}${thumbCount > 1 ? ` ${index + 1}` : ""}` : undefined}
           >
             <span data-slot="liquid-slider-occlusion" className="liquid-slider__occlusion" />
-            <span data-slot="liquid-slider-refraction" className="liquid-slider__refraction" />
+            <span
+              ref={index === 0 ? displacement.targetRef : undefined}
+              data-slot="liquid-slider-refraction"
+              className="liquid-slider__refraction"
+              style={displacement.filterStyle}
+            />
             <span data-slot="liquid-slider-lens" className="liquid-slider__lens" />
             <span data-slot="liquid-slider-rim" className="liquid-slider__rim" />
             <span data-slot="liquid-slider-light" className="liquid-slider__light" />
           </SliderPrimitive.Thumb>
         ))}
+        {displacement.filter}
       </SliderPrimitive.Root>
     );
   },

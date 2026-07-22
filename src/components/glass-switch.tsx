@@ -1,6 +1,11 @@
 import { forwardRef, useEffect, useRef, useState, type CSSProperties, type ElementRef } from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 
+import {
+  liquidLensPresets,
+  useLiquidDisplacement,
+  type LiquidLensOptions,
+} from "@/hooks/use-liquid-displacement";
 import { useLiquidMotion } from "@/hooks/use-liquid-motion";
 import { cn, composeRefs } from "@/lib/utils";
 import "@/styles/liquid.css";
@@ -8,6 +13,7 @@ import "@/styles/liquid.css";
 type LiquidSwitchProps = React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root> & {
   size?: "small" | "regular" | "large";
   tint?: string;
+  lens?: LiquidLensOptions;
 };
 
 const geometry = {
@@ -34,6 +40,7 @@ export const LiquidSwitch = forwardRef<
       className,
       size = "regular",
       tint = "#34c759",
+      lens,
       disabled,
       checked,
       defaultChecked = false,
@@ -51,6 +58,10 @@ export const LiquidSwitch = forwardRef<
     forwardedRef,
   ) => {
     const motion = useLiquidMotion<HTMLButtonElement>({ maxStretch: 14 });
+    const displacement = useLiquidDisplacement<HTMLSpanElement>({
+      ...liquidLensPresets.switch,
+      ...lens,
+    });
     const metrics = geometry[size];
     const [uncontrolledChecked, setUncontrolledChecked] = useState(defaultChecked);
     const drag = useRef<{ startX: number; left: number; width: number; moved: boolean } | null>(null);
@@ -162,9 +173,16 @@ export const LiquidSwitch = forwardRef<
           <span data-slot="liquid-switch-tint" className="liquid-switch__tint" />
         </span>
         <SwitchPrimitive.Thumb data-slot="liquid-switch-thumb" className="liquid-switch__thumb">
+          <span
+            ref={displacement.targetRef}
+            data-slot="liquid-switch-refraction"
+            className="liquid-switch__refraction"
+            style={displacement.filterStyle}
+          />
           <span data-slot="liquid-switch-lens" className="liquid-switch__lens" />
           <span data-slot="liquid-switch-rim" className="liquid-switch__rim" />
           <span data-slot="liquid-switch-light" className="liquid-switch__light" />
+          {displacement.filter}
         </SwitchPrimitive.Thumb>
       </SwitchPrimitive.Root>
     );

@@ -7,6 +7,11 @@ import {
 } from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 
+import {
+  liquidLensPresets,
+  useLiquidDisplacement,
+  type LiquidLensOptions,
+} from "@/hooks/use-liquid-displacement";
 import { useLiquidMotion } from "@/hooks/use-liquid-motion";
 import { cn, composeRefs } from "@/lib/utils";
 import "@/styles/liquid.css";
@@ -15,6 +20,7 @@ type LiquidTabsListProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.L
   size?: "small" | "regular" | "large";
   tint?: string;
   indicatorClassName?: string;
+  lens?: LiquidLensOptions;
 };
 
 type TabsStyle = CSSProperties & {
@@ -46,6 +52,7 @@ export const LiquidTabsList = forwardRef<
       size = "regular",
       tint,
       indicatorClassName,
+      lens,
       onPointerDown,
       onPointerMove,
       onPointerUp,
@@ -61,6 +68,10 @@ export const LiquidTabsList = forwardRef<
       maxStretch: 14,
       distanceWeight: 0.8,
       velocityWeight: 20,
+    });
+    const displacement = useLiquidDisplacement<HTMLSpanElement>({
+      ...liquidLensPresets.tabs,
+      ...lens,
     });
     const dragSelection = useRef<{ pointerId: number; value: string | null } | null>(null);
 
@@ -209,9 +220,16 @@ export const LiquidTabsList = forwardRef<
           className={cn("liquid-tabs__indicator", indicatorClassName)}
           aria-hidden="true"
         >
+          <span
+            ref={displacement.targetRef}
+            data-slot="liquid-tabs-refraction"
+            className="liquid-tabs__refraction"
+            style={displacement.filterStyle}
+          />
           <span data-slot="liquid-tabs-indicator-lens" className="liquid-tabs__indicator-lens" />
           <span data-slot="liquid-tabs-indicator-rim" className="liquid-tabs__indicator-rim" />
           <span data-slot="liquid-tabs-indicator-light" className="liquid-tabs__indicator-light" />
+          {displacement.filter}
         </span>
         {children}
       </TabsPrimitive.List>

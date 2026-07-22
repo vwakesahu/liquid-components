@@ -53,6 +53,7 @@ The final namespace and domain are placeholders until branding and hosting are c
 - Liquid material layers
 - Pointer-velocity physics
 - Refraction rendering
+- Generated displacement maps and SVG filter passes
 - Engagement and settling motion
 - Optical and motion tokens
 - Component documentation
