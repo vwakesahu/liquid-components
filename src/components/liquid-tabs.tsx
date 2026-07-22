@@ -18,7 +18,7 @@ type LiquidTabsListProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.L
 };
 
 type TabsStyle = CSSProperties & {
-  "--tabs-tint": string;
+  "--tabs-tint"?: string;
 };
 
 export const LiquidTabs = forwardRef<
@@ -44,7 +44,7 @@ export const LiquidTabsList = forwardRef<
       className,
       children,
       size = "regular",
-      tint = "rgba(255, 255, 255, .72)",
+      tint,
       indicatorClassName,
       onPointerDown,
       onPointerMove,
@@ -141,7 +141,7 @@ export const LiquidTabsList = forwardRef<
     }, []);
 
     const liquidStyle: TabsStyle = {
-      "--tabs-tint": tint,
+      ...(tint ? { "--tabs-tint": tint } : {}),
       ...motion.style,
       ...style,
     };

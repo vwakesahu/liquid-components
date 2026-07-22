@@ -280,7 +280,10 @@ function App() {
               </LiquidTabsList>
             </LiquidTabs>
             <LiquidTabs defaultValue="photos">
-              <LiquidTabsList tint="rgba(222, 244, 255, .78)" aria-label="Content tabs">
+              <LiquidTabsList
+                tint={dark ? "rgba(48, 74, 90, .82)" : "rgba(222, 244, 255, .78)"}
+                aria-label="Content tabs"
+              >
                 <LiquidTabsTrigger value="photos">Photos</LiquidTabsTrigger>
                 <LiquidTabsTrigger value="videos">Videos</LiquidTabsTrigger>
               </LiquidTabsList>

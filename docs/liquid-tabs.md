@@ -72,6 +72,8 @@ import {
 
 `LiquidTabsList` adds `size`, `tint`, and `indicatorClassName` while retaining Radix List props. The current material is optimized for horizontal capsule lists.
 
+The default tint is defined in CSS so `.dark` and `[data-theme="dark"]` ancestors automatically select the dark material. Passing `tint` is an explicit override; applications should provide a theme-aware value when that override must change between modes.
+
 Tailwind customization uses the same source component:
 
 ```tsx
