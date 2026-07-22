@@ -86,7 +86,14 @@ export const LiquidTabsList = forwardRef<
       const value = target.dataset.liquidValue ?? null;
       if (!value || selection.value === value) return;
       selection.value = value;
-      target.click();
+      target.dispatchEvent(
+        new MouseEvent("mousedown", {
+          bubbles: true,
+          cancelable: true,
+          button: 0,
+          clientX,
+        }),
+      );
     };
 
     useLayoutEffect(() => {

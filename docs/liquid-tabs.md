@@ -48,6 +48,8 @@ The indicator is hidden until its first valid measurement, preventing a flash at
 
 Radix remains responsible for tab roles, relationships between triggers and panels, roving focus, keyboard navigation, controlled state, and automatic or manual activation.
 
+Radix selects pointer-operated triggers from `mousedown`, not `click`. Drag selection therefore dispatches the same cancellable mouse-down path when the captured pointer crosses into a new segment. It must not call `.focus()` as a selection shortcut: programmatic focus exposes the keyboard focus ring during pointer input and couples selection to focus behavior.
+
 ## API
 
 ```tsx
