@@ -41,8 +41,8 @@ The indicator is hidden until its first valid measurement, preventing a flash at
 - Holding and dragging across the track continuously selects the nearest enabled tab.
 - A quick selection retains the shared `380ms` material pulse.
 - Pointer velocity can stretch, squash, and lean the indicator.
-- During drag, selection position follows with a `420ms` liquid curve instead of snapping; width catches up over `360ms`.
-- Engagement adds `14px` of tracker height so the active glass clearly rises beyond the resting segmented track.
+- During drag, selection position follows with a `500ms` liquid curve; width catches up with a stronger `460ms` overshooting spring.
+- Engagement adds a restrained `10px` of tracker height while horizontal velocity can now contribute up to `18px` of stretch.
 - Selection position and indicator width settle with coordinated curves.
 - Arrow-key selection uses the same material feedback.
 

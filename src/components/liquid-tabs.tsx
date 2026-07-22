@@ -57,7 +57,11 @@ export const LiquidTabsList = forwardRef<
     },
     forwardedRef,
   ) => {
-    const motion = useLiquidMotion<HTMLDivElement>({ maxStretch: 12 });
+    const motion = useLiquidMotion<HTMLDivElement>({
+      maxStretch: 18,
+      distanceWeight: 1,
+      velocityWeight: 24,
+    });
     const dragSelection = useRef<{ pointerId: number; value: string | null } | null>(null);
 
     const selectAtPointer = (clientX: number) => {
