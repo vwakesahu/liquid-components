@@ -58,9 +58,9 @@ export const LiquidTabsList = forwardRef<
     forwardedRef,
   ) => {
     const motion = useLiquidMotion<HTMLDivElement>({
-      maxStretch: 18,
-      distanceWeight: 1,
-      velocityWeight: 24,
+      maxStretch: 14,
+      distanceWeight: 0.8,
+      velocityWeight: 20,
     });
     const dragSelection = useRef<{ pointerId: number; value: string | null } | null>(null);
 
@@ -86,7 +86,6 @@ export const LiquidTabsList = forwardRef<
       const value = target.dataset.liquidValue ?? null;
       if (!value || selection.value === value) return;
       selection.value = value;
-      target.focus({ preventScroll: true });
       target.click();
     };
 
