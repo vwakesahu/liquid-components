@@ -2,6 +2,12 @@ import { useState } from "react";
 import { Check, Clipboard, ExternalLink, Moon, Sun } from "lucide-react";
 import { LiquidSwitch } from "./components/glass-switch";
 import { LiquidSlider } from "./components/liquid-slider";
+import {
+  LiquidTabs,
+  LiquidTabsContent,
+  LiquidTabsList,
+  LiquidTabsTrigger,
+} from "./components/liquid-tabs";
 
 const sourceExample = `import { LiquidSwitch } from "@/components/liquid-switch"
 
@@ -64,6 +70,7 @@ function App() {
   const [dark, setDark] = useState(false);
   const [volume, setVolume] = useState(68);
   const [brightness, setBrightness] = useState(42);
+  const [tab, setTab] = useState("overview");
 
   return (
     <div className="app" data-theme={dark ? "dark" : "light"}>
@@ -72,6 +79,7 @@ function App() {
         <nav>
           <a className="active" href="#component">Switch</a>
           <a href="#slider">Slider</a>
+          <a href="#tabs">Tabs</a>
           <a href="#anatomy">Anatomy</a>
           <a href="#source">React</a>
         </nav>
@@ -233,9 +241,56 @@ function App() {
           </div>
         </section>
 
+        <section className="tabs-study" id="tabs">
+          <div className="tabs-heading">
+            <div>
+              <p className="kicker">APPLE COMPONENT STUDY · 003</p>
+              <h2>Tabs, translated<br />for the web.</h2>
+            </div>
+            <p>One persistent glass indicator measures the selected Radix tab, then glides and reshapes itself instead of mounting a new highlight for every selection.</p>
+          </div>
+          <div className="tabs-stage">
+            <div className="tabs-orb tabs-orb-one" />
+            <div className="tabs-orb tabs-orb-two" />
+            <div className="tabs-card">
+              <LiquidTabs value={tab} onValueChange={setTab}>
+                <LiquidTabsList aria-label="Analytics period">
+                  <LiquidTabsTrigger value="overview">Overview</LiquidTabsTrigger>
+                  <LiquidTabsTrigger value="activity">Activity</LiquidTabsTrigger>
+                  <LiquidTabsTrigger value="insights">Insights</LiquidTabsTrigger>
+                </LiquidTabsList>
+                <LiquidTabsContent value="overview">
+                  <span>Weekly reach</span><strong>84.2K</strong><small>+12.8% from last week</small>
+                </LiquidTabsContent>
+                <LiquidTabsContent value="activity">
+                  <span>Interactions</span><strong>19.6K</strong><small>4,218 new actions</small>
+                </LiquidTabsContent>
+                <LiquidTabsContent value="insights">
+                  <span>Conversion</span><strong>7.4%</strong><small>Best result this month</small>
+                </LiquidTabsContent>
+              </LiquidTabs>
+            </div>
+          </div>
+          <div className="tabs-variants">
+            <LiquidTabs defaultValue="day">
+              <LiquidTabsList size="small" aria-label="Small period tabs">
+                <LiquidTabsTrigger value="day">Day</LiquidTabsTrigger>
+                <LiquidTabsTrigger value="week">Week</LiquidTabsTrigger>
+                <LiquidTabsTrigger value="month">Month</LiquidTabsTrigger>
+              </LiquidTabsList>
+            </LiquidTabs>
+            <LiquidTabs defaultValue="photos">
+              <LiquidTabsList tint="rgba(222, 244, 255, .78)" aria-label="Content tabs">
+                <LiquidTabsTrigger value="photos">Photos</LiquidTabsTrigger>
+                <LiquidTabsTrigger value="videos">Videos</LiquidTabsTrigger>
+              </LiquidTabsList>
+            </LiquidTabs>
+          </div>
+        </section>
+
         <section className="next">
           <p className="kicker">NEXT COMPONENT</p>
-          <div><span>003</span><h2>Tabs</h2><em>Up next</em></div>
+          <div><span>004</span><h2>QR interaction</h2><em>Up next</em></div>
         </section>
       </main>
 

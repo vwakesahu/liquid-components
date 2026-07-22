@@ -29,10 +29,10 @@ Initial registry scope:
 The intended user experience is:
 
 ```bash
-npx shadcn@latest registry add \
+bunx --bun shadcn@latest registry add \
   @liquid=https://liquid-ui.com/r/{name}.json
 
-npx shadcn@latest add @liquid/switch @liquid/slider
+bunx --bun shadcn@latest add @liquid/switch @liquid/slider @liquid/tabs
 ```
 
 The final namespace and domain are placeholders until branding and hosting are confirmed.
@@ -60,7 +60,7 @@ The final namespace and domain are placeholders until branding and hosting are c
 
 ## Component strategy
 
-Create `LiquidSwitch` and `LiquidSlider` as separate components instead of silently overriding shadcn’s standard `Switch` and `Slider`.
+Create `LiquidSwitch`, `LiquidSlider`, and `LiquidTabs` as separate components instead of silently overriding shadcn’s standard controls.
 
 This allows both styles to coexist:
 
@@ -80,10 +80,11 @@ Registry components should preserve the corresponding shadcn/Radix API wherever 
 5. [x] Rebuild `LiquidSlider` on Radix Slider.
 6. [x] Adopt slider arrays, ranges, multiple thumbs, vertical orientation, and RTL at the Radix behavior layer.
 7. [x] Create, validate, build, and dry-run the first `registry.json` items.
-8. [ ] Add a clean consumer fixture with interaction and visual tests.
-9. [ ] Add per-thumb active material and vertical-axis deformation.
-10. [ ] Publish through GitHub registry URLs first.
-11. [ ] Add the stable `@liquid` namespace when hosted registry infrastructure is ready.
+8. [x] Build Liquid Tabs on Radix Tabs with one measured shared indicator.
+9. [ ] Add a clean consumer fixture with interaction and visual tests.
+10. [ ] Add per-thumb active material and vertical-axis deformation.
+11. [ ] Publish through GitHub registry URLs first.
+12. [ ] Add the stable `@liquid` namespace when hosted registry infrastructure is ready.
 
 ## Compatibility rule
 
@@ -98,3 +99,4 @@ Shared utilities may be installed as registry dependencies, but every dependency
 - [shadcn registry setup](https://ui.shadcn.com/docs/registry/getting-started)
 - [shadcn Slider](https://ui.shadcn.com/docs/components/radix/slider)
 - [shadcn Switch](https://ui.shadcn.com/docs/components/radix/switch)
+- [shadcn Tabs](https://ui.shadcn.com/docs/components/radix/tabs)

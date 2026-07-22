@@ -68,6 +68,39 @@
           "target": "styles/liquid.css"
         }
       ]
+    },
+    {
+      "name": "liquid-tabs",
+      "type": "registry:ui",
+      "title": "Liquid Tabs",
+      "description": "Radix-compatible tabs with one measured, morphing Liquid Glass selection indicator.",
+      "dependencies": [
+        "@radix-ui/react-tabs",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "src/components/liquid-tabs.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-tabs.tsx"
+        },
+        {
+          "path": "src/hooks/use-liquid-motion.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-motion.ts"
+        },
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "src/styles/liquid.css",
+          "type": "registry:style",
+          "target": "styles/liquid.css"
+        }
+      ]
     }
   ]
 }

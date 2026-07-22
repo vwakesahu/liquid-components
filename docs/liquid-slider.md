@@ -2,7 +2,7 @@
 
 This document records how the current Liquid Slider was designed, the problems encountered while tuning it, and the rules future components should reuse.
 
-The implementation lives in [`src/components/liquid-slider.tsx`](../src/components/liquid-slider.tsx). Its visual layers live under the `Liquid Slider` section of [`src/styles.css`](../src/styles.css).
+The installable implementation lives in [`src/components/liquid-slider.tsx`](../src/components/liquid-slider.tsx). Its shared visual layers live under the `Slider` section of [`src/styles/liquid.css`](../src/styles/liquid.css); the documentation site imports the same component and keeps a mirrored preview stylesheet in `src/styles.css`.
 
 ## Objective
 
@@ -25,33 +25,34 @@ The rendered structure is intentionally layered:
 
 ```text
 LiquidSlider
-├── visual track
-│   ├── selected fill
-│   └── visual tracker
-│       ├── occlusion layer
-│       ├── enlarged refraction copy
-│       ├── glass lens
-│       ├── specular rim
-│       └── interaction light
-└── native range input
+└── Radix Slider.Root
+    ├── Slider.Track
+    │   └── Slider.Range
+    └── Slider.Thumb
+        ├── occlusion layer
+        ├── enlarged refraction copy
+        ├── glass lens
+        ├── specular rim
+        └── interaction light
 ```
 
-### Native range input
+### Radix behavior layer
 
-The invisible `<input type="range">` remains the semantic and interactive source. It provides:
+Radix Slider remains the semantic and interactive source. It provides:
 
 - Pointer and touch value calculation
 - Keyboard increments
 - Minimum, maximum, and step handling
 - Disabled behavior
-- Form participation
 - Screen-reader semantics
+- Controlled and uncontrolled value arrays
+- Multiple thumbs, orientation, and RTL behavior
 
-The custom visual surface never independently guesses the selected value.
+The Liquid component decorates Radix parts and never independently calculates or animates the selected value.
 
 ### Visual track and fill
 
-The visual rail is inset by half the tracker width. This matches the effective movement area of the native range thumb and keeps the tracker centered at both endpoints.
+The visual rail has an inline margin equal to half the tracker width. Radix positions thumb centers at the beginning and end of the track, so this makes the visible rail terminate beneath the tracker center at both 0% and 100%. Without that margin, an unfilled sliver remains visible to the right of the tracker at the maximum value.
 
 The fill ends beneath the center of the tracker. It extends an additional `2px` under the lens to ensure antialiasing or fractional coordinates never reveal a gap.
 
@@ -166,7 +167,7 @@ True live-content refraction requires a displacement-map renderer, SVG filtering
 
 ## Performance architecture
 
-The first implementation felt laggy because each pointer event triggered several React updates, a parent value rerender, repeated layout reads, CSS position transitions, and backdrop compositing.
+The first implementation felt laggy because each pointer event triggered several React updates, repeated layout reads, CSS position transitions, and backdrop compositing.
 
 The optimized implementation follows these rules.
 
@@ -184,31 +185,17 @@ browser compositor
 
 React state is only used for phase boundaries such as `interacting` and `dragging`.
 
-### Limit value callbacks to once per frame
+### Let Radix own value position
 
-Native input changes can occur more frequently than display refresh. The component updates the visual progress variable immediately, then reports the latest semantic value to React at most once per animation frame.
+Radix updates Range and Thumb geometry from one value source. The Liquid component does not duplicate progress into a second React state or add an independent position animation. This prevents the fill from arriving after the tracker.
 
-This keeps the tracker responsive while avoiding multiple full-page rerenders inside one frame.
+### Measure interaction layout once
 
-### Measure layout once
-
-The input bounds are read on pointer down and reused throughout the drag. Calling `getBoundingClientRect()` on every pointer move can force repeated layout calculation.
+The shared motion hook reads root bounds on pointer down and reuses them for pointer lighting throughout the drag. Calling `getBoundingClientRect()` on every pointer move can force repeated layout calculation.
 
 ### Do not transition value position during drag
 
-While dragging:
-
-```css
-.liquid-slider[data-dragging] .liquid-slider__fill {
-  transition: none;
-}
-
-.liquid-slider[data-dragging] .liquid-slider__thumb {
-  transition: left 0s;
-}
-```
-
-Tracker position and fill must use the same timing. Any difference makes the rail appear detached from the tracker.
+Tracker position and fill inherit their geometry directly from Radix and have no component-authored value transition. Any independent easing on either part makes the rail appear detached from the tracker.
 
 Shape deformation can still use a short transition because it is expressive rather than value-bearing.
 
@@ -240,8 +227,9 @@ Recommended curves:
 
 ## Do
 
-- Keep the native range input as the semantic source.
+- Keep Radix Slider as the semantic source.
 - Keep tracker position and fill width synchronized.
+- Inset the visible track by half a tracker width so both endpoints finish beneath the tracker center.
 - Extend the fill slightly beneath the tracker.
 - Use `requestAnimationFrame` for pointer-frequency visual updates.
 - Read component bounds once at the beginning of interaction.
@@ -258,6 +246,7 @@ Recommended curves:
 - Don’t call `getBoundingClientRect()` continuously during drag.
 - Don’t add easing delay to tracker position while the pointer is active.
 - Don’t animate fill and tracker with different durations.
+- Don’t make the visible track span the full root width; Radix’s thumb endpoints are center positions.
 - Don’t spring past the semantic range value.
 - Don’t show the original and refracted rail simultaneously.
 - Don’t overmagnify the inner rail; subtle enlargement reads as glass, while excessive enlargement reads as a separate graphic.
@@ -269,13 +258,12 @@ Recommended curves:
 
 The slider must retain:
 
-- Native range semantics
+- Slider semantics supplied by Radix
 - `aria-label` or `aria-labelledby`
 - Keyboard arrow, Home, and End behavior
 - Visible focus indication
 - Disabled state
 - Minimum, maximum, and step support
-- Form name and value behavior
 - Reduced-motion support
 
 The Radix foundation preserves these requirements while providing range values, multiple thumbs, vertical orientation, and RTL behavior.
@@ -303,6 +291,12 @@ The current behavioral foundation supports:
 - shadcn aliases, shared tokens, and registry distribution
 
 The optical layers decorate Radix parts without reimplementing Radix value or keyboard behavior. The next visual pass needs per-thumb active material for multiple-thumb and vertical layouts; the current shared interaction state activates all rendered thumbs together.
+
+Install the registry item with Bun’s shadcn runner:
+
+```bash
+bunx --bun shadcn@latest add https://your-registry.example/r/liquid-slider.json
+```
 
 ## Validation checklist
 

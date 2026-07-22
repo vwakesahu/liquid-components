@@ -4,11 +4,13 @@ Liquid UI is an independent React component study that translates the observable
 
 The project is not an Apple rendering clone. Apple’s Liquid Glass renderer is proprietary and supplied automatically by system frameworks. This project uses browser-native layers, pointer input, and motion to recreate the important design qualities in reusable web components.
 
-The first two components are `LiquidSwitch` and `LiquidSlider`. The same material and interaction system will be reused for tabs, QR interactions, and media controls.
+The first three components are `LiquidSwitch`, `LiquidSlider`, and `LiquidTabs`. The same material and interaction system will be reused for QR interactions and media controls.
 
 Detailed engineering context:
 
 - [Liquid Slider implementation guide](docs/liquid-slider.md)
+- [Liquid Switch implementation guide](docs/liquid-switch.md)
+- [Liquid Tabs implementation guide](docs/liquid-tabs.md)
 - [shadcn extension architecture](docs/shadcn-architecture.md)
 
 ## Design principles
@@ -301,6 +303,7 @@ import { LiquidSlider } from "./components/liquid-slider"
 
 ### Tabs and segmented controls
 
+- Status: implemented as `LiquidTabs`, `LiquidTabsList`, `LiquidTabsTrigger`, and `LiquidTabsContent`.
 - Use one shared glass selection indicator.
 - Morph or glide the indicator between items rather than recreating it.
 - Preserve label contrast while the lens moves underneath.
@@ -345,7 +348,8 @@ Before considering a component complete, verify:
 src/
 ├── components/
 │   ├── glass-switch.tsx   # Radix Switch with Liquid material
-│   └── liquid-slider.tsx  # Radix Slider with Liquid material
+│   ├── liquid-slider.tsx  # Radix Slider with Liquid material
+│   └── liquid-tabs.tsx    # Radix Tabs with a shared Liquid indicator
 ├── hooks/
 │   └── use-liquid-motion.ts
 ├── lib/
