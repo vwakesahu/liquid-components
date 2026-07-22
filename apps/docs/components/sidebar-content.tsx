@@ -5,8 +5,11 @@ type Icon = ComponentType<SVGProps<SVGSVGElement>>;
 
 export interface ListItem {
   title: string;
-  href: string;
+  href?: string;
   icon: Icon;
+  group?: boolean;
+  separator?: boolean;
+  isNew?: boolean;
 }
 
 export interface Section {
