@@ -16,20 +16,11 @@ export default function OpenGraphImage() {
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        background: "#09090b",
+        background: "#080808",
         color: "#f7f7f8",
         fontFamily: "sans-serif",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          background:
-            "radial-gradient(circle at 18% 12%, rgba(169,139,255,.32), transparent 36%), radial-gradient(circle at 86% 78%, rgba(105,215,255,.24), transparent 34%)",
-        }}
-      />
       <div
         style={{
           width: 1040,
@@ -38,33 +29,42 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "68px 72px",
-          border: "1px solid rgba(255,255,255,.16)",
-          background: "rgba(255,255,255,.045)",
+          border: "1px solid rgba(255,255,255,.12)",
+          background: "#0d0d0d",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <div
             style={{
-              width: 82,
-              height: 58,
+              width: 58,
+              height: 40,
               display: "flex",
-              border: "2px solid rgba(255,255,255,.62)",
+              border: "1px solid rgba(255,255,255,.38)",
               borderRadius: 999,
-              background:
-                "radial-gradient(circle at 28% 24%, #fff, transparent 32%), linear-gradient(135deg, #a98bff, #69d7ff 55%, #72ffa8)",
-              boxShadow: "0 14px 38px rgba(96,111,255,.34)",
+              background: "rgba(255,255,255,.08)",
+              boxShadow: "inset 1px 1px 1px rgba(255,255,255,.3)",
             }}
           />
-          <span style={{ fontSize: 34, fontWeight: 700, letterSpacing: -1 }}>
+          <span style={{ fontSize: 29, fontWeight: 650, letterSpacing: -0.8 }}>
             {siteConfig.name}
           </span>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <div style={{ fontSize: 66, fontWeight: 760, letterSpacing: -3.5, lineHeight: 1 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
+          <div style={{ fontSize: 64, fontWeight: 680, letterSpacing: -3.2, lineHeight: 1.03 }}>
             Liquid Glass components
           </div>
-          <div style={{ fontSize: 30, color: "rgba(247,247,248,.66)" }}>
-            Open-code interaction primitives for React and shadcn/ui.
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingTop: 24,
+              borderTop: "1px solid rgba(255,255,255,.1)",
+              fontSize: 23,
+              color: "rgba(247,247,248,.55)",
+            }}
+          >
+            <span>React · shadcn/ui</span>
+            <span>liquidcomponents.xyz</span>
           </div>
         </div>
       </div>
