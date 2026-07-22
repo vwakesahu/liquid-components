@@ -434,12 +434,59 @@ figure.shiki > div:first-child,
 .component-preview__slider { width: min(100%, 480px); }
 .component-preview__tabs { width: min(100%, 520px); }
 .component-preview__video { width: min(100%, 760px); }
-.install-command-wrap { margin-block: 1.25rem; border: 1px solid var(--border); background: var(--card); }
-.install-command-tabs { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
-.install-command-tabs button { padding: 0.55rem 0.8rem; border-right: 1px solid var(--border); color: color-mix(in oklch, var(--foreground) 52%, transparent); font-family: var(--font-mono); font-size: 0.72rem; text-transform: lowercase; cursor: pointer; }
-.install-command-tabs button[aria-selected="true"] { background: color-mix(in oklch, var(--foreground) 7%, transparent); color: var(--foreground); }
-.install-command { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.8rem 0.9rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.82rem; }
-.install-command button { flex: none; padding: 0.35rem 0.55rem; border: 1px solid var(--border); background: var(--background); cursor: pointer; }
+.install-command-wrap {
+  margin-block: 1.5rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+.install-command-head {
+  min-height: 40px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklch, var(--foreground) 2.5%, transparent);
+}
+
+.install-command-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.85rem;
+  color: color-mix(in oklch, var(--foreground) 58%, transparent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.install-command-label svg { width: 13px; height: 13px; }
+.install-command-manager { min-width: 92px; position: relative; display: flex; align-items: stretch; border-left: 1px solid var(--border); }
+.install-command-manager select { width: 100%; appearance: none; padding: 0 2rem 0 0.8rem; border: 0; outline: 0; background: transparent; color: var(--foreground); font-family: var(--font-mono); font-size: 12px; cursor: pointer; }
+.install-command-manager > svg { width: 13px; height: 13px; position: absolute; top: 50%; right: 0.7rem; color: color-mix(in oklch, var(--foreground) 48%, transparent); transform: translateY(-50%); pointer-events: none; }
+.install-command-manager:focus-within { box-shadow: inset 0 -2px 0 var(--foreground); }
+
+.install-command {
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 52px;
+  align-items: center;
+  background: #fafafa;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.dark .install-command { background: #050505; }
+.install-command-prompt { padding-left: 1rem; color: color-mix(in oklch, var(--foreground) 32%, transparent); user-select: none; }
+.install-command code { min-width: 0; display: block; overflow-x: auto; padding: 1rem 0.75rem; color: color-mix(in oklch, var(--foreground) 86%, transparent); font: inherit; white-space: nowrap; scrollbar-width: none; }
+.install-command code::-webkit-scrollbar { display: none; }
+.install-command code::before, .install-command code::after { content: none !important; }
+.install-command button { align-self: stretch; display: grid; place-items: center; border: 0; border-left: 1px solid var(--border); background: transparent; color: color-mix(in oklch, var(--foreground) 48%, transparent); cursor: pointer; transition: background 160ms ease, color 160ms ease; }
+.install-command button:hover { background: color-mix(in oklch, var(--foreground) 5%, transparent); color: var(--foreground); }
+.install-command button:focus-visible { outline: 2px solid var(--ring); outline-offset: -3px; }
+.install-command button svg { width: 15px; height: 15px; }
 
 /* Respect prefers-reduced-motion for accessibility (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {

@@ -1,5 +1,6 @@
 "use client";
 
+import { CheckIcon, ChevronDownIcon, CopyIcon, TerminalIcon } from "lucide-react";
 import { useState } from "react";
 
 const managers = ["npm", "pnpm", "yarn", "bun"] as const;
@@ -25,24 +26,34 @@ export function InstallCommand({ name }: { name: string }) {
 
   return (
     <div className="install-command-wrap">
-      <div className="install-command-tabs" role="tablist" aria-label="Package manager">
-        {managers.map((item) => (
-          <button
-            key={item}
-            type="button"
-            role="tab"
-            aria-selected={manager === item}
-            onClick={() => setManager(item)}
+      <div className="install-command-head">
+        <span className="install-command-label">
+          <TerminalIcon aria-hidden="true" />
+          Install component
+        </span>
+        <label className="install-command-manager">
+          <span className="sr-only">Package manager</span>
+          <select
+            value={manager}
+            onChange={(event) => {
+              setManager(event.target.value as PackageManager);
+              setCopied(false);
+            }}
           >
-            {item}
-          </button>
-        ))}
+            {managers.map((item) => (
+              <option key={item} value={item}>{item}</option>
+            ))}
+          </select>
+          <ChevronDownIcon aria-hidden="true" />
+        </label>
       </div>
       <div className="install-command">
+        <span className="install-command-prompt" aria-hidden="true">$</span>
         <code>{command}</code>
-        <button type="button" onClick={copy} aria-label={`Copy ${manager} installation command`}>
-          {copied ? "Copied" : "Copy"}
+        <button type="button" onClick={copy} aria-label={`Copy ${manager} installation command`} title={copied ? "Copied" : "Copy command"}>
+          {copied ? <CheckIcon aria-hidden="true" /> : <CopyIcon aria-hidden="true" />}
         </button>
+        <span className="sr-only" aria-live="polite">{copied ? "Command copied" : ""}</span>
       </div>
     </div>
   );
