@@ -48,6 +48,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${siteConfig.name} · Liquid Glass components for shadcn/ui`,
     description: siteConfig.description,
+    site: siteConfig.xHandle,
+    creator: siteConfig.xHandle,
     images: [siteConfig.ogImage],
   },
   robots: {

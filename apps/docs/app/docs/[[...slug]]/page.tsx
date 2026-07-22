@@ -104,6 +104,8 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: socialTitle,
       description,
+      site: siteConfig.xHandle,
+      creator: siteConfig.xHandle,
       images: [siteConfig.ogImage],
     },
   };

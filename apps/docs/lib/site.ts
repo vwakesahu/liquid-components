@@ -6,6 +6,7 @@ export const siteConfig = {
   docsUrl: "https://liquidcomponents.xyz/docs",
   ogImage: "/opengraph-image",
   repository: "https://github.com/vwakesahu/liquid-components",
+  xHandle: "@vwakesahu",
   author: {
     name: "Vivek Sahu",
     url: "https://github.com/vwakesahu",
