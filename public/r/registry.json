@@ -6,6 +6,7 @@
     {
       "name": "liquid-switch",
       "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
       "title": "Liquid Switch",
       "description": "A Radix-compatible switch with a responsive Liquid Glass tracker.",
       "dependencies": [
@@ -44,6 +45,7 @@
     {
       "name": "liquid-slider",
       "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
       "title": "Liquid Slider",
       "description": "A Radix-compatible slider with ranges, multiple thumbs, and an interactive refractive tracker.",
       "dependencies": [
@@ -82,6 +84,7 @@
     {
       "name": "liquid-tabs",
       "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
       "title": "Liquid Tabs",
       "description": "Radix-compatible tabs with one measured, morphing Liquid Glass selection indicator.",
       "dependencies": [
@@ -120,6 +123,7 @@
     {
       "name": "liquid-video-player",
       "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
       "title": "Liquid Video Player",
       "description": "An accessible native video player with WebGL-refraction controls and a graceful media fallback.",
       "dependencies": [

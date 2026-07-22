@@ -412,9 +412,13 @@ bun run registry:build
 
 ## Styling with or without Tailwind
 
-Liquid UI ships its optical renderer in `styles/liquid.css`, so the components work in plain CSS projects. The same components are Tailwind-friendly: roots accept `className`, internal primitives expose stable `data-slot` attributes, and component colors and geometry are CSS variables. Tabs also exposes `indicatorClassName` for direct utility-class customization.
+Liquid UI ships its optical renderer in `styles/liquid.css`, so the components work in plain CSS projects. The shadcn CLI installs this file and each component imports it automatically—consumers do not need to edit their global CSS. The same components are Tailwind-friendly: roots accept `className`, internal primitives expose stable `data-slot` attributes, and component colors and geometry are CSS variables. Tabs also exposes `indicatorClassName` for direct utility-class customization.
 
 There is intentionally no second Tailwind-only implementation. This keeps the motion and glass rendering identical while allowing shadcn/Tailwind consumers to theme the public surfaces with utilities.
+
+## License
+
+Liquid UI is available under the [MIT License](LICENSE). Copyright © 2026 Vivek Sahu.
 
 ## References
 

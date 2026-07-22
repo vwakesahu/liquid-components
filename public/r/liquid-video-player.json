@@ -2,6 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "liquid-video-player",
   "title": "Liquid Video Player",
+  "author": "Vivek Sahu <viveksahu1762@gmail.com>",
   "description": "An accessible native video player with WebGL-refraction controls and a graceful media fallback.",
   "dependencies": [
     "lucide-react",

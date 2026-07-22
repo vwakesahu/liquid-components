@@ -33,13 +33,15 @@ Then install any component by name:
 npx shadcn@latest add @liquid/liquid-slider
 ```
 
-## Import the styles
+## Styles are automatic
 
-Each registry item installs `styles/liquid.css`. Import it once from your application stylesheet or root layout if your setup does not preserve the component's CSS import.
+There is no CSS setup step. Each registry item installs `styles/liquid.css`, and the installed component imports it automatically:
 
-```css
-@import "@/styles/liquid.css";
+```tsx
+import "@/styles/liquid.css"
 ```
+
+The dedicated stylesheet contains the shared refraction layers, pointer states, spring geometry, and accessibility fallbacks. Tailwind remains available for layout and theming through `className`, `data-slot` selectors, CSS variables, and `indicatorClassName`; you do not need to copy any CSS into your global stylesheet.
 
 ## Tailwind
 
