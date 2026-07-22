@@ -1,4 +1,4 @@
-import { BookOpen, Component, MousePointer2, Play, SlidersHorizontal, Sparkles, ToggleLeft } from "lucide-react";
+import { BookOpen, Component, Heart, MousePointer2, Play, SlidersHorizontal, Sparkles, ToggleLeft } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>;
@@ -22,6 +22,7 @@ export const contents: Section[] = [
     list: [
       { title: "Overview", href: "/docs", icon: BookOpen },
       { title: "Installation", href: "/docs/installation", icon: MousePointer2 },
+      { title: "Credits", href: "/docs/credits", icon: Heart },
     ],
   },
   {

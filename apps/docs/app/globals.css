@@ -130,7 +130,11 @@
 .component-preview__slider { width: min(100%, 480px); }
 .component-preview__tabs { width: min(100%, 520px); }
 .component-preview__video { width: min(100%, 760px); }
-.install-command { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-block: 1.25rem; padding: 0.8rem 0.9rem; overflow-x: auto; border: 1px solid var(--border); background: var(--card); font-family: var(--font-liquid-mono); font-size: 0.82rem; }
+.install-command-wrap { margin-block: 1.25rem; border: 1px solid var(--border); background: var(--card); }
+.install-command-tabs { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+.install-command-tabs button { padding: 0.55rem 0.8rem; border-right: 1px solid var(--border); color: color-mix(in oklch, var(--foreground) 52%, transparent); font-family: var(--font-liquid-mono); font-size: 0.72rem; text-transform: lowercase; cursor: pointer; }
+.install-command-tabs button[aria-selected="true"] { background: color-mix(in oklch, var(--foreground) 7%, transparent); color: var(--foreground); }
+.install-command { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.8rem 0.9rem; overflow-x: auto; font-family: var(--font-liquid-mono); font-size: 0.82rem; }
 .install-command button { flex: none; padding: 0.35rem 0.55rem; border: 1px solid var(--border); background: var(--background); cursor: pointer; }
 
 figure:has(.shiki), figure.shiki, [data-slot="tabs"]:has(.shiki), .bg-fd-card:has(.shiki), [role="tabpanel"]:has(.shiki) { overflow: hidden; border-radius: 0 !important; }

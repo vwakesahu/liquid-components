@@ -1,0 +1,43 @@
+---
+title: Credits and references
+description: The design systems, research, and open-source projects that informed Liquid UI.
+---
+
+Liquid UI is an independent web implementation. It is not affiliated with, endorsed by, or sponsored by Apple Inc. or Aave Labs.
+
+## Apple design team
+
+Apple created and introduced the Liquid Glass design language. Its platform controls, interaction behavior, material hierarchy, concentric geometry, lensing, and accessibility guidance are the primary design reference for this project.
+
+We referred to:
+
+- [Liquid Glass technology overview](https://developer.apple.com/documentation/technologyoverviews/liquid-glass)
+- [Human Interface Guidelines: Materials](https://developer.apple.com/design/human-interface-guidelines/materials)
+- [Meet Liquid Glass](https://developer.apple.com/videos/play/wwdc2025/219/)
+- [Get to know the new design system](https://developer.apple.com/videos/play/wwdc2025/356/)
+- [Build a SwiftUI app with the new design](https://developer.apple.com/videos/play/wwdc2025/323/)
+
+Apple's rendering technology and source code are proprietary. Liquid UI does not contain Apple framework code or claim pixel-identical rendering. It translates observable interaction principles using browser APIs.
+
+## Aave Labs design and engineering team
+
+Aave Labs published [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web), which was the main engineering reference for the cross-browser refraction architecture.
+
+That article informed our study of:
+
+- Generated red-and-green displacement maps driving `feDisplacementMap`.
+- Refracting intentional copies of component fills instead of sampling arbitrary page pixels.
+- Computing a symmetric rounded-rectangle map by quadrants.
+- Refreshing SVG filter identifiers for Safari.
+- Using the same displacement model in WebGL when live video cannot pass through Safari's SVG filter pipeline.
+
+Aave's article credits **Abhijeet Singh** for leading research and development, **Lochie Axon** for writing, **Alex Vanderzon** and **Ana Howard** for design direction, and the wider Aave Labs team for testing and refinement. We gratefully acknowledge their decision to publish the technique and browser findings.
+
+Liquid UI's source was implemented independently for this project and is not an Aave component release.
+
+## Open-source foundations
+
+- [shadcn/ui](https://ui.shadcn.com) for the open-code registry and distribution model.
+- [Radix Primitives](https://www.radix-ui.com/primitives) for accessible Switch, Slider, and Tabs behavior.
+- [Fumadocs](https://www.fumadocs.dev) for documentation content and layout infrastructure.
+- The Erebuz documentation app for the dark-first documentation shell and navigation structure used by this site.

@@ -30,11 +30,13 @@ bunx --bun shadcn@latest add ./public/r/liquid-switch.json --dry-run -y
 Current shadcn releases can install directly from a public GitHub source registry. Once this repository is public, users can run:
 
 ```bash
+npx shadcn@latest add <owner>/<repo>/liquid-switch
+pnpm dlx shadcn@latest add <owner>/<repo>/liquid-switch
+yarn dlx shadcn@latest add <owner>/<repo>/liquid-switch
 bunx --bun shadcn@latest add <owner>/<repo>/liquid-switch
-bunx --bun shadcn@latest add <owner>/<repo>/liquid-slider
-bunx --bun shadcn@latest add <owner>/<repo>/liquid-tabs
-bunx --bun shadcn@latest add <owner>/<repo>/liquid-video-player
 ```
+
+The four commands install the same registry item. Repeat with `liquid-slider`, `liquid-tabs`, or `liquid-video-player`. Bun is used to maintain this repository, but consumers are not required to use it.
 
 The root `registry.json` is the source of truth for this mode. GitHub registry installation does not require committing `public/r`, but the built JSON remains useful for a hosted namespace later.
 

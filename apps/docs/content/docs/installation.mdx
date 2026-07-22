@@ -7,7 +7,7 @@ description: Add Liquid UI components to a React project with Bun and the shadcn
 
 - React 19 or a compatible React 18 project.
 - A `components.json` file configured for shadcn/ui.
-- Bun for the commands shown in these docs.
+- npm, pnpm, Yarn, or Bun. Pick the package manager your project already uses.
 
 ## Install a component
 
@@ -16,6 +16,8 @@ Until the final repository URL is connected, replace `<owner>/<repo>` with the p
 <InstallCommand name="liquid-switch" />
 
 The CLI installs the component source, shared motion hook, displacement renderer, utilities, CSS, and external dependencies. Review the diff and commit those files as part of your application.
+
+Liquid UI uses Bun for developing and validating this repository. That does not create a Bun runtime dependency in installed components.
 
 ## Import the styles
 

@@ -27,6 +27,15 @@ bun run docs:build
 
 The component pages render the registry source directly, so a docs build also checks that the Switch, Slider, Tabs, and Video Player work across a Next.js client boundary.
 
+## Credits
+
+Liquid UI is an independent project inspired by Apple's Liquid Glass design language and informed by Aave Labs' published cross-browser glass research.
+
+- Apple design references: [Liquid Glass](https://developer.apple.com/documentation/technologyoverviews/liquid-glass), [Materials HIG](https://developer.apple.com/design/human-interface-guidelines/materials), and the WWDC25 Liquid Glass sessions.
+- Aave engineering reference: [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web), including the work credited there to Abhijeet Singh, Lochie Axon, Alex Vanderzon, Ana Howard, and the wider Aave Labs team.
+
+This project is not affiliated with Apple or Aave Labs and contains no proprietary Apple framework code. See the full [credits and references page](apps/docs/content/docs/credits.mdx).
+
 ## Design principles
 
 ### 1. Quiet at rest
