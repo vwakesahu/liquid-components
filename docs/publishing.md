@@ -37,7 +37,7 @@ gh repo create vwakesahu/liquid-components --public --source=. --remote=origin -
 
 ## Deploy with the Vercel CLI
 
-The root `vercel.json` builds the nested Next.js documentation app while retaining access to the shared component source.
+The Vercel project uses `apps/docs` as its Root Directory and keeps “Include source files outside of the Root Directory” enabled so Next.js can consume `packages/liquid-ui`. The app-local `apps/docs/vercel.json` identifies the Next.js framework; the root remains a package-manager workspace rather than pretending to be the deployed app.
 
 ```bash
 vercel link --yes --scope anonymous-scope --project liquid-components

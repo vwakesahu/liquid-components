@@ -18,7 +18,7 @@
     "playground:dev": "bun --cwd apps/playground dev",
     "playground:build": "bun --cwd apps/playground build",
     "docs:dev": "bun --cwd apps/docs dev",
-    "docs:build": "bun --cwd apps/docs build",
+    "docs:build": "bun run registry:build && bun --cwd apps/docs build",
     "package:check": "bun --cwd packages/liquid-ui check",
     "check": "bun run package:check && bun --cwd apps/playground check",
     "build": "bun run playground:build",
