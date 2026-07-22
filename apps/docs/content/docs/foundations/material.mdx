@@ -1,0 +1,27 @@
+---
+title: Material and motion
+description: The optical layers, state model, and constraints shared by every Liquid UI component.
+---
+
+Liquid UI treats glass as an interaction material, not permanent decoration. Controls remain quiet at rest and reveal stronger refraction, lighting, and deformation when engaged.
+
+## Shared anatomy
+
+Every tracker combines four coordinated layers:
+
+1. A stable state surface.
+2. A generated displacement map that bends component pixels.
+3. A chromatic and specular edge treatment.
+4. Pointer-positioned light and velocity-driven deformation.
+
+## Interaction states
+
+The shared motion model moves through rest, engage, hold or drag, and settle. Position, shape, light, and shadow resolve together. A capsule remains a capsule in every state.
+
+## Renderer boundary
+
+Live DOM uses an SVG `feDisplacementMap`. Video uses the same generated map in WebGL because Safari does not reliably pass live video pixels through SVG filters. Accessibility and input semantics remain native even when the optical renderer is unavailable.
+
+## Reduced motion
+
+When a user requests reduced motion, the controls keep their state and accessibility behavior while removing nonessential spring and deformation transitions.

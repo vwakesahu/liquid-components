@@ -3,8 +3,13 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "dev": "vite",
+    "docs:dev": "bun --cwd apps/docs dev",
+    "docs:build": "bun --cwd apps/docs build",
     "build": "tsc -b && vite build",
     "registry:validate": "shadcn registry validate registry.json",
     "registry:build": "shadcn build registry.json",
@@ -23,7 +28,7 @@
     "react": "latest",
     "react-dom": "latest",
     "tailwind-merge": "^3.6.0",
-    "typescript": "latest",
+    "typescript": "^5.9.3",
     "vite": "latest"
   },
   "devDependencies": {
@@ -31,5 +36,6 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "shadcn": "^4.13.1"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

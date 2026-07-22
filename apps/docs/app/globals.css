@@ -1,0 +1,141 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/black.css";
+@import "fumadocs-ui/css/preset.css";
+@import "../../../src/styles/liquid.css";
+
+@source "../components/**/*.{ts,tsx}";
+@source "../node_modules/fumadocs-ui/dist/**/*.js";
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.147 0.004 49.25);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.147 0.004 49.25);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.147 0.004 49.25);
+  --primary: oklch(0.216 0.006 56.043);
+  --primary-foreground: oklch(0.985 0.001 106.423);
+  --secondary: oklch(0.97 0.001 106.424);
+  --secondary-foreground: oklch(0.216 0.006 56.043);
+  --muted: oklch(0.97 0.001 106.424);
+  --muted-foreground: oklch(0.553 0.013 58.071);
+  --accent: oklch(0.97 0.001 106.424);
+  --accent-foreground: oklch(0.216 0.006 56.043);
+  --border: oklch(0.923 0.003 48.717);
+  --ring: oklch(0.709 0.01 56.259);
+  --scrollbar-thumb: var(--border);
+  --scrollbar-thumb-hover: var(--ring);
+  --landing-topbar-height: 48px;
+  --fd-nav-height: 56px;
+  --fd-banner-height: 0px;
+  --fd-tocnav-height: 0px;
+  --font-liquid-sans: Geist, Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-liquid-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+.dark {
+  --background: hsl(0 0% 0%);
+  --foreground: oklch(0.985 0.001 106.423);
+  --card: oklch(0.147 0.004 49.25);
+  --card-foreground: oklch(0.985 0.001 106.423);
+  --popover: oklch(0.147 0.004 49.25);
+  --popover-foreground: oklch(0.985 0.001 106.423);
+  --primary: oklch(0.985 0.001 106.423);
+  --primary-foreground: oklch(0.216 0.006 56.043);
+  --secondary: oklch(0.268 0.007 34.298);
+  --secondary-foreground: oklch(0.985 0.001 106.423);
+  --muted: oklch(0.268 0.007 34.298);
+  --muted-foreground: oklch(0.709 0.01 56.259);
+  --accent: oklch(0.268 0.007 34.298);
+  --accent-foreground: oklch(0.985 0.001 106.423);
+  --border: oklch(0.268 0.007 34.298);
+  --ring: oklch(0.553 0.013 58.071);
+  --scrollbar-thumb: var(--border);
+  --scrollbar-thumb-hover: var(--ring);
+}
+
+@theme inline {
+  --font-sans: var(--font-liquid-sans);
+  --font-mono: var(--font-liquid-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+}
+
+::selection { background: var(--foreground); color: var(--background); }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border: 3px solid transparent; border-radius: 9999px; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
+.sidebar-scroll { scrollbar-width: none; }
+.sidebar-scroll::-webkit-scrollbar { display: none; }
+.prose code:not(pre code), .prose a { overflow-wrap: anywhere; }
+
+.docs-layout {
+  --fd-sidebar-width: 0px;
+  --fd-toc-width: 0px;
+  --fd-layout-width: 100vw;
+  --fd-layout-offset: 0px;
+  --fd-page-width: 900px;
+  --fd-banner-height: var(--landing-topbar-height);
+  --landing-left-pane-width: min(22vw, 300px);
+  padding-top: var(--landing-topbar-height);
+}
+
+@media (min-width: 64rem) {
+  :root { --landing-topbar-height: 44px; }
+  .docs-layout { --fd-layout-width: min(calc(100vw - var(--landing-left-pane-width)), 1200px); padding-inline-start: var(--landing-left-pane-width); }
+  .docs-layout::before { content: ""; position: fixed; inset-block-start: 0; inset-inline-start: calc(var(--landing-left-pane-width) - 1px); z-index: 100; width: 1px; height: var(--landing-topbar-height); background: var(--color-border); opacity: 0.55; pointer-events: none; }
+}
+
+@media (min-width: 80rem) {
+  .docs-layout { --fd-toc-width: 280px; }
+  .docs-layout #nd-toc { padding: 4rem 0 4rem 2rem; }
+}
+
+.docs-layout #nd-toc > div { overscroll-behavior-y: contain; scrollbar-width: none; }
+.docs-layout [data-toc-popover], .docs-layout [data-toc-popover] * { scrollbar-width: none; }
+.docs-layout #nd-page article > div.\@container { gap: 0; margin-top: 3rem; padding-top: 0; padding-bottom: 2rem; border-top: 1px dashed color-mix(in oklch, var(--color-foreground) 8%, transparent); }
+.docs-layout #nd-page article > div.\@container > a { position: relative; padding: 1.25rem 1.5rem; border: none; border-bottom: 1px dashed color-mix(in oklch, var(--color-foreground) 8%, transparent); border-radius: 0; background: transparent; font-family: var(--font-liquid-mono); transition: all 200ms ease; }
+.docs-layout #nd-page article > div.\@container > a:first-child { border-right: 1px dashed color-mix(in oklch, var(--color-foreground) 8%, transparent); }
+.docs-layout #nd-page article > div.\@container > a:hover { border-color: color-mix(in oklch, var(--color-foreground) 15%, transparent); background: color-mix(in oklch, var(--color-foreground) 3%, transparent); }
+
+.liquid-logo-mark { width: 18px; height: 13px; display: block; border: 1px solid rgb(255 255 255 / 0.5); border-radius: 999px; background: radial-gradient(circle at 28% 24%, #fff, transparent 32%), linear-gradient(135deg, #a98bff, #69d7ff 55%, #72ffa8); box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.75), 0 4px 14px rgb(96 111 255 / 0.3); }
+
+.component-preview { position: relative; min-height: 300px; margin-block: 1.5rem; overflow: hidden; border: 1px solid var(--border); background: radial-gradient(circle at 12% 22%, rgb(130 112 255 / 0.22), transparent 31%), radial-gradient(circle at 88% 74%, rgb(68 218 255 / 0.18), transparent 32%), var(--card); }
+.component-preview__canvas { min-height: 300px; display: grid; place-items: center; padding: 2.5rem; background-image: linear-gradient(rgb(127 127 127 / 0.07) 1px, transparent 1px), linear-gradient(90deg, rgb(127 127 127 / 0.07) 1px, transparent 1px); background-size: 24px 24px; }
+.component-preview__row { width: min(100%, 560px); display: flex; align-items: center; justify-content: center; gap: 2rem; }
+.component-preview__slider { width: min(100%, 480px); }
+.component-preview__tabs { width: min(100%, 520px); }
+.component-preview__video { width: min(100%, 760px); }
+.install-command { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-block: 1.25rem; padding: 0.8rem 0.9rem; overflow-x: auto; border: 1px solid var(--border); background: var(--card); font-family: var(--font-liquid-mono); font-size: 0.82rem; }
+.install-command button { flex: none; padding: 0.35rem 0.55rem; border: 1px solid var(--border); background: var(--background); cursor: pointer; }
+
+figure:has(.shiki), figure.shiki, [data-slot="tabs"]:has(.shiki), .bg-fd-card:has(.shiki), [role="tabpanel"]:has(.shiki) { overflow: hidden; border-radius: 0 !important; }
+.dark .shiki, .dark figure.shiki, .dark [role="tabpanel"] .shiki, .dark .fd-scroll-container { border-color: rgb(255 255 255 / 0.06); border-radius: 0 !important; background-color: #050505 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

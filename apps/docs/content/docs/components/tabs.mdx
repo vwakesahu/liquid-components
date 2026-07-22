@@ -1,0 +1,25 @@
+---
+title: Liquid Tabs
+description: Radix Tabs with one measured, draggable Liquid Glass selection indicator.
+---
+
+<ComponentPreview name="tabs" />
+
+## Installation
+
+<InstallCommand name="liquid-tabs" />
+
+## Usage
+
+```tsx
+import { LiquidTabs, LiquidTabsList, LiquidTabsTrigger } from "@/components/ui/liquid-tabs"
+
+<LiquidTabs defaultValue="overview">
+  <LiquidTabsList>
+    <LiquidTabsTrigger value="overview">Overview</LiquidTabsTrigger>
+    <LiquidTabsTrigger value="activity">Activity</LiquidTabsTrigger>
+  </LiquidTabsList>
+</LiquidTabs>
+```
+
+Press and drag anywhere across the list to select a tab. The indicator measures each trigger and eases toward it instead of snapping between independently rendered backgrounds.

@@ -1,0 +1,23 @@
+---
+title: Liquid UI
+description: Liquid Glass components and interaction primitives designed for the shadcn ecosystem.
+---
+
+Liquid UI is an open-code component registry for interfaces that need tactile, refractive controls. It extends shadcn/ui instead of replacing it: Radix owns semantics and accessibility, while Liquid UI owns the material, displacement, pointer physics, and spring motion.
+
+## Components
+
+- **Liquid Switch** — a draggable binary control with a refractive tracker.
+- **Liquid Slider** — a value control whose fill remains synchronized with its lens.
+- **Liquid Tabs** — a toggle group with one measured, draggable selection indicator.
+- **Liquid Video Player** — native video semantics with shared liquid controls and WebGL refraction.
+
+## Open code
+
+Components are installed as source through the shadcn CLI. There is no permanent Liquid UI runtime package: you receive the components, hooks, styles, and utilities needed by each item.
+
+```bash
+bunx --bun shadcn@latest add <owner>/<repo>/liquid-switch
+```
+
+Start with [installation](/docs/installation), then open a component page to try its live preview.

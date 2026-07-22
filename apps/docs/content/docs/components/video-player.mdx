@@ -1,0 +1,24 @@
+---
+title: Liquid Video Player
+description: An accessible native video player with shared liquid controls and WebGL refraction.
+---
+
+<ComponentPreview name="video" />
+
+## Installation
+
+<InstallCommand name="liquid-video-player" />
+
+## Usage
+
+```tsx
+import { LiquidVideoPlayer } from "@/components/ui/liquid-video-player"
+
+<LiquidVideoPlayer
+  src="/media/demo.mp4"
+  poster="/media/poster.webp"
+  aria-label="Product demonstration"
+/>
+```
+
+The timeline reuses `LiquidSlider`, including its endpoint spacing and input behavior. Video remains a native `<video>` element; WebGL only renders the refracted visual layer around controls and falls back safely when unavailable.

@@ -1,0 +1,30 @@
+---
+title: Installation
+description: Add Liquid UI components to a React project with Bun and the shadcn CLI.
+---
+
+## Requirements
+
+- React 19 or a compatible React 18 project.
+- A `components.json` file configured for shadcn/ui.
+- Bun for the commands shown in these docs.
+
+## Install a component
+
+Until the final repository URL is connected, replace `<owner>/<repo>` with the public GitHub repository address.
+
+<InstallCommand name="liquid-switch" />
+
+The CLI installs the component source, shared motion hook, displacement renderer, utilities, CSS, and external dependencies. Review the diff and commit those files as part of your application.
+
+## Import the styles
+
+Each registry item installs `styles/liquid.css`. Import it once from your application stylesheet or root layout if your setup does not preserve the component's CSS import.
+
+```css
+@import "@/styles/liquid.css";
+```
+
+## Tailwind
+
+Tailwind is supported but not required by the material renderer. Use `className`, stable `data-slot` attributes, or CSS variables to customize a component. This keeps the same optics available to both Tailwind and plain-CSS projects.

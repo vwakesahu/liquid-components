@@ -14,6 +14,18 @@ Detailed engineering context:
 - [Liquid displacement renderer](docs/liquid-displacement.md)
 - [Liquid Video Player implementation guide](docs/liquid-video-player.md)
 - [shadcn extension architecture](docs/shadcn-architecture.md)
+- [Publishing the registry and docs](docs/publishing.md)
+
+## Documentation site
+
+The public docs live in `apps/docs`. They use the same foundation as the current shadcn site—Next.js, Tailwind CSS, and Fumadocs—with a dark-first shell adapted from the Erebuz docs app.
+
+```bash
+bun run docs:dev
+bun run docs:build
+```
+
+The component pages render the registry source directly, so a docs build also checks that the Switch, Slider, Tabs, and Video Player work across a Next.js client boundary.
 
 ## Design principles
 

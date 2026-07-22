@@ -1,3 +1,5 @@
+"use client";
+
 import { forwardRef, useEffect, useRef, useState, type CSSProperties, type ElementRef } from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { forwardRef, type CSSProperties, type ElementRef } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 

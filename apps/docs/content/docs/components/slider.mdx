@@ -1,0 +1,22 @@
+---
+title: Liquid Slider
+description: A Radix Slider with synchronized fill, spring deformation, and a refractive tracker.
+---
+
+<ComponentPreview name="slider" />
+
+## Installation
+
+<InstallCommand name="liquid-slider" />
+
+## Usage
+
+```tsx
+import { LiquidSlider } from "@/components/ui/liquid-slider"
+
+export function Volume() {
+  return <LiquidSlider defaultValue={[64]} aria-label="Volume" />
+}
+```
+
+The fill and tracker derive from the same Radix value, preventing visual lag. Endpoint geometry keeps the tracker inside the rail at both 0% and 100%.
