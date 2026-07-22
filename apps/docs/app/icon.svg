@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="liquid" x1="8" y1="10" x2="56" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a98bff"/>
+      <stop offset="0.55" stop-color="#69d7ff"/>
+      <stop offset="1" stop-color="#72ffa8"/>
+    </linearGradient>
+    <radialGradient id="light" cx="0" cy="0" r="1" gradientTransform="translate(20 20) rotate(42) scale(22 18)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff"/>
+      <stop offset="0.34" stop-color="#fff" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-30%" width="140%" height="170%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#606fff" flood-opacity="0.34"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <rect x="4" y="10" width="56" height="42" rx="21" fill="url(#liquid)"/>
+    <rect x="4" y="10" width="56" height="42" rx="21" fill="url(#light)"/>
+    <rect x="4.75" y="10.75" width="54.5" height="40.5" rx="20.25" fill="none" stroke="#fff" stroke-opacity="0.62" stroke-width="1.5"/>
+    <path d="M15 18c8-6 26-6 35 0" fill="none" stroke="#fff" stroke-opacity="0.48" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
