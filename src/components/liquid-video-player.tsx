@@ -3,7 +3,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
 } from "react";
 import {
   Maximize,
@@ -18,6 +17,7 @@ import {
 import type { LiquidLensOptions } from "@/hooks/use-liquid-displacement";
 import { useVideoRefraction } from "@/hooks/use-video-refraction";
 import { cn, composeRefs } from "@/lib/utils";
+import { LiquidSlider } from "./liquid-slider";
 import "@/styles/liquid.css";
 
 type LiquidVideoPlayerProps = Omit<
@@ -29,10 +29,6 @@ type LiquidVideoPlayerProps = Omit<
   lens?: LiquidLensOptions;
   skipSeconds?: number;
   volume?: number;
-};
-
-type PlayerStyle = CSSProperties & {
-  "--video-progress": string;
 };
 
 function formatTime(value: number) {
@@ -138,9 +134,6 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
       showControls();
     };
 
-    const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
-    const playerStyle: PlayerStyle = { "--video-progress": `${progress}%` };
-
     return (
       <div
         ref={renderer.containerRef}
@@ -149,7 +142,6 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
         data-renderer-ready={renderer.ready || undefined}
         data-paused={paused || undefined}
         className={cn("liquid-video", className)}
-        style={playerStyle}
         role="group"
         aria-label={props["aria-label"] ?? "Video player"}
         tabIndex={0}
@@ -272,18 +264,15 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
             {formatTime(currentTime)} <i>/</i> {formatTime(duration)}
           </span>
           <div className="liquid-video__scrubber">
-            <span className="liquid-video__scrubber-track">
-              <span className="liquid-video__scrubber-fill" />
-            </span>
-            <span data-liquid-video-lens className="liquid-video__scrubber-thumb" />
-            <input
-              type="range"
-              min="0"
-              max={duration || 0}
-              step="0.01"
-              value={Math.min(currentTime, duration || 0)}
+            <LiquidSlider
+              size="small"
+              tint="rgba(255,255,255,.92)"
+              min={0}
+              max={Math.max(duration, 0.01)}
+              step={0.01}
+              value={[Math.min(currentTime, duration || 0)]}
               aria-label="Video progress"
-              onChange={(event) => seek(event.currentTarget.valueAsNumber)}
+              onValueChange={([next]) => seek(next)}
               onPointerDown={showControls}
             />
           </div>

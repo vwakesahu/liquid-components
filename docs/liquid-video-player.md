@@ -34,7 +34,7 @@ The `<video>` element owns:
 - Media events forwarded through normal React props.
 - `playsInline`, preload, poster, source, and cross-origin configuration.
 
-The custom UI adds play/pause, backward/forward skip, time display, a native range scrubber, mute, and fullscreen.
+The custom UI adds play/pause, backward/forward skip, time display, the shared Radix-based `LiquidSlider` scrubber, mute, and fullscreen. Reusing the same slider keeps the rail, lens physics, and endpoint geometry consistent; at 100% the tracker remains inside its layout slot instead of overlapping the volume button.
 
 Keyboard shortcuts on the focused player:
 

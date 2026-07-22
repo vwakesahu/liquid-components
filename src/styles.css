@@ -168,13 +168,10 @@ nav a:hover, nav a.active { color: var(--text); }
 .liquid-video__button:active { width: 46px; height: 44px; transform: scaleY(.96); background: rgba(255,255,255,.22); }
 .liquid-video__time { min-width: 67px; color: rgba(255,255,255,.82); font-size: 10px; font-variant-numeric: tabular-nums; text-align: center; }
 .liquid-video__time i { color: rgba(255,255,255,.38); font-style: normal; }
-.liquid-video__scrubber { height: 40px; flex: 1; min-width: 80px; position: relative; display: flex; align-items: center; }
-.liquid-video__scrubber-track { width: 100%; height: 5px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.25); box-shadow: inset 0 1px 1px rgba(0,0,0,.18); }
-.liquid-video__scrubber-fill { display: block; width: var(--video-progress); height: 100%; border-radius: inherit; background: rgba(255,255,255,.92); }
-.liquid-video__scrubber-thumb { width: 18px; height: 26px; position: absolute; left: var(--video-progress); top: 50%; border: .5px solid rgba(255,255,255,.72); border-radius: 999px; background: rgba(255,255,255,.34); box-shadow: 0 4px 10px rgba(0,0,0,.25), inset 1px 1px 1px rgba(255,255,255,.55); transform: translate(-50%,-50%); pointer-events: none; transition: width .3s cubic-bezier(.18,1.28,.3,1), height .3s cubic-bezier(.18,1.28,.3,1); }
-.liquid-video__scrubber:focus-within .liquid-video__scrubber-thumb, .liquid-video__scrubber:active .liquid-video__scrubber-thumb { width: 26px; height: 34px; }
-.liquid-video__scrubber input { width: 100%; height: 40px; position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
-.liquid-video__scrubber:focus-within { outline: 2px solid rgba(255,255,255,.82); outline-offset: 2px; border-radius: 999px; }
+.liquid-video__scrubber { height: 42px; flex: 1; min-width: 100px; padding-inline: 6px; display: flex; align-items: center; overflow: visible; }
+.liquid-video__scrubber .liquid-slider { width: 100%; flex: 1; }
+.liquid-video__scrubber .liquid-slider__track { background: rgba(255,255,255,.24); }
+.liquid-video__scrubber .liquid-slider__thumb { background: rgba(255,255,255,.86); box-shadow: 0 4px 10px rgba(0,0,0,.25), inset 1px 1px 1px rgba(255,255,255,.55); }
 
 .behavior-strip { display: grid; grid-template-columns: repeat(3,1fr); padding: 95px 0 115px; }
 .behavior-strip article { min-height: 250px; padding: 0 34px; border-left: 1px solid var(--line); display: flex; flex-direction: column; align-items: flex-start; }

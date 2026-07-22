@@ -129,7 +129,7 @@ type UseVideoRefractionOptions = {
 
 export function useVideoRefraction({
   lens,
-  lensSelector = "[data-liquid-video-lens]",
+  lensSelector = '[data-liquid-video-lens], [data-slot="liquid-slider-thumb"]',
 }: UseVideoRefractionOptions = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);

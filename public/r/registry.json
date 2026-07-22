@@ -124,6 +124,7 @@
       "description": "An accessible native video player with WebGL-refraction controls and a graceful media fallback.",
       "dependencies": [
         "lucide-react",
+        "@radix-ui/react-slider",
         "clsx",
         "tailwind-merge"
       ],
@@ -137,6 +138,16 @@
           "path": "src/hooks/use-video-refraction.ts",
           "type": "registry:hook",
           "target": "hooks/use-video-refraction.ts"
+        },
+        {
+          "path": "src/components/liquid-slider.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-slider.tsx"
+        },
+        {
+          "path": "src/hooks/use-liquid-motion.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-motion.ts"
         },
         {
           "path": "src/hooks/use-liquid-displacement.tsx",
