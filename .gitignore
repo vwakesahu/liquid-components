@@ -15,6 +15,7 @@ vite.config.d.ts
 .DS_Store
 .idea/
 .vscode/
+.vercel/
 
 # Logs
 *.log

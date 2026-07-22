@@ -140,7 +140,7 @@ export function DocsSidebar() {
       {/* Footer: GitHub + Theme Toggle */}
       <div className="flex items-center gap-1 border-t border-foreground/5 p-2 text-foreground/40">
         <a
-          href="https://github.com/liquid-ui/liquid-ui"
+          href="https://github.com/vwakesahu/liquid-components"
           target="_blank"
           rel="noreferrer noopener"
           className="inline-flex size-8 items-center justify-center transition-colors hover:bg-foreground/5 hover:text-foreground/70"

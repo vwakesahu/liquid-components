@@ -11,15 +11,27 @@ description: Add Liquid UI components to a React project with Bun and the shadcn
 
 ## Install a component
 
-Until the final repository URL is connected, replace `<owner>/<repo>` with the public GitHub repository address.
-
 ```npm
-npx shadcn@latest add <owner>/<repo>/liquid-switch
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-switch.json
 ```
 
 The CLI installs the component source, shared motion hook, displacement renderer, utilities, CSS, and external dependencies. Review the diff and commit those files as part of your application.
 
 Liquid UI uses Bun for developing and validating this repository. That does not create a Bun runtime dependency in installed components.
+
+## Optional namespace
+
+Register the hosted collection once:
+
+```npm
+npx shadcn@latest registry add '@liquid=https://liquidcomponents.xyz/r/{name}.json'
+```
+
+Then install any component by name:
+
+```npm
+npx shadcn@latest add @liquid/liquid-slider
+```
 
 ## Import the styles
 

@@ -6,6 +6,7 @@ import { Topbar } from "../components/topbar";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://liquidcomponents.xyz"),
   title: { default: "Liquid UI", template: "%s · Liquid UI" },
   description: "Liquid Glass components and interaction primitives for shadcn/ui.",
 };

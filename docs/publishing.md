@@ -1,57 +1,77 @@
 # Publishing Liquid UI
 
-Liquid UI ships as an open-code shadcn registry and a separate documentation site. The registry does not need an npm package.
+Liquid UI ships as an open-code shadcn registry and a documentation site. It does not require an npm package: the shadcn CLI downloads each component's source from the hosted registry.
 
-## Before the first release
+## Public identities
 
-Replace these placeholders after the public repository and docs domain are chosen:
+- GitHub repository: `https://github.com/vwakesahu/liquid-components`
+- Documentation: `https://liquidcomponents.xyz`
+- Registry catalog: `https://liquidcomponents.xyz/r/registry.json`
+- Git commits remain authored by `Vivek Sahu`; Vercel is only the hosting provider.
 
-- `registry.json` → `homepage`
-- `apps/docs/components/install-command.tsx` → `<owner>/<repo>`
-- `apps/docs/app/layout.tsx` → add the production `metadataBase`
+The Vercel project is deployed from the local working tree with the CLI rather than connected to Git. This keeps Git authorship independent from the Vercel account and avoids Git-committer membership checks.
 
 ## Validate locally
 
 ```bash
 bun run build
-bun run docs:build
 bun run registry:validate
-bun run registry:build
+bun run docs:build
 ```
+
+`registry:build` writes the same generated items to `public/r` for local inspection and `apps/docs/public/r` for the deployed Next.js application.
 
 Test one generated item before publishing:
 
 ```bash
-bunx --bun shadcn@latest add ./public/r/liquid-switch.json --dry-run -y
+bunx --bun shadcn@latest view ./apps/docs/public/r/liquid-switch.json
 ```
 
-## Publish from GitHub
+## Push the public source
 
-Current shadcn releases can install directly from a public GitHub source registry. Once this repository is public, users can run:
+Create the public repository without changing the local Git author:
 
 ```bash
-npx shadcn@latest add <owner>/<repo>/liquid-switch
-pnpm dlx shadcn@latest add <owner>/<repo>/liquid-switch
-yarn dlx shadcn@latest add <owner>/<repo>/liquid-switch
-bunx --bun shadcn@latest add <owner>/<repo>/liquid-switch
+gh repo create vwakesahu/liquid-components --public --source=. --remote=origin --push
 ```
 
-The four commands install the same registry item. Repeat with `liquid-slider`, `liquid-tabs`, or `liquid-video-player`. Bun is used to maintain this repository, but consumers are not required to use it.
+## Deploy with the Vercel CLI
 
-The root `registry.json` is the source of truth for this mode. GitHub registry installation does not require committing `public/r`, but the built JSON remains useful for a hosted namespace later.
+The root `vercel.json` builds the nested Next.js documentation app while retaining access to the shared component source.
 
-## Deploy the docs
-
-Deploy the repository to Vercel with `apps/docs` as the project root. Use Bun for dependency installation and `bun run build` as the build command.
-
-After the domain is connected, update the docs metadata and registry homepage, then rebuild the registry artifacts.
-
-## Add a namespace later
-
-A stable namespace such as `@liquid` needs a hosted URL pattern like:
-
-```text
-https://liquid-ui.dev/r/{name}.json
+```bash
+vercel link --yes --team anonymous-scope --project liquid-components
+vercel deploy --prod --scope anonymous-scope
 ```
 
-Users can use the GitHub address immediately. Submit the namespace to shadcn's public registry directory only after the domain and item URLs are stable.
+The `.vercel` directory contains only the local project link and stays ignored by Git.
+
+## Connect the domain
+
+```bash
+vercel domains add liquidcomponents.xyz liquid-components --scope anonymous-scope
+vercel domains add www.liquidcomponents.xyz liquid-components --scope anonymous-scope
+vercel domains inspect liquidcomponents.xyz --scope anonymous-scope
+```
+
+Apply the DNS records printed by Vercel at the domain registrar. Keep `liquidcomponents.xyz` canonical and redirect `www` to it.
+
+## Verify production
+
+```bash
+curl --fail https://liquidcomponents.xyz/r/registry.json
+bunx --bun shadcn@latest view https://liquidcomponents.xyz/r/liquid-switch.json
+```
+
+Direct installation works with every package manager supported by shadcn:
+
+```bash
+bunx --bun shadcn@latest add https://liquidcomponents.xyz/r/liquid-switch.json
+```
+
+Users who want a short namespace can register the collection once:
+
+```bash
+bunx --bun shadcn@latest registry add '@liquid=https://liquidcomponents.xyz/r/{name}.json'
+bunx --bun shadcn@latest add @liquid/liquid-switch
+```
