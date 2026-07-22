@@ -13,22 +13,30 @@ import { contents } from "./sidebar-content";
 import { ThemeToggle } from "./theme-toggle";
 import { cn } from "../lib/utils";
 
+const componentsSectionIndex = contents.findIndex(
+  (section) => section.title === "Components",
+);
+
+function getDefaultOpen(sections: Section[], pathname: string) {
+  const activeSectionIndex = sections.findIndex((section) =>
+    section.list.some((item) => item.href === pathname),
+  );
+
+  return new Set(
+    [componentsSectionIndex, activeSectionIndex].filter((index) => index >= 0),
+  );
+}
+
 export function DocsSidebar() {
   const pathname = usePathname();
   const { setOpenSearch } = useSearchContext();
-  const [currentOpen, setCurrentOpen] = useState(0);
+  const [openSections, setOpenSections] = useState(() =>
+    getDefaultOpen(contents, pathname),
+  );
   const navRef = useRef<HTMLElement>(null);
 
-  const getDefaultOpen = (sections: Section[]) => {
-    const defaultValue = sections.findIndex((item) =>
-      item.list.some((listItem) => listItem.href === pathname),
-    );
-    return defaultValue === -1 ? 0 : defaultValue;
-  };
-
   useEffect(() => {
-    setCurrentOpen(getDefaultOpen(contents));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setOpenSections(getDefaultOpen(contents, pathname));
   }, [pathname]);
 
   // Scroll the active item into view after section expands
@@ -49,7 +57,7 @@ export function DocsSidebar() {
     }, 380); // wait for expand animation to finish
 
     return () => clearTimeout(timer);
-  }, [pathname, currentOpen]);
+  }, [pathname, openSections]);
 
   return (
     <motion.aside
@@ -101,12 +109,17 @@ export function DocsSidebar() {
                   className={cn(
                     "flex w-full items-center gap-2 border-b border-foreground/6 px-4 py-2.5 text-left transition-colors",
                     "text-sm font-medium tracking-wider",
-                    currentOpen === index
+                    openSections.has(index)
                       ? "bg-foreground/3 text-foreground"
                       : "text-foreground/70 hover:bg-foreground/3 hover:text-foreground",
                   )}
                   onClick={() => {
-                    setCurrentOpen((prev) => (prev === index ? -1 : index));
+                    setOpenSections((current) => {
+                      const next = new Set(current);
+                      if (next.has(index)) next.delete(index);
+                      else next.add(index);
+                      return next;
+                    });
                   }}
                 >
                   <section.Icon className="size-4.5" />
@@ -114,12 +127,12 @@ export function DocsSidebar() {
                   <ChevronDownIcon
                     className={cn(
                       "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200",
-                      currentOpen === index ? "rotate-180" : "",
+                      openSections.has(index) ? "rotate-180" : "",
                     )}
                   />
                 </button>
                 <AnimatePresence initial={false}>
-                  {currentOpen === index && (
+                  {openSections.has(index) && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
