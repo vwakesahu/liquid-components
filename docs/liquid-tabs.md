@@ -1,6 +1,6 @@
 # Liquid Tabs: Implementation Guide
 
-`LiquidTabs` combines Radix Tabs behavior with one persistent Liquid Glass selection indicator. The implementation is in [`src/components/liquid-tabs.tsx`](../src/components/liquid-tabs.tsx), and its installable styles are in [`src/styles/liquid.css`](../src/styles/liquid.css).
+`LiquidTabs` combines Radix Tabs behavior with one persistent Liquid Glass selection indicator. The implementation is in [`packages/liquid-ui/src/components/ui/liquid-tabs.tsx`](../packages/liquid-ui/src/components/ui/liquid-tabs.tsx), and its installable styles are in [`packages/liquid-ui/src/styles/liquid.css`](../packages/liquid-ui/src/styles/liquid.css).
 
 ## Core rule
 

@@ -12,9 +12,6 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "types": ["vite/client"],
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,

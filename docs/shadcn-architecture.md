@@ -15,13 +15,10 @@ Users should keep ordinary shadcn components such as `Field`, `Label`, `Dialog`,
 Initial registry scope:
 
 ```text
-@liquid/switch
-@liquid/slider
-@liquid/tabs
-@liquid/qr
-@liquid/player
-@liquid/use-liquid-motion
-@liquid/liquid-tokens
+liquid-switch
+liquid-slider
+liquid-tabs
+liquid-video-player
 ```
 
 ## Installation target
@@ -30,12 +27,13 @@ The intended user experience is:
 
 ```bash
 bunx --bun shadcn@latest registry add \
-  @liquid=https://liquid-ui.com/r/{name}.json
+  '@liquid=https://liquidcomponents.xyz/r/{name}.json'
 
-bunx --bun shadcn@latest add @liquid/switch @liquid/slider @liquid/tabs
+bunx --bun shadcn@latest add \
+  @liquid/liquid-switch @liquid/liquid-slider @liquid/liquid-tabs
 ```
 
-The final namespace and domain are placeholders until branding and hosting are confirmed.
+Components can also be installed directly from their hosted JSON URL without registering the optional namespace.
 
 ## Ownership boundary
 
@@ -85,8 +83,8 @@ Registry components should preserve the corresponding shadcn/Radix API wherever 
 9. [x] Add shared DOM displacement maps and the WebGL Liquid Video Player.
 10. [ ] Add a clean consumer fixture with interaction and visual tests.
 11. [ ] Add per-thumb active material and vertical-axis deformation.
-12. [ ] Publish through GitHub registry URLs first.
-13. [ ] Add the stable `@liquid` namespace when hosted registry infrastructure is ready.
+12. [x] Publish the registry and documentation at `liquidcomponents.xyz`.
+13. [x] Document the optional `@liquid` namespace.
 
 ## Compatibility rule
 

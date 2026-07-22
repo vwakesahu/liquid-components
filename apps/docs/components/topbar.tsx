@@ -5,6 +5,7 @@ import { MenuIcon, SearchIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { siteConfig } from "../lib/site";
 import { contents } from "./sidebar-content";
 import { cn } from "../lib/utils";
 
@@ -24,7 +25,7 @@ export function Topbar() {
         <Link href="/docs" className="flex items-center gap-2">
           <span className="liquid-logo-mark" aria-hidden="true" />
           <span className="text-[15px] font-bold tracking-tight text-foreground">
-            Liquid UI
+            {siteConfig.name}
           </span>
           <span className="mt-px font-mono text-[10px] uppercase tracking-wider text-foreground/45">
             docs

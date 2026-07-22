@@ -13,10 +13,10 @@ import {
   liquidLensPresets,
   useLiquidDisplacement,
   type LiquidLensOptions,
-} from "@/hooks/use-liquid-displacement";
-import { useLiquidMotion } from "@/hooks/use-liquid-motion";
-import { cn, composeRefs } from "@/lib/utils";
-import "@/styles/liquid.css";
+} from "../../hooks/use-liquid-displacement";
+import { useLiquidMotion } from "../../hooks/use-liquid-motion";
+import { cn, composeRefs } from "../../lib/utils";
+import "../../styles/liquid.css";
 
 type LiquidTabsListProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
   size?: "small" | "regular" | "large";

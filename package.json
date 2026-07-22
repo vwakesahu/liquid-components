@@ -1,5 +1,5 @@
 {
-  "name": "liquid-ui",
+  "name": "liquid-ui-monorepo",
   "private": true,
   "version": "0.0.1",
   "license": "MIT",
@@ -9,40 +9,26 @@
     "type": "git",
     "url": "https://github.com/vwakesahu/liquid-components.git"
   },
-  "type": "module",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "bun run playground:dev",
+    "playground:dev": "bun --cwd apps/playground dev",
+    "playground:build": "bun --cwd apps/playground build",
     "docs:dev": "bun --cwd apps/docs dev",
     "docs:build": "bun --cwd apps/docs build",
-    "build": "tsc -b && vite build",
+    "package:check": "bun --cwd packages/liquid-ui check",
+    "check": "bun run package:check && bun --cwd apps/playground check",
+    "build": "bun run playground:build",
     "registry:validate": "shadcn registry validate registry.json",
     "registry:build": "shadcn build registry.json && shadcn build registry.json --output apps/docs/public/r",
-    "preview": "vite preview",
-    "check": "tsc -b"
-  },
-  "dependencies": {
-    "@radix-ui/react-slider": "^1.4.4",
-    "@radix-ui/react-slot": "^1.3.0",
-    "@radix-ui/react-switch": "^1.3.4",
-    "@radix-ui/react-tabs": "^1.1.18",
-    "@vitejs/plugin-react": "latest",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "tailwind-merge": "^3.6.0",
-    "typescript": "^5.9.3",
-    "vite": "latest"
+    "ci": "bun run check && bun run registry:validate && bun run build && bun run docs:build"
   },
   "devDependencies": {
-    "@types/node": "^26.1.1",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "shadcn": "^4.13.1"
+    "shadcn": "^4.13.1",
+    "typescript": "^5.9.3"
   },
   "packageManager": "bun@1.3.10"
 }

@@ -1,6 +1,6 @@
 # Liquid Displacement Renderer
 
-The shared renderer in [`src/hooks/use-liquid-displacement.tsx`](../src/hooks/use-liquid-displacement.tsx) gives Switch, Slider, and Tabs one optical model. It is inspired by Aave’s published displacement-map architecture, implemented independently for Liquid UI.
+The shared renderer in [`packages/liquid-ui/src/hooks/use-liquid-displacement.tsx`](../packages/liquid-ui/src/hooks/use-liquid-displacement.tsx) gives Switch, Slider, and Tabs one optical model. It is inspired by Aave’s published displacement-map architecture, implemented independently for Liquid UI.
 
 ## Pipeline
 

@@ -2,10 +2,15 @@
 
 import { useState } from "react";
 
-import { LiquidSwitch } from "@/components/glass-switch";
-import { LiquidSlider } from "@/components/liquid-slider";
-import { LiquidTabs, LiquidTabsContent, LiquidTabsList, LiquidTabsTrigger } from "@/components/liquid-tabs";
-import { LiquidVideoPlayer } from "@/components/liquid-video-player";
+import {
+  LiquidSlider,
+  LiquidSwitch,
+  LiquidTabs,
+  LiquidTabsContent,
+  LiquidTabsList,
+  LiquidTabsTrigger,
+  LiquidVideoPlayer,
+} from "@liquid-ui/core";
 
 type PreviewName = "switch" | "slider" | "tabs" | "video";
 

@@ -16,27 +16,27 @@
       ],
       "files": [
         {
-          "path": "src/components/glass-switch.tsx",
+          "path": "packages/liquid-ui/src/components/ui/liquid-switch.tsx",
           "type": "registry:ui",
           "target": "components/ui/liquid-switch.tsx"
         },
         {
-          "path": "src/hooks/use-liquid-motion.ts",
+          "path": "packages/liquid-ui/src/hooks/use-liquid-motion.ts",
           "type": "registry:hook",
           "target": "hooks/use-liquid-motion.ts"
         },
         {
-          "path": "src/hooks/use-liquid-displacement.tsx",
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
           "type": "registry:hook",
           "target": "hooks/use-liquid-displacement.tsx"
         },
         {
-          "path": "src/lib/utils.ts",
+          "path": "packages/liquid-ui/src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
         },
         {
-          "path": "src/styles/liquid.css",
+          "path": "packages/liquid-ui/src/styles/liquid.css",
           "type": "registry:style",
           "target": "styles/liquid.css"
         },
@@ -60,27 +60,27 @@
       ],
       "files": [
         {
-          "path": "src/components/liquid-slider.tsx",
+          "path": "packages/liquid-ui/src/components/ui/liquid-slider.tsx",
           "type": "registry:ui",
           "target": "components/ui/liquid-slider.tsx"
         },
         {
-          "path": "src/hooks/use-liquid-motion.ts",
+          "path": "packages/liquid-ui/src/hooks/use-liquid-motion.ts",
           "type": "registry:hook",
           "target": "hooks/use-liquid-motion.ts"
         },
         {
-          "path": "src/hooks/use-liquid-displacement.tsx",
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
           "type": "registry:hook",
           "target": "hooks/use-liquid-displacement.tsx"
         },
         {
-          "path": "src/lib/utils.ts",
+          "path": "packages/liquid-ui/src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
         },
         {
-          "path": "src/styles/liquid.css",
+          "path": "packages/liquid-ui/src/styles/liquid.css",
           "type": "registry:style",
           "target": "styles/liquid.css"
         },
@@ -104,27 +104,27 @@
       ],
       "files": [
         {
-          "path": "src/components/liquid-tabs.tsx",
+          "path": "packages/liquid-ui/src/components/ui/liquid-tabs.tsx",
           "type": "registry:ui",
           "target": "components/ui/liquid-tabs.tsx"
         },
         {
-          "path": "src/hooks/use-liquid-motion.ts",
+          "path": "packages/liquid-ui/src/hooks/use-liquid-motion.ts",
           "type": "registry:hook",
           "target": "hooks/use-liquid-motion.ts"
         },
         {
-          "path": "src/hooks/use-liquid-displacement.tsx",
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
           "type": "registry:hook",
           "target": "hooks/use-liquid-displacement.tsx"
         },
         {
-          "path": "src/lib/utils.ts",
+          "path": "packages/liquid-ui/src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
         },
         {
-          "path": "src/styles/liquid.css",
+          "path": "packages/liquid-ui/src/styles/liquid.css",
           "type": "registry:style",
           "target": "styles/liquid.css"
         },
@@ -149,37 +149,37 @@
       ],
       "files": [
         {
-          "path": "src/components/liquid-video-player.tsx",
+          "path": "packages/liquid-ui/src/components/ui/liquid-video-player.tsx",
           "type": "registry:ui",
           "target": "components/ui/liquid-video-player.tsx"
         },
         {
-          "path": "src/hooks/use-video-refraction.ts",
+          "path": "packages/liquid-ui/src/hooks/use-video-refraction.ts",
           "type": "registry:hook",
           "target": "hooks/use-video-refraction.ts"
         },
         {
-          "path": "src/components/liquid-slider.tsx",
+          "path": "packages/liquid-ui/src/components/ui/liquid-slider.tsx",
           "type": "registry:ui",
           "target": "components/ui/liquid-slider.tsx"
         },
         {
-          "path": "src/hooks/use-liquid-motion.ts",
+          "path": "packages/liquid-ui/src/hooks/use-liquid-motion.ts",
           "type": "registry:hook",
           "target": "hooks/use-liquid-motion.ts"
         },
         {
-          "path": "src/hooks/use-liquid-displacement.tsx",
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
           "type": "registry:hook",
           "target": "hooks/use-liquid-displacement.tsx"
         },
         {
-          "path": "src/lib/utils.ts",
+          "path": "packages/liquid-ui/src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
         },
         {
-          "path": "src/styles/liquid.css",
+          "path": "packages/liquid-ui/src/styles/liquid.css",
           "type": "registry:style",
           "target": "styles/liquid.css"
         },

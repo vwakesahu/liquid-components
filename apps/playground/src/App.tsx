@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Check, Clipboard, ExternalLink, Moon, Sun } from "lucide-react";
-import { LiquidSwitch } from "./components/glass-switch";
-import { LiquidSlider } from "./components/liquid-slider";
 import {
+  LiquidSlider,
+  LiquidSwitch,
   LiquidTabs,
   LiquidTabsContent,
   LiquidTabsList,
   LiquidTabsTrigger,
-} from "./components/liquid-tabs";
-import { LiquidVideoPlayer } from "./components/liquid-video-player";
+  LiquidVideoPlayer,
+} from "@liquid-ui/core";
 
 const sourceExample = `import { LiquidSwitch } from "@/components/liquid-switch"
 

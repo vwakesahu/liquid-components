@@ -1,6 +1,6 @@
 # Liquid Switch: Implementation Guide
 
-This guide records the behavior and constraints of the current `LiquidSwitch`. The installable implementation is [`src/components/glass-switch.tsx`](../src/components/glass-switch.tsx), the shared pointer physics are in [`src/hooks/use-liquid-motion.ts`](../src/hooks/use-liquid-motion.ts), and the material is in [`src/styles/liquid.css`](../src/styles/liquid.css).
+This guide records the behavior and constraints of the current `LiquidSwitch`. The installable implementation is [`packages/liquid-ui/src/components/ui/liquid-switch.tsx`](../packages/liquid-ui/src/components/ui/liquid-switch.tsx), the shared pointer physics are in [`packages/liquid-ui/src/hooks/use-liquid-motion.ts`](../packages/liquid-ui/src/hooks/use-liquid-motion.ts), and the material is in [`packages/liquid-ui/src/styles/liquid.css`](../packages/liquid-ui/src/styles/liquid.css).
 
 ## Objective
 

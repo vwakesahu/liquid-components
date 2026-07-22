@@ -16,11 +16,11 @@ import {
   VolumeX,
 } from "lucide-react";
 
-import type { LiquidLensOptions } from "@/hooks/use-liquid-displacement";
-import { useVideoRefraction } from "@/hooks/use-video-refraction";
-import { cn, composeRefs } from "@/lib/utils";
+import type { LiquidLensOptions } from "../../hooks/use-liquid-displacement";
+import { useVideoRefraction } from "../../hooks/use-video-refraction";
+import { cn, composeRefs } from "../../lib/utils";
 import { LiquidSlider } from "./liquid-slider";
-import "@/styles/liquid.css";
+import "../../styles/liquid.css";
 
 type LiquidVideoPlayerProps = Omit<
   React.VideoHTMLAttributes<HTMLVideoElement>,

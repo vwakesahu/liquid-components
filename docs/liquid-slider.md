@@ -2,7 +2,7 @@
 
 This document records how the current Liquid Slider was designed, the problems encountered while tuning it, and the rules future components should reuse.
 
-The installable implementation lives in [`src/components/liquid-slider.tsx`](../src/components/liquid-slider.tsx). Its shared visual layers live under the `Slider` section of [`src/styles/liquid.css`](../src/styles/liquid.css); the documentation site imports the same component and keeps a mirrored preview stylesheet in `src/styles.css`.
+The installable implementation lives in [`packages/liquid-ui/src/components/ui/liquid-slider.tsx`](../packages/liquid-ui/src/components/ui/liquid-slider.tsx). Its shared visual layers live under the `Slider` section of [`packages/liquid-ui/src/styles/liquid.css`](../packages/liquid-ui/src/styles/liquid.css); both the documentation site and playground consume that same source workspace.
 
 ## Objective
 

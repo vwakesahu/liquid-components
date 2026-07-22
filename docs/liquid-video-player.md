@@ -1,6 +1,6 @@
 # Liquid Video Player: Implementation Guide
 
-`LiquidVideoPlayer` keeps a native `<video>` element as the media authority and renders live refraction through WebGL. The component is in [`src/components/liquid-video-player.tsx`](../src/components/liquid-video-player.tsx); the renderer is [`src/hooks/use-video-refraction.ts`](../src/hooks/use-video-refraction.ts).
+`LiquidVideoPlayer` keeps a native `<video>` element as the media authority and renders live refraction through WebGL. The component is in [`packages/liquid-ui/src/components/ui/liquid-video-player.tsx`](../packages/liquid-ui/src/components/ui/liquid-video-player.tsx); the renderer is [`packages/liquid-ui/src/hooks/use-video-refraction.ts`](../packages/liquid-ui/src/hooks/use-video-refraction.ts).
 
 ## Why WebGL
 

@@ -5,18 +5,18 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "src/styles.css",
+    "css": "apps/playground/src/styles.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
+    "components": "@/packages/liquid-ui/src/components",
+    "utils": "@/packages/liquid-ui/src/lib/utils",
+    "ui": "@/packages/liquid-ui/src/components/ui",
+    "lib": "@/packages/liquid-ui/src/lib",
+    "hooks": "@/packages/liquid-ui/src/hooks"
   },
   "registries": {}
 }

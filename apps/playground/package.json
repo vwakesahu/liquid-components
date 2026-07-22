@@ -1,0 +1,24 @@
+{
+  "name": "@liquid-ui/playground",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "check": "tsc -b"
+  },
+  "dependencies": {
+    "@liquid-ui/core": "workspace:*",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "latest",
+    "typescript": "^5.9.3",
+    "vite": "latest"
+  }
+}

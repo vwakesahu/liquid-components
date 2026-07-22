@@ -7,10 +7,10 @@ import {
   liquidLensPresets,
   useLiquidDisplacement,
   type LiquidLensOptions,
-} from "@/hooks/use-liquid-displacement";
-import { useLiquidMotion } from "@/hooks/use-liquid-motion";
-import { cn, composeRefs } from "@/lib/utils";
-import "@/styles/liquid.css";
+} from "../../hooks/use-liquid-displacement";
+import { useLiquidMotion } from "../../hooks/use-liquid-motion";
+import { cn, composeRefs } from "../../lib/utils";
+import "../../styles/liquid.css";
 
 type LiquidSliderProps = React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & {
   size?: "small" | "regular" | "large";

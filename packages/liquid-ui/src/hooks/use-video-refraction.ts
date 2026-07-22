@@ -6,7 +6,7 @@ import {
   generateLiquidLensMap,
   liquidLensPresets,
   type LiquidLensOptions,
-} from "@/hooks/use-liquid-displacement";
+} from "./use-liquid-displacement";
 
 const MAX_LENSES = 8;
 

@@ -1,5 +1,7 @@
 # Liquid UI
 
+[![CI](https://github.com/vwakesahu/liquid-components/actions/workflows/ci.yml/badge.svg)](https://github.com/vwakesahu/liquid-components/actions/workflows/ci.yml)
+
 Liquid UI is an independent React component study that translates the observable behavior of Apple’s Liquid Glass design language to the web.
 
 The project is not an Apple rendering clone. Apple’s Liquid Glass renderer is proprietary and supplied automatically by system frameworks. This project uses browser-native layers, pointer input, and motion to recreate the important design qualities in reusable web components.
@@ -25,7 +27,7 @@ bun run docs:dev
 bun run docs:build
 ```
 
-The component pages render the registry source directly, so a docs build also checks that the Switch, Slider, Tabs, and Video Player work across a Next.js client boundary.
+The component pages import the same `@liquid-ui/core` source workspace used to build the registry, so a docs build also checks that the Switch, Slider, Tabs, and Video Player work across a Next.js client boundary.
 
 ## Credits
 
@@ -220,7 +222,7 @@ Treat these as material defaults rather than fixed brand colors. Components may 
 
 ```tsx
 import { useState } from "react"
-import { LiquidSwitch } from "./components/glass-switch"
+import { LiquidSwitch } from "@/components/ui/liquid-switch"
 
 export function AutomaticUpdates() {
   const [enabled, setEnabled] = useState(true)
@@ -313,7 +315,7 @@ Each component should reuse the same states and material layers, but adapt its g
 - Do not delay settling after pointer release.
 
 ```tsx
-import { LiquidSlider } from "./components/liquid-slider"
+import { LiquidSlider } from "@/components/ui/liquid-slider"
 
 <LiquidSlider
   value={[volume]}
@@ -369,23 +371,21 @@ Before considering a component complete, verify:
 ## Project structure
 
 ```text
-src/
-├── components/
-│   ├── glass-switch.tsx   # Radix Switch with Liquid material
-│   ├── liquid-slider.tsx  # Radix Slider with Liquid material
-│   ├── liquid-tabs.tsx    # Radix Tabs with a shared Liquid indicator
-│   └── liquid-video-player.tsx # Native video with WebGL control lenses
-├── hooks/
-│   ├── use-liquid-motion.ts
-│   ├── use-liquid-displacement.tsx
-│   └── use-video-refraction.ts
-├── lib/
-│   └── utils.ts
-├── styles/
-│   └── liquid.css         # Installable material and motion system
-├── App.tsx                # Documentation and live component study
-├── main.tsx
-└── styles.css             # Documentation-site styles
+apps/
+├── docs/                  # Next.js and Fumadocs documentation
+└── playground/            # Vite component study
+    └── src/
+        ├── App.tsx
+        ├── main.tsx
+        └── styles.css
+packages/
+└── liquid-ui/             # Private source workspace for the registry
+    └── src/
+        ├── components/ui/ # Liquid Switch, Slider, Tabs, and Video Player
+        ├── hooks/         # Motion, displacement, and video refraction
+        ├── lib/           # Shared utilities
+        └── styles/        # Installable material and motion system
+registry.json              # Public shadcn registry source
 ```
 
 ## Development
@@ -394,13 +394,21 @@ Install dependencies and start the local server:
 
 ```bash
 bun install
-bun run dev
+bun run playground:dev
+bun run docs:dev
 ```
 
 Create a production build:
 
 ```bash
-bun run build
+bun run playground:build
+bun run docs:build
+```
+
+Run the complete local CI gate:
+
+```bash
+bun run ci
 ```
 
 Validate and build the shadcn registry:
