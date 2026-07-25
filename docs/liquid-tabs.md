@@ -1,6 +1,6 @@
 # Liquid Tabs: Implementation Guide
 
-`LiquidTabs` combines Radix Tabs behavior with one persistent Liquid Glass selection indicator. The implementation is in [`packages/liquid-ui/src/components/ui/liquid-tabs.tsx`](../packages/liquid-ui/src/components/ui/liquid-tabs.tsx), and its installable styles are in [`packages/liquid-ui/src/styles/liquid.css`](../packages/liquid-ui/src/styles/liquid.css).
+`LiquidTabs` combines Radix Tabs behavior with one persistent Liquid Glass selection indicator. Its implementation and installable Tailwind styles are in [`packages/liquid-ui/src/components/ui/liquid-tabs.tsx`](../packages/liquid-ui/src/components/ui/liquid-tabs.tsx).
 
 ## Core rule
 
@@ -44,8 +44,8 @@ The indicator is hidden until its first valid measurement, preventing a flash at
 - Holding and dragging across the track continuously selects the nearest enabled tab.
 - A quick selection retains the shared `380ms` material pulse.
 - Pointer velocity can stretch, squash, and lean the indicator.
-- During drag, selection position follows with a `500ms` liquid curve; width catches up with a moderate `460ms` spring.
-- Engagement matches the other controls with `8px` of added tracker height and up to `14px` of velocity stretch.
+- During drag, selection position follows in `240ms`; width and height catch up in `280–300ms`, giving the larger lens visible weight without averaging away its deformation.
+- Tabs uses a stronger shape response than the smaller controls: `16px` of added tracker height and up to `20px` of velocity stretch.
 - Selection position and indicator width settle with coordinated curves.
 - Arrow-key selection uses the same material feedback.
 

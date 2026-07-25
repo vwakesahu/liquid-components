@@ -1,5 +1,14 @@
+export {
+  LiquidButton,
+  type LiquidButtonProps,
+  type LiquidButtonStatus,
+} from "./components/ui/liquid-button";
 export { LiquidSwitch } from "./components/ui/liquid-switch";
-export { LiquidSlider } from "./components/ui/liquid-slider";
+export {
+  LiquidSlider,
+  type LiquidSliderProps,
+  type LiquidSliderTrackerSize,
+} from "./components/ui/liquid-slider";
 export {
   LiquidTabs,
   LiquidTabsContent,

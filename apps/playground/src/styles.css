@@ -1,3 +1,7 @@
+@import "tailwindcss";
+@source "../../../packages/liquid-ui/src/**/*.{ts,tsx}";
+@custom-variant dark (&:where(.dark *, [data-theme="dark"] *));
+
 :root {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
   color: #161617;

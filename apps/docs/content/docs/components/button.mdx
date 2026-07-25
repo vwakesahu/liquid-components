@@ -1,0 +1,106 @@
+---
+title: Liquid Button
+description: A familiar button at rest with Liquid Glass feedback during interaction.
+---
+
+<ComponentPreview name="button" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-button.json
+```
+
+## Usage
+
+```tsx
+import { LiquidButton } from "@/components/ui/liquid-button"
+
+export function ContinueButton() {
+  return <LiquidButton>Continue</LiquidButton>
+}
+```
+
+## Variants
+
+The default button uses the neutral secondary treatment. Use `primary` for the blue emphasized action. Destructive actions keep that secondary surface and communicate risk with red text instead of a heavy red fill. Every variant stays intentionally ordinary at rest; Liquid expansion, spring motion, refraction, and rim light appear only during interaction.
+
+<ComponentPreview name="button-variants" />
+
+```tsx
+<LiquidButton>Default</LiquidButton>
+<LiquidButton variant="primary">Primary</LiquidButton>
+<LiquidButton variant="destructive">Delete</LiquidButton>
+<LiquidButton variant="outline">Outline</LiquidButton>
+<LiquidButton variant="ghost">Ghost</LiquidButton>
+<LiquidButton variant="link">Learn more</LiquidButton>
+```
+
+## Sizes
+
+<ComponentPreview name="button-sizes" />
+
+```tsx
+<LiquidButton size="small">Small</LiquidButton>
+<LiquidButton size="regular">Regular</LiquidButton>
+<LiquidButton size="large">Large</LiquidButton>
+```
+
+## Success and error
+
+<ComponentPreview name="button-status" />
+
+Keep asynchronous state in your application and pass it to the button. Each state morphs the capsule geometry, material color, refraction map, icon, and label together.
+
+```tsx
+import { useState } from "react"
+import { LiquidButton, type LiquidButtonStatus } from "@/components/ui/liquid-button"
+
+export function SubmitButton() {
+  const [status, setStatus] = useState<LiquidButtonStatus>("idle")
+
+  async function submit() {
+    setStatus("loading")
+
+    try {
+      await saveChanges()
+      setStatus("success")
+    } catch {
+      setStatus("error")
+    }
+  }
+
+  return (
+    <LiquidButton
+      variant="status"
+      status={status}
+      loadingLabel="Saving…"
+      errorLabel="Try again"
+      successLabel="Saved"
+      onClick={submit}
+    >
+      Submit
+    </LiquidButton>
+  )
+}
+```
+
+The status variant supports `idle`, `loading`, `error`, and `success`. Error uses a secondary surface with red text, while Success uses a filled green surface. Loading spring-morphs into a compact spinner-only control; `loadingLabel` remains available to assistive technology through the polite status announcement. On press and hold, one internal tracker body expands beyond the button's stable layout bounds while its refraction, rim, and interaction light appear together. Pointer movement can reposition the highlight while held, but it never moves, drags, or velocity-stretches the capsule.
+
+Pass `tint`, `errorTint`, or `successTint` to change the three semantic colors:
+
+```tsx
+<LiquidButton variant="destructive" errorTint="#dc2626">
+  Delete
+</LiquidButton>
+
+<LiquidButton
+  variant="status"
+  status="success"
+  successTint="#16a34a"
+>
+  Submit
+</LiquidButton>
+```
+
+You can also customize the stable `data-slot` layers with Tailwind. Native button behavior, keyboard activation, form types, focus, disabled state, reduced motion, and reduced transparency are preserved. The Link variant has no button surface or glass treatment; a short underline is its only click feedback.

@@ -23,6 +23,17 @@ export type LiquidLensOptions = {
 };
 
 export const liquidLensPresets = {
+  button: {
+    scale: 0.1,
+    depth: 50,
+    curvature: 40,
+    splay: 1,
+    chroma: 0.76,
+    blur: 0,
+    glow: 0.1,
+    edgeHighlight: 0.25,
+    specularAngle: 45,
+  },
   switch: {
     scale: 0.1,
     depth: 50,
@@ -35,14 +46,14 @@ export const liquidLensPresets = {
     specularAngle: 45,
   },
   slider: {
-    scale: 0.045,
-    depth: 26,
-    curvature: 34,
+    scale: 0.1,
+    depth: 10,
+    curvature: 40,
     splay: 1,
-    chroma: 0.24,
+    chroma: 0.2,
     blur: 0,
-    glow: 0.08,
-    edgeHighlight: 0.2,
+    glow: 0.1,
+    edgeHighlight: 0.25,
     specularAngle: 45,
   },
   tabs: {

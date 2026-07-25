@@ -21,4 +21,25 @@ export function Volume() {
 }
 ```
 
-The fill and tracker derive from the same Radix value, preventing visual lag. Endpoint geometry keeps the tracker inside the rail at both 0% and 100%.
+The visible rail is the real Radix Range. Inside the tracker, a full DOM track clone with a live Range segment is aligned beneath the lens and bent by the displacement map, following Aave's `refractionTarget={<TrackFill progress={progress} />}` architecture. It is updated synchronously from Radix without independent React progress state or a second position animation, so the fill remains continuous through the glass at 0%, 100%, and during drag.
+
+## Tracker size
+
+<ComponentPreview name="slider-sizes" />
+
+Use a preset or tune the tracker geometry in pixels. Custom geometry keeps the same Switch-aligned material, motion, live progress refraction, and endpoint calculations.
+
+```tsx
+<LiquidSlider size="small" defaultValue={[36]} />
+<LiquidSlider size="regular" defaultValue={[52]} />
+<LiquidSlider size="large" defaultValue={[68]} />
+
+<LiquidSlider
+  trackerSize={{
+    width: 58,
+    height: 34,
+    trackHeight: 9,
+  }}
+  defaultValue={[44]}
+/>
+```

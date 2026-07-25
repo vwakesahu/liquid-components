@@ -96,11 +96,11 @@ Shared utilities may be installed as registry dependencies, but every dependency
 
 shadcn is a source-code registry and is not limited to Tailwind projects. Its registry can distribute component source, CSS, variables, hooks, and other files. Liquid UI therefore uses one hybrid styling contract instead of maintaining separate Tailwind and vanilla implementations.
 
-### Portable core
+### Tailwind component core
 
-`styles/liquid.css` owns the geometry, layered optics, state selectors, pointer deformation, and reduced-motion behavior. These rules are too coordinated to express as a long utility string without making the component difficult to tune. A project without Tailwind can use this file unchanged.
+Geometry, layered optics, state selectors, pointer deformation, and accessibility fallbacks live in the component source as Tailwind utilities. Dynamic pointer and lens values remain CSS custom properties because they are updated at runtime. Registry installation therefore follows the standard shadcn model without adding or importing a standalone component stylesheet.
 
-### Tailwind customization surface
+### Customization surface
 
 Every public primitive exposes:
 
@@ -127,7 +127,7 @@ More specific internal targeting remains available without depending on generate
 <LiquidSlider className="[&_[data-slot=liquid-slider-thumb]]:ring-1" />
 ```
 
-Tailwind is an enhancement layer here, not a second renderer. Component behavior and Liquid material must remain identical in Tailwind and plain-CSS projects.
+Tailwind is the component renderer and customization layer. The browser-native SVG and WebGL refraction hooks remain independent of Tailwind.
 
 ## References
 

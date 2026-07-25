@@ -6,10 +6,11 @@ Liquid UI is an independent React component study that translates the observable
 
 The project is not an Apple rendering clone. Apple’s Liquid Glass renderer is proprietary and supplied automatically by system frameworks. This project uses browser-native layers, pointer input, and motion to recreate the important design qualities in reusable web components.
 
-The first four components are `LiquidSwitch`, `LiquidSlider`, `LiquidTabs`, and `LiquidVideoPlayer`. The same material and interaction system will be reused for QR interactions next.
+The current components are `LiquidButton`, `LiquidSwitch`, `LiquidSlider`, `LiquidTabs`, and `LiquidVideoPlayer`. The same material and interaction system will be reused for QR interactions next.
 
 Detailed engineering context:
 
+- [Liquid Button implementation guide](docs/liquid-button.md)
 - [Liquid Slider implementation guide](docs/liquid-slider.md)
 - [Liquid Switch implementation guide](docs/liquid-switch.md)
 - [Liquid Tabs implementation guide](docs/liquid-tabs.md)
@@ -164,7 +165,7 @@ The switch uses a wide track and a capsule tracker in every state.
 | Regular | `64 × 32px` | `40 × 28px` | `2px` |
 | Large | `74 × 36px` | `46 × 32px` | `2px` |
 
-During engagement, the tracker adds `8px` to its base width and becomes `8px` taller than the track. Drag velocity can add up to another `14px` of horizontal stretch.
+During engagement, the Switch and Slider tracker add `8px` to their base width and become `12px` taller than the track. Tabs uses a more expressive `16px` height increase and up to `20px` of velocity stretch.
 
 All track and tracker states use a full capsule radius:
 
@@ -420,7 +421,7 @@ bun run registry:build
 
 ## Styling with or without Tailwind
 
-Liquid UI ships its optical renderer in `styles/liquid.css`, so the components work in plain CSS projects. The shadcn CLI installs this file and each component imports it automatically—consumers do not need to edit their global CSS. The same components are Tailwind-friendly: roots accept `className`, internal primitives expose stable `data-slot` attributes, and component colors and geometry are CSS variables. Tabs also exposes `indicatorClassName` for direct utility-class customization.
+Liquid UI follows the shadcn styling model: the registry installs Tailwind-first component source with no standalone stylesheet import. Roots accept `className`, internal primitives expose stable `data-slot` attributes, and runtime component colors, geometry, pointer motion, and refraction values use CSS variables. Tabs also exposes `indicatorClassName` for direct utility-class customization.
 
 There is intentionally no second Tailwind-only implementation. This keeps the motion and glass rendering identical while allowing shadcn/Tailwind consumers to theme the public surfaces with utilities.
 

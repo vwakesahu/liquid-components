@@ -2,7 +2,7 @@
 
 This document records how the current Liquid Slider was designed, the problems encountered while tuning it, and the rules future components should reuse.
 
-The installable implementation lives in [`packages/liquid-ui/src/components/ui/liquid-slider.tsx`](../packages/liquid-ui/src/components/ui/liquid-slider.tsx). Its shared visual layers live under the `Slider` section of [`packages/liquid-ui/src/styles/liquid.css`](../packages/liquid-ui/src/styles/liquid.css); both the documentation site and playground consume that same source workspace.
+The installable implementation and its Tailwind visual layers live in [`packages/liquid-ui/src/components/ui/liquid-slider.tsx`](../packages/liquid-ui/src/components/ui/liquid-slider.tsx); both the documentation site and playground consume that same source workspace.
 
 ## Objective
 
@@ -14,7 +14,7 @@ The tracker must:
 - Expand beyond the resting rail when engaged.
 - Remain a fully rounded capsule in every state.
 - Stretch and lean according to horizontal velocity.
-- Magnify the rail beneath it instead of only blurring it.
+- Refract a synchronized copy of the real Radix progress so the selected value stays visible through the tracker.
 - Settle with spring motion without overshooting the selected value.
 
 The optical treatment must never compromise range-input semantics, keyboard behavior, or form behavior.
@@ -30,7 +30,7 @@ LiquidSlider
     │   └── Slider.Range
     └── Slider.Thumb
         ├── occlusion layer
-        ├── displaced rail target
+        ├── displaced progress target
         ├── glass lens
         ├── specular rim
         └── interaction light
@@ -60,13 +60,17 @@ The fill ends beneath the center of the tracker. It extends an additional `2px` 
 
 The tracker is a capsule, not a circle. Its idle dimensions vary by component size:
 
+Its white resting surface, glass opacity, lens blur, rim, shadow, engagement expansion, and release timing intentionally match `LiquidSwitch`. Only the displacement preset stays gentler so the value-bearing progress remains readable.
+
 | Size | Tracker width | Slider height | Track height |
 | --- | ---: | ---: | ---: |
 | Small | 32px | 26px | 6px |
 | Regular | 40px | 32px | 8px |
-| Large | 48px | 38px | 10px |
+| Large | 46px | 36px | 10px |
 
-During engagement, the tracker adds `10px` to its base width and `8px` to its height. Pointer velocity can contribute up to another `16px` of horizontal stretch.
+Consumers can select a preset with `size` or override the pixel geometry with `trackerSize={{ width, height, trackHeight }}`. Values are clamped to usable minimums, and the rail can never be taller than the resting tracker. Motion and refraction calculations derive from the resolved geometry rather than assuming a preset.
+
+During engagement, the tracker uses the same geometry as the Switch tracker: it adds `8px` to its base width and grows `16px` from its idle height. Pointer velocity can contribute up to another `14px` of horizontal stretch.
 
 ## Interaction phases
 
@@ -81,7 +85,7 @@ Pointer down immediately:
 - Expands the tracker
 - Reveals the glass lens
 - Strengthens the rim and shadow
-- Activates the displaced rail target
+- Activates the synchronized displaced progress target
 - Places illumination close to the pointer coordinate
 
 A quick click guarantees a minimum `380ms` visible pulse. Without this minimum duration, pointer down and up can occur before the glass expansion becomes perceptible.
@@ -96,7 +100,7 @@ During drag:
 
 - Tracker position and fill width update without CSS delay.
 - Velocity changes tracker width, vertical compression, and skew.
-- The refracted rail enlarges slightly more.
+- The refracted glass surface stretches slightly more.
 - Pointer lighting follows the current horizontal coordinate.
 - React does not rerender for every visual property update.
 
@@ -138,15 +142,16 @@ These properties must be derived from the same filtered state so the material be
 
 CSS backdrop blur alone cannot create optical magnification. It only softens pixels behind an element.
 
-The current slider therefore uses a component-specific displacement target:
+The slider uses the `refractionTarget={<TrackFill progress={progress} />}` architecture described in Aave's displacement write-up:
 
-1. The occlusion layer diffuses and hides the original thin rail beneath the transparent tracker.
-2. A synchronized copy of the filled and unfilled rail is drawn above the occlusion layer.
-3. A generated rounded-rectangle displacement map bends that copy through SVG `feDisplacementMap`.
-4. Separate red, green, and blue passes add restrained chromatic refraction.
-5. Glow, angled specular light, lens, rim, and interaction light complete the surface.
+1. Radix `Slider.Range` is the semantic and visible progress source outside the tracker.
+2. The occlusion layer hides the original thin rail only where the tracker covers it.
+3. A real DOM track clone, including its Range segment, is aligned to the full Radix track and clipped by the tracker’s refraction viewport.
+4. Radix `onValueChange` updates the clone’s CSS range and thumb offset synchronously, without adding React progress state or a second position animation. For a single-value slider, its fill boundary lands at the same thumb center Radix uses as the Range endpoint.
+5. A generated rounded-rectangle displacement map bends that synchronized copy through SVG `feDisplacementMap`.
+6. Separate red, green, and blue passes add restrained chromatic refraction, followed by the lens, rim, and interaction light.
 
-The rendering order matters. Without occlusion, both the original thin rail and enlarged rail remain visible, producing an unwanted double line.
+This is not a hardcoded 50/50 bar. The cloned Range uses the live minimum, maximum, and current Radix values; the full cloned track is shifted beneath each lens by its measured pixel offset. Extra highlight stops around the real boundary would create the false second bar seen in earlier versions, so none are added. During velocity deformation, the copied target counteracts the tracker’s decorative offset so its boundary remains pinned to the semantic value.
 
 Current layer order:
 
@@ -154,15 +159,15 @@ Current layer order:
 original rail
   ↓ hidden by
 occlusion blur
-  ↓ replaced by
-displaced rail target
-  ↓ covered by
-lens → rim → interaction light
+  ↓ replaced inside the lens by
+synchronized progress target
+  ↓ bent and covered by
+displacement → lens → rim → interaction light
 ```
 
 ### Important limitation
 
-This is real displacement of a slider-aware target, not arbitrary backdrop sampling. The implementation redraws and bends the known rail inside the tracker. It does not refract unrelated DOM content behind the component.
+This is real displacement of a live slider-aware DOM copy, not arbitrary backdrop sampling. The cloned track is back-synced from Radix and never acts as an independent progress indicator. The component still cannot sample unrelated DOM content behind itself; the cross-browser technique requires an intentional `refractionTarget`, exactly as described in the Aave document.
 
 Arbitrary backdrop refraction still requires control of the pixels being filtered. QR and media components will use the same generated map with WebGL because their canvas or video pixels cannot be safely reproduced with this DOM-target technique.
 
@@ -236,7 +241,7 @@ Recommended curves:
 - Read component bounds once at the beginning of interaction.
 - Filter raw pointer velocity.
 - Apply spring to material geometry rather than selected-value position.
-- Hide the original rail before drawing a magnified copy.
+- Occlude the original rail beneath the tracker before revealing the synchronized displaced copy.
 - Preserve a capsule silhouette in every phase.
 - Test bright, dark, textured, and high-contrast backgrounds.
 - Respect reduced-motion and reduced-transparency preferences.
@@ -249,8 +254,8 @@ Recommended curves:
 - Don’t animate fill and tracker with different durations.
 - Don’t make the visible track span the full root width; Radix’s thumb endpoints are center positions.
 - Don’t spring past the semantic range value.
-- Don’t show the original and refracted rail simultaneously.
-- Don’t overmagnify the inner rail; subtle enlargement reads as glass, while excessive enlargement reads as a separate graphic.
+- Don’t give the copied progress target independent React state, easing, or timing.
+- Don’t add soft color stops around its fill boundary; they read as a second fake line.
 - Don’t use blur as a substitute for refraction.
 - Don’t let deformation turn the tracker into a circle or irregular blob.
 - Don’t stack multiple independent backdrop filters when one coordinated material layer is sufficient.

@@ -4,6 +4,40 @@
   "homepage": "https://liquidcomponents.xyz",
   "items": [
     {
+      "name": "liquid-button",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Button",
+      "description": "A semantic glass button with tactile press expansion and live refraction.",
+      "dependencies": [
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-button.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
       "name": "liquid-switch",
       "type": "registry:ui",
       "author": "Vivek Sahu <viveksahu1762@gmail.com>",
@@ -34,11 +68,6 @@
           "path": "packages/liquid-ui/src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
-        },
-        {
-          "path": "packages/liquid-ui/src/styles/liquid.css",
-          "type": "registry:style",
-          "target": "styles/liquid.css"
         },
         {
           "path": "LICENSE",
@@ -80,11 +109,6 @@
           "target": "lib/utils.ts"
         },
         {
-          "path": "packages/liquid-ui/src/styles/liquid.css",
-          "type": "registry:style",
-          "target": "styles/liquid.css"
-        },
-        {
           "path": "LICENSE",
           "type": "registry:file",
           "target": "@ui/liquid-ui.LICENSE"
@@ -122,11 +146,6 @@
           "path": "packages/liquid-ui/src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
-        },
-        {
-          "path": "packages/liquid-ui/src/styles/liquid.css",
-          "type": "registry:style",
-          "target": "styles/liquid.css"
         },
         {
           "path": "LICENSE",
@@ -177,11 +196,6 @@
           "path": "packages/liquid-ui/src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
-        },
-        {
-          "path": "packages/liquid-ui/src/styles/liquid.css",
-          "type": "registry:style",
-          "target": "styles/liquid.css"
         },
         {
           "path": "LICENSE",

@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/black.css";
 @import "fumadocs-ui/css/preset.css";
-@import "../../../packages/liquid-ui/src/styles/liquid.css";
 
 @source "../components/**/*.{ts,tsx}";
+@source "../../../packages/liquid-ui/src/**/*.{ts,tsx}";
 @source "../node_modules/fumadocs-ui/dist/**/*.js";
 
 @custom-variant dark (&:is(.dark *));
@@ -430,7 +430,85 @@ figure.shiki > div:first-child,
   background-size: 24px 24px;
 }
 
+.component-preview[data-preview="button-variants"],
+.component-preview[data-preview="button-status"] {
+  background: var(--card);
+}
+
+.component-preview[data-preview="button-variants"] .component-preview__canvas,
+.component-preview[data-preview="button-status"] .component-preview__canvas {
+  background-image: none;
+}
+
 .component-preview__row { width: min(100%, 560px); display: flex; align-items: center; justify-content: center; gap: 2rem; }
+.component-preview__button-grid > div > span,
+.component-preview__button-status-grid > div > span,
+.component-preview__button-status-grid > div > small {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+}
+
+.component-preview__button-grid,
+.component-preview__button-status-grid {
+  width: min(100%, 760px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.component-preview__button-grid,
+.component-preview__button-status-grid { display: grid; }
+
+.component-preview__button-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.component-preview__button-status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.component-preview__button-grid > div,
+.component-preview__button-status-grid > div {
+  background:
+    radial-gradient(circle at 14% 18%, rgb(130 112 255 / 0.18), transparent 34%),
+    radial-gradient(circle at 88% 82%, rgb(68 218 255 / 0.14), transparent 35%),
+    linear-gradient(rgb(127 127 127 / 0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(127 127 127 / 0.065) 1px, transparent 1px),
+    var(--card);
+  background-size: auto, auto, 24px 24px, 24px 24px, auto;
+}
+
+.component-preview__button-grid > div,
+.component-preview__button-status-grid > div {
+  min-width: 0;
+  min-height: 148px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 1rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.component-preview__button-grid > div:nth-child(3n) { border-right: 0; }
+.component-preview__button-grid > div:nth-last-child(-n + 3) { border-bottom: 0; }
+.component-preview__button-status-grid > div:nth-child(2n) { border-right: 0; }
+.component-preview__button-status-grid > div:nth-last-child(-n + 2) { border-bottom: 0; }
+
+.component-preview__button-size-row {
+  width: min(100%, 560px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .component-preview__button-grid,
+  .component-preview__button-status-grid { grid-template-columns: 1fr; }
+  .component-preview__button-grid > div,
+  .component-preview__button-status-grid > div { border-right: 0; border-bottom: 1px solid var(--border); }
+  .component-preview__button-grid > div:last-child,
+  .component-preview__button-status-grid > div:last-child { border-bottom: 0; }
+  .component-preview__button-size-row { flex-direction: column; }
+  .component-preview__slider-sizes > div { grid-template-columns: 1fr; gap: 6px; }
+}
+
 .component-preview__slider {
   width: min(100%, 480px);
   display: flex;
@@ -438,6 +516,26 @@ figure.shiki > div:first-child,
   justify-self: center;
   margin-inline: auto;
 }
+
+.component-preview__slider-sizes {
+  width: min(100%, 560px);
+  display: grid;
+  gap: 18px;
+}
+
+.component-preview__slider-sizes > div {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+}
+
+.component-preview__slider-sizes span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.component-preview__slider-sizes .liquid-slider { width: 100%; }
 
 .component-preview__slider > .liquid-slider {
   width: min(100%, 420px);
