@@ -1364,3 +1364,15 @@ figure.shiki pre, figure:has(.shiki) pre { padding-right: 3rem; }
   figure.shiki pre, figure:has(.shiki) pre { width: 100% !important; }
   figure.shiki pre code, figure:has(.shiki) pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
 }
+
+/* Previous and next: two quiet links under a hairline, no boxes, no truncated text. */
+.docs-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(--line); }
+.docs-pager__link { display: grid; gap: 4px; padding: 12px 14px; border-radius: 14px; text-decoration: none; transition: background-color 0.15s; }
+.docs-pager__link:hover { background: var(--fill); }
+.docs-pager__link:focus-visible { outline: 3px solid rgb(105 215 255 / 0.5); outline-offset: 2px; }
+.docs-pager__link--next { grid-column: 2; justify-items: end; text-align: right; }
+.docs-pager__label { display: inline-flex; align-items: center; gap: 6px; color: var(--grey); font-size: 13px; }
+.docs-pager__label svg { width: 14px; height: 14px; transition: translate 0.2s cubic-bezier(0.33, 1, 0.68, 1); }
+.docs-pager__link:hover .docs-pager__label svg { translate: -2px 0; }
+.docs-pager__link--next:hover .docs-pager__label svg { translate: 2px 0; }
+.docs-pager__title { color: var(--ink); font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }

@@ -14,6 +14,7 @@ import type { TOCItemType } from "fumadocs-core/toc";
 import type { MDXContent } from "mdx/types";
 import { ComponentPreview } from "../../../components/component-preview";
 import { ComponentGallery, HomeHero, HomePlayground } from "../../../components/home";
+import { DocsPager } from "../../../components/docs-pager";
 import { siteConfig } from "../../../lib/site";
 import { source } from "../../../lib/source";
 
@@ -43,6 +44,7 @@ export default async function Page({
       tableOfContent={{ enabled: !landing, style: "clerk" }}
       tableOfContentPopover={{ enabled: !landing }}
       breadcrumb={{ enabled: !landing }}
+      footer={{ enabled: false }}
     >
       {!landing && <DocsTitle className="docs-title">{data.title}</DocsTitle>}
       {!landing && data.description && (
@@ -65,6 +67,7 @@ export default async function Page({
           }}
         />
       </DocsBody>
+      {!landing && <DocsPager url={page.url} />}
     </DocsPage>
   );
 }
