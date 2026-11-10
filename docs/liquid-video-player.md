@@ -13,17 +13,16 @@ If WebGL initialization or video texture upload fails, the canvas remains transp
 ```text
 native video frame
   → WebGL video texture
-generated 96 × 60 lens map
-  → WebGL map texture
-visible DOM controls
-  → measured normalized lens rectangles
+visible DOM controls (control bar, buttons, scrubber thumb, center play)
+  → measured lens rectangles
+  → one generated lens map per control size, packed into an atlas texture
 one fragment shader
-  → base frame + displaced RGB samples + glow + specular
+  → base frame + dispersed refraction + baked rim light per lens
 ```
 
-Up to eight visible controls can contribute lens regions in one draw. Hidden controls are excluded, so an auto-hidden control bar does not leave invisible refraction behind.
+Up to eight visible controls can contribute lens regions in one draw; nested controls (buttons inside the bar) take priority over their container. The maps use the same generator and channel layout as the DOM renderer, so the lighting matches. Hidden controls are excluded, so an auto-hidden control bar does not leave invisible refraction behind.
 
-The renderer uses `requestVideoFrameCallback` when available and falls back to `requestAnimationFrame` while playing. Paused video renders only when seeking, resizing, or changing visible controls.
+The renderer uses `requestVideoFrameCallback` when available and falls back to `requestAnimationFrame` while playing. Paused video renders only when seeking, resizing, changing visible controls, or while a CSS transition on a control is running.
 
 ## Native media contract
 

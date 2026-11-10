@@ -1,0 +1,49 @@
+---
+title: Liquid Menu
+description: A glass dropdown menu that springs out of its trigger.
+---
+
+<ComponentPreview name="menu" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-menu.json
+```
+
+## Usage
+
+```tsx
+import { Copy, Pencil, Trash2 } from "lucide-react"
+import {
+  LiquidMenu,
+  LiquidMenuContent,
+  LiquidMenuItem,
+  LiquidMenuSeparator,
+  LiquidMenuTrigger,
+} from "@/components/ui/liquid-menu"
+
+export function DocumentActions() {
+  return (
+    <LiquidMenu>
+      <LiquidMenuTrigger variant="outline">Options</LiquidMenuTrigger>
+      <LiquidMenuContent>
+        <LiquidMenuItem><Pencil />Rename</LiquidMenuItem>
+        <LiquidMenuItem><Copy />Duplicate</LiquidMenuItem>
+        <LiquidMenuSeparator />
+        <LiquidMenuItem destructive><Trash2 />Delete</LiquidMenuItem>
+      </LiquidMenuContent>
+    </LiquidMenu>
+  )
+}
+```
+
+## Highlight
+
+The menu is a glass panel that springs out of its trigger. The highlight is one glass lens shared by every item, it glides between them as you move the pointer or the arrow keys, the same way the Tabs indicator glides between tabs. While it travels it bends the item labels under its edges, and it settles quietly as soon as it stops.
+
+## Accessibility
+
+Radix Dropdown Menu gives it the `menu` role, typeahead, arrow key navigation, focus trapping and focus return to the trigger. Reduced motion removes the entrance animation and the highlight glide.
+
+The parts are `LiquidMenu`, `LiquidMenuTrigger`, `LiquidMenuContent`, `LiquidMenuItem`, `LiquidMenuLabel`, `LiquidMenuSeparator`, `LiquidMenuShortcut` and `LiquidMenuGroup`.

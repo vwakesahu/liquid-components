@@ -1,0 +1,63 @@
+---
+title: Liquid Stepper
+description: The iOS − / + stepper in Liquid Glass.
+---
+
+<ComponentPreview name="stepper" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-stepper.json
+```
+
+## Usage
+
+```tsx
+import { LiquidStepper } from "@/components/ui/liquid-stepper"
+
+export function Guests() {
+  const [guests, setGuests] = useState(2)
+  return <LiquidStepper value={guests} onValueChange={setGuests} min={0} max={10} aria-label="Guests" />
+}
+```
+
+Hold a button and it repeats. The value pops on every change, and the buttons disable at `min` and `max`. Use `step` for bigger jumps, `format` to label the value and `showValue={false}` for the compact iOS form.
+
+## Examples
+
+### Quantity
+
+<ComponentPreview name="stepper-cart" />
+
+```tsx
+<LiquidStepper value={quantity} onValueChange={setQuantity} min={1} max={9} aria-label="Quantity" />
+```
+
+### Settings
+
+<ComponentPreview name="stepper-settings" />
+
+```tsx
+<LiquidStepper defaultValue={17} min={12} max={28} format={(value) => `${value} pt`} aria-label="Font size" />
+<LiquidStepper defaultValue={1} min={0} showValue={false} aria-label="Zoom" />
+```
+
+## API
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `value` | `number` | none |
+| `defaultValue` | `number` | `0` |
+| `onValueChange` | `(value: number) => void` | none |
+| `min` | `number` | `-Infinity` |
+| `max` | `number` | `Infinity` |
+| `step` | `number` | `1` |
+| `format` | `(value: number) => ReactNode` | none |
+| `showValue` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+| `aria-label` | `string` | `"Value"` |
+
+## Keyboard
+
+`Tab` moves between the two buttons, and `Enter` or `Space` steps once. Holding the pointer down repeats.

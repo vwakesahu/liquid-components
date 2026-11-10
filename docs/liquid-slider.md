@@ -14,7 +14,7 @@ The tracker must:
 - Expand beyond the resting rail when engaged.
 - Remain a fully rounded capsule in every state.
 - Stretch and lean according to horizontal velocity.
-- Refract a synchronized copy of the real Radix progress so the selected value stays visible through the tracker.
+- Refract the real Radix rail and fill underneath it so the selected value stays visible through the tracker.
 - Settle with spring motion without overshooting the selected value.
 
 The optical treatment must never compromise range-input semantics, keyboard behavior, or form behavior.
@@ -28,12 +28,8 @@ LiquidSlider
 └── Radix Slider.Root
     ├── Slider.Track
     │   └── Slider.Range
-    └── Slider.Thumb
-        ├── occlusion layer
-        ├── displaced progress target
-        ├── glass lens
-        ├── specular rim
-        └── interaction light
+    ├── Slider.Thumb       (the lens: opaque at rest, clear glass while engaged)
+    └── refraction filter  (applied to Slider.Root only while engaged)
 ```
 
 ### Radix behavior layer
@@ -60,7 +56,7 @@ The fill ends beneath the center of the tracker. It extends an additional `2px` 
 
 The tracker is a capsule, not a circle. Its idle dimensions vary by component size:
 
-Its white resting surface, glass opacity, lens blur, rim, shadow, engagement expansion, and release timing intentionally match `LiquidSwitch`. Only the displacement preset stays gentler so the value-bearing progress remains readable.
+Its white resting surface, clear engaged glass, engagement expansion, and release timing intentionally match `LiquidSwitch`. Only the displacement preset stays gentler so the value-bearing progress remains readable.
 
 | Size | Tracker width | Slider height | Track height |
 | --- | ---: | ---: | ---: |
@@ -83,10 +79,8 @@ The tracker is opaque, stable, and quiet. The refraction layers are invisible.
 Pointer down immediately:
 
 - Expands the tracker
-- Reveals the glass lens
-- Strengthens the rim and shadow
-- Activates the synchronized displaced progress target
-- Places illumination close to the pointer coordinate
+- Turns the tracker into clear glass
+- Ramps in refraction of the real rail and fill, the rim light, and the glass shadow
 
 A quick click guarantees a minimum `380ms` visible pulse. Without this minimum duration, pointer down and up can occur before the glass expansion becomes perceptible.
 
@@ -101,7 +95,6 @@ During drag:
 - Tracker position and fill width update without CSS delay.
 - Velocity changes tracker width, vertical compression, and skew.
 - The refracted glass surface stretches slightly more.
-- Pointer lighting follows the current horizontal coordinate.
 - React does not rerender for every visual property update.
 
 ### Release
@@ -140,36 +133,21 @@ These properties must be derived from the same filtered state so the material be
 
 ## Refraction model
 
-CSS backdrop blur alone cannot create optical magnification. It only softens pixels behind an element.
+CSS backdrop blur alone cannot create optical refraction. It only softens pixels behind an element.
 
-The slider uses the `refractionTarget={<TrackFill progress={progress} />}` architecture described in Aave's displacement write-up:
+The slider follows the shared [displacement renderer](liquid-displacement.md):
 
-1. Radix `Slider.Range` is the semantic and visible progress source outside the tracker.
-2. The occlusion layer hides the original thin rail only where the tracker covers it.
-3. A real DOM track clone, including its Range segment, is aligned to the full Radix track and clipped by the tracker’s refraction viewport.
-4. Radix `onValueChange` updates the clone’s CSS range and thumb offset synchronously, without adding React progress state or a second position animation. For a single-value slider, its fill boundary lands at the same thumb center Radix uses as the Range endpoint.
-5. A generated rounded-rectangle displacement map bends that synchronized copy through SVG `feDisplacementMap`.
-6. Separate red, green, and blue passes add restrained chromatic refraction, followed by the lens, rim, and interaction light.
+1. `Slider.Root` is the refraction surface and every `Slider.Thumb` is a lens.
+2. While the slider has `data-interacting`, a generated lens map is positioned at each thumb's measured bounds and the root is filtered in place.
+3. The real Radix rail and Range under the thumb are bent toward the rim, so the fill boundary stays on the semantic value with nothing to keep in sync.
+4. The rim highlight, shade, and glass shadow come from the filter, so the thumb has a transparent background and no box-shadow while engaged.
+5. On release the refraction eases out and the filter is removed.
 
-This is not a hardcoded 50/50 bar. The cloned Range uses the live minimum, maximum, and current Radix values; the full cloned track is shifted beneath each lens by its measured pixel offset. Extra highlight stops around the real boundary would create the false second bar seen in earlier versions, so none are added. During velocity deformation, the copied target counteracts the tracker’s decorative offset so its boundary remains pinned to the semantic value.
-
-Current layer order:
-
-```text
-original rail
-  ↓ hidden by
-occlusion blur
-  ↓ replaced inside the lens by
-synchronized progress target
-  ↓ bent and covered by
-displacement → lens → rim → interaction light
-```
+Range sliders get one lens per thumb inside the same filter.
 
 ### Important limitation
 
-This is real displacement of a live slider-aware DOM copy, not arbitrary backdrop sampling. The cloned track is back-synced from Radix and never acts as an independent progress indicator. The component still cannot sample unrelated DOM content behind itself; the cross-browser technique requires an intentional `refractionTarget`, exactly as described in the Aave document.
-
-Arbitrary backdrop refraction still requires control of the pixels being filtered. QR and media components will use the same generated map with WebGL because their canvas or video pixels cannot be safely reproduced with this DOM-target technique.
+Only the slider's own pixels bend. Where the engaged thumb hangs past the rail, the area shows the page through clear glass rather than refracted page content. Media and canvas surfaces use the same lens maps through WebGL instead.
 
 ## Performance architecture
 
@@ -197,7 +175,7 @@ Radix updates Range and Thumb geometry from one value source. The Liquid compone
 
 ### Measure interaction layout once
 
-The shared motion hook reads root bounds on pointer down and reuses them for pointer lighting throughout the drag. Calling `getBoundingClientRect()` on every pointer move can force repeated layout calculation.
+The shared motion hook reads root bounds on pointer down and reuses them for the rest of the drag. Calling `getBoundingClientRect()` on every pointer move can force repeated layout calculation.
 
 ### Do not transition value position during drag
 
@@ -241,7 +219,7 @@ Recommended curves:
 - Read component bounds once at the beginning of interaction.
 - Filter raw pointer velocity.
 - Apply spring to material geometry rather than selected-value position.
-- Occlude the original rail beneath the tracker before revealing the synchronized displaced copy.
+- Keep the engaged thumb transparent so the refracted rail shows through it.
 - Preserve a capsule silhouette in every phase.
 - Test bright, dark, textured, and high-contrast backgrounds.
 - Respect reduced-motion and reduced-transparency preferences.

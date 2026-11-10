@@ -8,7 +8,7 @@
       "type": "registry:ui",
       "author": "Vivek Sahu <viveksahu1762@gmail.com>",
       "title": "Liquid Button",
-      "description": "A semantic glass button with tactile press expansion and live refraction.",
+      "description": "A semantic button with tactile press expansion, live refraction, and a glass variant.",
       "dependencies": [
         "class-variance-authority",
         "clsx",
@@ -24,6 +24,11 @@
           "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
           "type": "registry:hook",
           "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
         },
         {
           "path": "packages/liquid-ui/src/lib/utils.ts",
@@ -155,6 +160,484 @@
       ]
     },
     {
+      "name": "liquid-glass",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Glass",
+      "description": "Glass surfaces that refract what's behind them, and groups that flow together like liquid.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-toolbar",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Toolbar",
+      "description": "A floating glass toolbar whose groups fuse into one capsule and split apart again.",
+      "dependencies": [
+        "@radix-ui/react-toolbar",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-toolbar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-toolbar.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-menu",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Menu",
+      "description": "A glass dropdown menu that springs out of its trigger, with one gliding lens highlight.",
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-menu.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-button.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-popover",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Popover",
+      "description": "A glass panel that springs out of its trigger.",
+      "dependencies": [
+        "@radix-ui/react-popover",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-popover.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-popover.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-button.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-toast",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Toast",
+      "description": "Glass notifications that stack and behave like Sonner.",
+      "dependencies": [
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-toast.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-toast.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-button.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-stepper",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Stepper",
+      "description": "The iOS − / + stepper in liquid glass.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-stepper.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-stepper.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-wheel-picker",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Wheel Picker",
+      "description": "The iOS wheel picker, with a liquid glass lens over the selection.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-wheel-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-wheel-picker.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-drawer",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Drawer",
+      "description": "A glass drawer that grows out of its button and morphs between views.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-drawer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-drawer.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-button.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-alert",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Alert",
+      "description": "The iOS alert: a centred glass card that asks one question.",
+      "dependencies": [
+        "@radix-ui/react-alert-dialog",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-alert.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-alert.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-button.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-search-field",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Search Field",
+      "description": "The iOS 26 search field, with a close button that flows out of it.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-search-field.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-search-field.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-island",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Island",
+      "description": "A Dynamic Island that morphs between compact and expanded.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-island.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-island.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
       "name": "liquid-video-player",
       "type": "registry:ui",
       "author": "Vivek Sahu <viveksahu1762@gmail.com>",
@@ -186,6 +669,230 @@
           "path": "packages/liquid-ui/src/hooks/use-liquid-motion.ts",
           "type": "registry:hook",
           "target": "hooks/use-liquid-motion.ts"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-tab-bar",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Tab Bar",
+      "description": "The iOS 26 tab bar: floating glass with a droplet you drag between tabs, and a minimized state.",
+      "dependencies": [
+        "@radix-ui/react-tabs",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-tab-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-tab-bar.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-tabs.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-tabs.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-motion.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-motion.ts"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        }
+      ]
+    },
+    {
+      "name": "liquid-context-menu",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Context Menu",
+      "description": "Press and hold to lift a preview above a blurred backdrop, with a glass menu beside it.",
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-context-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-context-menu.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-menu.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-button.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-tooltip",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Tooltip",
+      "description": "A small glass capsule that springs out to name a control.",
+      "dependencies": [
+        "@radix-ui/react-tooltip",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-tooltip.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-tooltip.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-progress",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Progress",
+      "description": "The iOS progress bar, App Store download ring, and activity indicator.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-progress.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-progress.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-page-control",
+      "type": "registry:ui",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid Page Control",
+      "description": "Page dots in a glass capsule, with a pill that glides and stretches between them.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-page-control.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-page-control.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/components/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/liquid-glass.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/hooks/use-liquid-glass.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-liquid-glass.tsx"
         },
         {
           "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",

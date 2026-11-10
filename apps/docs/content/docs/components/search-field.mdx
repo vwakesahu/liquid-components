@@ -1,0 +1,73 @@
+---
+title: "Liquid Search Field"
+description: "The iOS 26 search field, with a close button that flows out of it."
+---
+
+<ComponentPreview name="search-field" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-search-field.json
+```
+
+## Usage
+
+```tsx
+import { LiquidSearchField } from "@/components/ui/liquid-search-field"
+
+const [query, setQuery] = useState("")
+
+<LiquidSearchField value={query} onValueChange={setQuery} placeholder="Search places" />
+```
+
+While the field is focused, a round glass close button grows out of it, joined by a liquid bridge, and separates as it settles. The close button and Escape clear the field and blur it, the inline × clears it and keeps focus.
+
+## Examples
+
+### Scopes
+
+<ComponentPreview name="search-scopes" />
+
+```tsx
+<LiquidSearchField value={query} onValueChange={setQuery} placeholder="Search mail" />
+<LiquidTabs value={scope} onValueChange={setScope}>
+  <LiquidTabsList aria-label="Mailbox">
+    <LiquidTabsTrigger value="all">All</LiquidTabsTrigger>
+    <LiquidTabsTrigger value="inbox">Inbox</LiquidTabsTrigger>
+    <LiquidTabsTrigger value="sent">Sent</LiquidTabsTrigger>
+  </LiquidTabsList>
+</LiquidTabs>
+```
+
+Pair the field with [Tabs](/docs/components/tabs) to narrow the results.
+
+### Recent searches
+
+<ComponentPreview name="search-recents" />
+
+```tsx
+<LiquidSearchField
+  value={query}
+  onValueChange={setQuery}
+  onFocus={() => setFocused(true)}
+  onBlur={() => setFocused(false)}
+  onKeyDown={(event) => event.key === "Enter" && remember(query)}
+/>
+{focused && !query && <Recents />}
+```
+
+Show recent searches while the field is focused and empty. Press Enter to save one.
+
+## API
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `value` | `string` | none |
+| `defaultValue` | `string` | `""` |
+| `onValueChange` | `(value: string) => void` | none |
+| `onCancel` | `() => void` | none |
+| `placeholder` | `string` | `"Search"` |
+| `lens` | `LiquidGlassOptions` | none |
+
+Every other prop goes to the `<input>`.

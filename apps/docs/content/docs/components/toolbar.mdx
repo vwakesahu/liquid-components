@@ -1,0 +1,63 @@
+---
+title: Liquid Toolbar
+description: A floating glass toolbar whose groups fuse into one capsule and split apart again.
+---
+
+<ComponentPreview name="toolbar" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-toolbar.json
+```
+
+## Usage
+
+```tsx
+import { ChevronLeft, ChevronRight, Share } from "lucide-react"
+import {
+  LiquidToolbar,
+  LiquidToolbarButton,
+  LiquidToolbarGroup,
+} from "@/components/ui/liquid-toolbar"
+
+export function BrowserBar() {
+  return (
+    <LiquidToolbar aria-label="Browser">
+      <LiquidToolbarGroup>
+        <LiquidToolbarButton aria-label="Back"><ChevronLeft /></LiquidToolbarButton>
+        <LiquidToolbarButton aria-label="Forward"><ChevronRight /></LiquidToolbarButton>
+      </LiquidToolbarGroup>
+      <LiquidToolbarGroup>
+        <LiquidToolbarButton aria-label="Share"><Share /></LiquidToolbarButton>
+      </LiquidToolbarGroup>
+    </LiquidToolbar>
+  )
+}
+```
+
+Each `LiquidToolbarGroup` is a solid glass capsule. All the capsules in a toolbar belong to one glass group, so as they move toward each other a liquid bridge forms between them.
+
+Each group also has one glass droplet. Press a button and the droplet swells under it and magnifies the icon. Slide across the group and it glides from button to button, and letting go presses the one you end on, like the iOS tab bar.
+
+## Merging
+
+Set `merged` to fuse every group into one continuous capsule, clear it to split them apart again. The groups slide together, overlap their rounded ends and the glass fills the seam, so the merged bar reads as one piece and not as capsules touching.
+
+The demo is a browser window. Scroll down and the toolbar merges into one capsule, scroll back up or click the address and it splits. Back, forward and reload all work.
+
+```tsx
+const [compact, setCompact] = useState(false)
+
+<LiquidToolbar merged={compact} aria-label="Browser controls">
+  <LiquidToolbarGroup>…</LiquidToolbarGroup>
+  <LiquidToolbarGroup>…</LiquidToolbarGroup>
+  <LiquidToolbarGroup>…</LiquidToolbarGroup>
+</LiquidToolbar>
+```
+
+Drive `merged` from whatever fits your app, scroll direction, focus, a compact layout or a user setting.
+
+## Accessibility
+
+Radix Toolbar gives it the `toolbar` role and roving focus, so the arrow keys move between buttons. `LiquidToolbarButton` is a plain button, so it supports `disabled`, `aria-pressed` and every other button attribute.

@@ -1,0 +1,51 @@
+---
+title: Liquid Toast
+description: Glass notifications that stack and behave like Sonner.
+---
+
+<ComponentPreview name="toast" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-toast.json
+```
+
+## Usage
+
+Render the toaster once, then call `toast()` from anywhere.
+
+```tsx
+import { LiquidToaster, toast } from "@/components/ui/liquid-toast"
+
+export function App() {
+  return (
+    <>
+      <button onClick={() => toast({ title: "Saved to Photos", description: "IMG_2048.heic" })}>
+        Save
+      </button>
+      <LiquidToaster />
+    </>
+  )
+}
+```
+
+| Option | Meaning |
+| --- | --- |
+| `title` | The main line. |
+| `description` | A second, quieter line. |
+| `icon` | Shown before the text. |
+| `action` | `{ label, onClick }`, shown as a button. |
+| `duration` | Milliseconds before it leaves. Default `4000`. |
+
+Toasts behave like Sonner, the React toast library. They drop in and collapse into a stack with the newest on top. Hover to spread the stack open and pause every timer, or swipe a toast up to dismiss it. Timers also pause while the tab is hidden and pick up again with the time that was left. Up to three show at once.
+
+```tsx
+toast.success("Saved to Photos")
+toast.error("Couldn't upload")
+toast.info("Connected to Home")
+toast.promise(upload(), { loading: "Uploading…", success: "Uploaded", error: "Upload failed" })
+toast.dismiss(id)
+```
+
+Each toast is announced politely to screen readers, so it doesn't cut off what they're reading.

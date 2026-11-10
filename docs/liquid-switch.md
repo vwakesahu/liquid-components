@@ -23,11 +23,8 @@ LiquidSwitch
 └── Radix Switch.Root
     ├── state track
     │   └── tint surface
-    └── Radix Switch.Thumb
-        ├── displaced state-track copy
-        ├── adaptive lens
-        ├── specular rim
-        └── interaction light
+    ├── Radix Switch.Thumb   (the lens: opaque white at rest, clear glass while engaged)
+    └── refraction filter    (applied to Switch.Root only while engaged)
 ```
 
 Radix owns the `switch` role, `aria-checked`, keyboard activation, disabled state, form bridge, and ordinary click toggle. Liquid UI owns the additional continuous drag gesture and optical response.
@@ -72,7 +69,7 @@ The shared `useLiquidMotion` hook separates value movement from material deforma
 - `--liquid-skew` communicates directional momentum.
 - `--liquid-light-x` follows the engagement coordinate.
 
-The tracker’s state-track copy is filtered through the shared generated displacement map. `scale`, `depth`, `curvature`, `splay`, `chroma`, `blur`, `glow`, edge highlight, and specular angle are configurable through the `lens` prop; see the [Liquid Displacement Renderer](liquid-displacement.md).
+While engaged, the switch root is filtered in place: the real track and tint under the thumb bend into its rim, and the filter adds the rim light and glass shadow. `scale`, `depth`, `curvature`, `splay`, `chroma`, `blur`, `glow`, edge highlight, and specular angle are configurable through the `lens` prop; see the [Liquid Displacement Renderer](liquid-displacement.md).
 
 A quick click keeps the lens visible for at least `380ms`. A drag does not wait for that timer; it begins settling immediately on release.
 

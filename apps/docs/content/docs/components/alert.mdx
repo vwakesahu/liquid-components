@@ -1,0 +1,108 @@
+---
+title: "Liquid Alert"
+description: "The iOS alert, a centred glass card that asks one question."
+---
+
+<ComponentPreview name="alert" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-alert.json
+```
+
+## Usage
+
+```tsx
+import {
+  LiquidAlert,
+  LiquidAlertAction,
+  LiquidAlertCancel,
+  LiquidAlertContent,
+  LiquidAlertTrigger,
+} from "@/components/ui/liquid-alert"
+
+<LiquidAlert>
+  <LiquidAlertTrigger variant="destructive">Delete album</LiquidAlertTrigger>
+  <LiquidAlertContent title="Delete “Summer”?" description="This album and its 48 photos will be removed.">
+    <LiquidAlertCancel>Cancel</LiquidAlertCancel>
+    <LiquidAlertAction destructive>Delete</LiquidAlertAction>
+  </LiquidAlertContent>
+</LiquidAlert>
+```
+
+The card springs in, and focus starts on Cancel so a stray Enter never confirms. Radix AlertDialog makes it modal and keeps it open until an action is chosen.
+
+## Examples
+
+### Three choices
+
+<ComponentPreview name="alert-stacked" />
+
+```tsx
+<LiquidAlertContent title="Allow “Weather” to use your location?">
+  <LiquidAlertAction>Allow While Using App</LiquidAlertAction>
+  <LiquidAlertAction variant="secondary">Allow Once</LiquidAlertAction>
+  <LiquidAlertCancel>Don’t Allow</LiquidAlertCancel>
+</LiquidAlertContent>
+```
+
+Three or more actions stack, like on iOS. Set `stacked` to choose either way.
+
+### Text field
+
+<ComponentPreview name="alert-input" />
+
+```tsx
+<LiquidAlertContent
+  title="New Folder"
+  description="Enter a name for this folder."
+  onOpenAutoFocus={(event) => {
+    event.preventDefault()
+    input.current?.focus()
+  }}
+  body={<LiquidAlertInput ref={input} value={name} onChange={(event) => setName(event.target.value)} />}
+>
+  <LiquidAlertCancel>Cancel</LiquidAlertCancel>
+  <LiquidAlertAction disabled={!name}>Save</LiquidAlertAction>
+</LiquidAlertContent>
+```
+
+`body` sits between the text and the actions. Focus the field on open, and let Enter save.
+
+### Wait for the work
+
+<ComponentPreview name="alert-async" />
+
+```tsx
+<LiquidAlert open={open} onOpenChange={(next) => !busy && setOpen(next)}>
+  …
+  <LiquidAlertAction
+    destructive
+    onClick={async (event) => {
+      event.preventDefault() // keep it open
+      setBusy(true)
+      await signOut()
+      setOpen(false)
+    }}
+  >
+    {busy ? <Spinner /> : "Sign Out"}
+  </LiquidAlertAction>
+</LiquidAlert>
+```
+
+Call `preventDefault` in an action's `onClick` and the alert stays open until the work finishes.
+
+## API
+
+`LiquidAlertContent`
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `title` | `ReactNode` | none |
+| `description` | `ReactNode` | none |
+| `body` | `ReactNode` | none |
+| `stacked` | `boolean` | three or more actions |
+| `lens` | `LiquidGlassOptions` | none |
+
+`LiquidAlertAction` takes `destructive` and any `LiquidButton` prop. `LiquidAlertInput` takes any input prop.

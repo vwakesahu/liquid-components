@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
-  generateLiquidLensMap,
   liquidLensPresets,
+  renderLiquidLensMap,
+  resolveLiquidLensOptions,
   type LiquidLensOptions,
 } from "./use-liquid-displacement";
 
@@ -20,69 +21,68 @@ const vertexShaderSource = `
   }
 `;
 
+// Each control is a lens with its own map, packed into one atlas texture. The
+// map channels match the DOM renderer: R/G offset, B lighting, A silhouette.
 const fragmentShaderSource = `
   precision mediump float;
 
   varying vec2 v_uv;
   uniform sampler2D u_video;
-  uniform sampler2D u_lensMap;
+  uniform sampler2D u_lensAtlas;
   uniform vec2 u_resolution;
   uniform vec2 u_uvScale;
   uniform vec4 u_lenses[${MAX_LENSES}];
+  uniform vec4 u_lensAtlasRects[${MAX_LENSES}];
+  uniform float u_lensOffsets[${MAX_LENSES}];
   uniform int u_lensCount;
-  uniform float u_scale;
   uniform float u_chroma;
-  uniform float u_glow;
-  uniform float u_edgeHighlight;
-  uniform float u_specularAngle;
 
   vec2 coverUv(vec2 uv) {
     return (uv - 0.5) * u_uvScale + 0.5;
   }
 
+  vec3 sampleVideo(vec2 offsetPixels) {
+    vec2 offsetUv = vec2(offsetPixels.x, -offsetPixels.y) / u_resolution;
+    return texture2D(u_video, coverUv(v_uv + offsetUv)).rgb;
+  }
+
   void main() {
     vec2 screenUv = vec2(v_uv.x, 1.0 - v_uv.y);
-    vec2 displacement = vec2(0.0);
-    float surface = 0.0;
-    float inside = 0.0;
+    vec4 lensMap = vec4(0.5, 0.5, 0.5, 0.0);
+    float lensOffset = 0.0;
 
     for (int index = 0; index < ${MAX_LENSES}; index++) {
       if (index >= u_lensCount) break;
       vec4 lens = u_lenses[index];
       vec2 local = (screenUv - lens.xy) / lens.zw;
       if (local.x >= 0.0 && local.x <= 1.0 && local.y >= 0.0 && local.y <= 1.0) {
-        vec3 map = texture2D(u_lensMap, vec2(local.x, 1.0 - local.y)).rgb;
-        vec2 candidate = (map.rg - 0.5019608) * 2.0;
-        float strength = length(candidate);
-        if (strength > length(displacement)) {
-          displacement = candidate;
-          surface = map.b;
-          inside = step(0.002, strength + surface);
+        vec4 atlas = u_lensAtlasRects[index];
+        vec4 candidate = texture2D(u_lensAtlas, atlas.xy + local * atlas.zw);
+        // Later lenses are nested controls (buttons inside the control bar) and win ties.
+        if (candidate.a > 0.0 && candidate.a >= lensMap.a) {
+          lensMap = candidate;
+          lensOffset = u_lensOffsets[index];
         }
       }
     }
 
-    vec2 displacedPixels = displacement * u_scale;
-    vec2 displacedUv = vec2(displacedPixels.x, -displacedPixels.y) / u_resolution;
-    vec2 chromaUv = normalize(displacedUv + vec2(0.000001)) * u_chroma * inside / u_resolution;
-    vec2 redUv = coverUv(v_uv + displacedUv + chromaUv);
-    vec2 greenUv = coverUv(v_uv + displacedUv);
-    vec2 blueUv = coverUv(v_uv + displacedUv - chromaUv);
-    vec3 color = vec3(
-      texture2D(u_video, redUv).r,
-      texture2D(u_video, greenUv).g,
-      texture2D(u_video, blueUv).b
+    vec3 base = sampleVideo(vec2(0.0));
+    if (lensMap.a <= 0.0) {
+      gl_FragColor = vec4(base, 1.0);
+      return;
+    }
+
+    vec2 offset = (lensMap.rg - 0.5019608) * 2.0 * lensOffset;
+    vec3 refracted = vec3(
+      sampleVideo(offset * (1.0 + u_chroma)).r,
+      sampleVideo(offset).g,
+      sampleVideo(offset * (1.0 - u_chroma)).b
     );
 
-    float angle = radians(u_specularAngle);
-    vec2 lightDirection = vec2(cos(angle), sin(angle));
-    float directional = max(0.0, dot(normalize(displacement + vec2(0.0001)), lightDirection));
-    float edge = smoothstep(0.02, 0.72, length(displacement));
-    float specular = pow(directional, 10.0) * edge * u_edgeHighlight * inside;
-    float glow = (1.0 - surface) * edge * u_glow * inside;
-    color += vec3(specular + glow);
-
-    gl_FragColor = vec4(color, 1.0);
+    float light = lensMap.b * 2.0 - 1.0;
+    refracted *= 1.0 - max(0.0, -light);
+    refracted = mix(refracted, vec3(1.0), max(0.0, light));
+    gl_FragColor = vec4(mix(base, refracted, lensMap.a), 1.0);
   }
 `;
 
@@ -129,6 +129,17 @@ type UseVideoRefractionOptions = {
   lensSelector?: string;
 };
 
+type LensEntry = {
+  element: HTMLElement;
+  key: string;
+  width: number;
+  height: number;
+  radius: number;
+  bounds: DOMRect;
+};
+
+const quantize = (value: number) => Math.max(2, Math.round(value / 2) * 2);
+
 export function useVideoRefraction({
   lens,
   lensSelector = '[data-liquid-video-lens], [data-slot="liquid-slider-thumb"]',
@@ -139,7 +150,7 @@ export function useVideoRefraction({
   const drawRef = useRef<(() => void) | null>(null);
   const [ready, setReady] = useState(false);
   const options = useMemo(
-    () => ({ ...liquidLensPresets.video, ...lens }),
+    () => resolveLiquidLensOptions({ ...liquidLensPresets.video, ...lens }),
     [
       lens?.blur,
       lens?.borderRadius,
@@ -149,6 +160,7 @@ export function useVideoRefraction({
       lens?.edgeHighlight,
       lens?.glow,
       lens?.scale,
+      lens?.shadow,
       lens?.specularAngle,
       lens?.splay,
     ],
@@ -173,8 +185,8 @@ export function useVideoRefraction({
 
     const positionBuffer = gl.createBuffer();
     const videoTexture = gl.createTexture();
-    const mapTexture = gl.createTexture();
-    if (!positionBuffer || !videoTexture || !mapTexture) return;
+    const atlasTexture = gl.createTexture();
+    if (!positionBuffer || !videoTexture || !atlasTexture) return;
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(
       gl.ARRAY_BUFFER,
@@ -185,43 +197,104 @@ export function useVideoRefraction({
     const positionLocation = gl.getAttribLocation(program, "a_position");
     gl.enableVertexAttribArray(positionLocation);
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
     configureTexture(gl, videoTexture);
-    configureTexture(gl, mapTexture);
-    const mapImage = new Image();
-    let mapReady = false;
+    configureTexture(gl, atlasTexture);
+
     let stopped = false;
     let animationFrame = 0;
     let videoFrame = 0;
     let frameScheduled = false;
-
-    mapImage.onload = () => {
-      gl.bindTexture(gl.TEXTURE_2D, mapTexture);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mapImage);
-      mapReady = true;
-      drawRef.current?.();
-    };
-    mapImage.src = generateLiquidLensMap(96, 60, {
-      ...options,
-      borderRadius: options.borderRadius ?? 28,
-    });
+    let atlasLayout = "";
+    let atlasRects = new Map<string, [number, number, number, number]>();
+    const mapCache = new Map<string, ImageData>();
 
     const uniform = (name: string) => gl.getUniformLocation(program, name);
     const videoUniform = uniform("u_video");
-    const mapUniform = uniform("u_lensMap");
+    const atlasUniform = uniform("u_lensAtlas");
     const resolutionUniform = uniform("u_resolution");
     const uvScaleUniform = uniform("u_uvScale");
     const lensesUniform = uniform("u_lenses[0]");
+    const atlasRectsUniform = uniform("u_lensAtlasRects[0]");
+    const offsetsUniform = uniform("u_lensOffsets[0]");
     const lensCountUniform = uniform("u_lensCount");
-    const scaleUniform = uniform("u_scale");
     const chromaUniform = uniform("u_chroma");
-    const glowUniform = uniform("u_glow");
-    const edgeUniform = uniform("u_edgeHighlight");
-    const angleUniform = uniform("u_specularAngle");
+
+    // Packs each distinct lens size into one atlas texture. Maps are only
+    // regenerated when a control changes shape, never when it moves.
+    const updateAtlas = (entries: LensEntry[], pixelRatio: number) => {
+      const unique = [...new Map(entries.map((entry) => [entry.key, entry])).values()];
+      const layout = unique.map((entry) => entry.key).join(";");
+      if (layout === atlasLayout) return;
+      const images = unique.map((entry) => {
+        let image = mapCache.get(entry.key);
+        if (!image) {
+          image = renderLiquidLensMap(
+            entry.width,
+            entry.height,
+            { ...options, borderRadius: entry.radius },
+            pixelRatio,
+          );
+          mapCache.set(entry.key, image);
+        }
+        return image;
+      });
+      const atlasWidth = Math.max(1, ...images.map((image) => image.width));
+      const atlasHeight = Math.max(1, images.reduce((sum, image) => sum + image.height + 2, 0));
+      const pixels = new Uint8Array(atlasWidth * atlasHeight * 4);
+      atlasRects = new Map();
+      let row = 0;
+      unique.forEach((entry, index) => {
+        const image = images[index]!;
+        for (let y = 0; y < image.height; y += 1) {
+          const sourceStart = y * image.width * 4;
+          pixels.set(
+            image.data.subarray(sourceStart, sourceStart + image.width * 4),
+            ((row + y) * atlasWidth) * 4,
+          );
+        }
+        atlasRects.set(entry.key, [
+          0.5 / atlasWidth,
+          (row + 0.5) / atlasHeight,
+          (image.width - 1) / atlasWidth,
+          (image.height - 1) / atlasHeight,
+        ]);
+        row += image.height + 2;
+      });
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, atlasTexture);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 0);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, atlasWidth, atlasHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+      atlasLayout = layout;
+    };
+
+    const collectLenses = () => {
+      const entries: LensEntry[] = [];
+      for (const element of container.querySelectorAll<HTMLElement>(lensSelector)) {
+        if (entries.length >= MAX_LENSES) break;
+        if (
+          element.matches('[data-slot="liquid-video-center-play"]') &&
+          !container.hasAttribute("data-paused")
+        ) continue;
+        if (
+          element.closest('[data-slot="liquid-video-controls"]') &&
+          !container.hasAttribute("data-controls-visible")
+        ) continue;
+        const bounds = element.getBoundingClientRect();
+        if (bounds.width < 2 || bounds.height < 2) continue;
+        const width = quantize(bounds.width);
+        const height = quantize(bounds.height);
+        const computedRadius = Number.parseFloat(getComputedStyle(element).borderTopLeftRadius);
+        const radius = Math.round(
+          Math.min(width, height, Number.isFinite(computedRadius) ? computedRadius * 2 : Infinity) / 2,
+        );
+        entries.push({ element, key: `${width}x${height}r${radius}`, width, height, radius, bounds });
+      }
+      return entries;
+    };
 
     const draw = () => {
-      if (stopped || !mapReady || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return;
+      if (stopped || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return;
       const bounds = container.getBoundingClientRect();
       if (bounds.width <= 0 || bounds.height <= 0) return;
       const pixelRatio = Math.min(2, window.devicePixelRatio || 1);
@@ -240,15 +313,33 @@ export function useVideoRefraction({
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
       } catch {
+        // A cross-origin video without CORS taints WebGL; fall back to the native video.
         setReady(false);
         return;
       }
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, mapTexture);
-      gl.uniform1i(videoUniform, 0);
-      gl.uniform1i(mapUniform, 1);
-      gl.uniform2f(resolutionUniform, width, height);
 
+      const entries = collectLenses();
+      updateAtlas(entries, pixelRatio);
+      const lenses = new Float32Array(MAX_LENSES * 4);
+      const rects = new Float32Array(MAX_LENSES * 4);
+      const offsets = new Float32Array(MAX_LENSES);
+      entries.forEach((entry, index) => {
+        const lensBounds = entry.bounds;
+        lenses.set([
+          (lensBounds.left - bounds.left) / bounds.width,
+          (lensBounds.top - bounds.top) / bounds.height,
+          lensBounds.width / bounds.width,
+          lensBounds.height / bounds.height,
+        ], index * 4);
+        rects.set(atlasRects.get(entry.key) ?? [0, 0, 0, 0], index * 4);
+        offsets[index] = Math.min(lensBounds.width, lensBounds.height) * options.scale * pixelRatio;
+      });
+
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, atlasTexture);
+      gl.uniform1i(videoUniform, 0);
+      gl.uniform1i(atlasUniform, 1);
+      gl.uniform2f(resolutionUniform, width, height);
       const videoAspect = video.videoWidth / Math.max(1, video.videoHeight);
       const canvasAspect = width / height;
       if (videoAspect > canvasAspect) {
@@ -256,37 +347,11 @@ export function useVideoRefraction({
       } else {
         gl.uniform2f(uvScaleUniform, 1, videoAspect / canvasAspect);
       }
-
-      const lenses = new Float32Array(MAX_LENSES * 4);
-      const elements = Array.from(
-        container.querySelectorAll<HTMLElement>(lensSelector),
-      ).slice(0, MAX_LENSES);
-      let count = 0;
-      for (const element of elements) {
-        if (
-          element.matches('[data-slot="liquid-video-center-play"]') &&
-          !container.hasAttribute("data-paused")
-        ) continue;
-        if (
-          element.closest('[data-slot="liquid-video-controls"]') &&
-          !container.hasAttribute("data-controls-visible")
-        ) continue;
-        const lensBounds = element.getBoundingClientRect();
-        if (lensBounds.width <= 0 || lensBounds.height <= 0) continue;
-        const offset = count * 4;
-        lenses[offset] = (lensBounds.left - bounds.left) / bounds.width;
-        lenses[offset + 1] = (lensBounds.top - bounds.top) / bounds.height;
-        lenses[offset + 2] = lensBounds.width / bounds.width;
-        lenses[offset + 3] = lensBounds.height / bounds.height;
-        count += 1;
-      }
       gl.uniform4fv(lensesUniform, lenses);
-      gl.uniform1i(lensCountUniform, count);
-      gl.uniform1f(scaleUniform, 60 * (options.scale ?? 0.075) * 2 * pixelRatio);
-      gl.uniform1f(chromaUniform, (options.chroma ?? 0.45) * 1.5 * pixelRatio);
-      gl.uniform1f(glowUniform, options.glow ?? 0.1);
-      gl.uniform1f(edgeUniform, options.edgeHighlight ?? 0.25);
-      gl.uniform1f(angleUniform, options.specularAngle ?? 45);
+      gl.uniform4fv(atlasRectsUniform, rects);
+      gl.uniform1fv(offsetsUniform, offsets);
+      gl.uniform1i(lensCountUniform, entries.length);
+      gl.uniform1f(chromaUniform, options.chroma * 0.25);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
       setReady(true);
     };
@@ -317,6 +382,24 @@ export function useVideoRefraction({
       schedule();
     };
     const renderOnce = () => draw();
+    // While paused, the canvas only redraws on demand. CSS transitions on the
+    // controls (sliding in, buttons growing while pressed, the scrubber thumb
+    // engaging) move or reshape lenses, so keep drawing until they settle.
+    let settleUntil = 0;
+    let settleFrame = 0;
+    const settle = (time: number) => {
+      settleFrame = 0;
+      if (stopped) return;
+      if (video.paused || video.ended) draw();
+      if (time < settleUntil) settleFrame = window.requestAnimationFrame(settle);
+    };
+    const keepDrawing = () => {
+      settleUntil = performance.now() + 750;
+      if (!settleFrame) settleFrame = window.requestAnimationFrame(settle);
+    };
+    container.addEventListener("transitionrun", keepDrawing);
+    container.addEventListener("pointerdown", keepDrawing);
+    container.addEventListener("pointerup", keepDrawing);
     video.addEventListener("play", start);
     video.addEventListener("loadeddata", start);
     video.addEventListener("seeked", renderOnce);
@@ -333,13 +416,17 @@ export function useVideoRefraction({
       video.removeEventListener("seeked", renderOnce);
       video.removeEventListener("pause", renderOnce);
       resizeObserver.disconnect();
+      container.removeEventListener("transitionrun", keepDrawing);
+      container.removeEventListener("pointerdown", keepDrawing);
+      container.removeEventListener("pointerup", keepDrawing);
       window.cancelAnimationFrame(animationFrame);
+      window.cancelAnimationFrame(settleFrame);
       const frameVideo = video as HTMLVideoElement & {
         cancelVideoFrameCallback?: (handle: number) => void;
       };
       frameVideo.cancelVideoFrameCallback?.(videoFrame);
       gl.deleteTexture(videoTexture);
-      gl.deleteTexture(mapTexture);
+      gl.deleteTexture(atlasTexture);
       gl.deleteBuffer(positionBuffer);
       gl.deleteProgram(program);
     };

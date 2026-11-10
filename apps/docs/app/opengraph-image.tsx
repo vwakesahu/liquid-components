@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { siteConfig } from "../lib/site";
 
-export const alt = "Liquid UI — Liquid Glass components for shadcn/ui";
+export const alt = "Liquid UI, Liquid Glass components for shadcn/ui";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -63,7 +63,7 @@ export default function OpenGraphImage() {
               color: "rgba(247,247,248,.55)",
             }}
           >
-            <span>React · shadcn/ui</span>
+            <span>React and shadcn/ui</span>
             <span>liquidcomponents.xyz</span>
           </div>
         </div>

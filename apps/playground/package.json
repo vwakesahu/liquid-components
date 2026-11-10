@@ -10,17 +10,17 @@
   },
   "dependencies": {
     "@liquid-ui/core": "workspace:*",
-    "lucide-react": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "lucide-react": "^1.26.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "@vitejs/plugin-react": "latest",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
     "@tailwindcss/vite": "^4.3.0",
     "tailwindcss": "^4.3.0",
     "typescript": "^5.9.3",
-    "vite": "latest"
+    "vite": "^8.1.5"
   }
 }

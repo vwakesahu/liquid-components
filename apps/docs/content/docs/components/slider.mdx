@@ -1,6 +1,6 @@
 ---
 title: Liquid Slider
-description: A Radix Slider with synchronized fill, spring deformation, and a refractive tracker.
+description: A Radix Slider with a refractive tracker, spring deformation and a fill that stays in sync.
 ---
 
 <ComponentPreview name="slider" />
@@ -21,13 +21,13 @@ export function Volume() {
 }
 ```
 
-The visible rail is the real Radix Range. Inside the tracker, a full DOM track clone with a live Range segment is aligned beneath the lens and bent by the displacement map, following Aave's `refractionTarget={<TrackFill progress={progress} />}` architecture. It is updated synchronously from Radix without independent React progress state or a second position animation, so the fill remains continuous through the glass at 0%, 100%, and during drag.
+The rail is the real Radix Range. While you drag, the tracker turns to clear glass and the slider refracts that same rail in place, so the fill bends into the glass rim while its edge stays on the selected value. There's no copy to keep in sync.
 
 ## Tracker size
 
 <ComponentPreview name="slider-sizes" />
 
-Use a preset or tune the tracker geometry in pixels. Custom geometry keeps the same Switch-aligned material, motion, live progress refraction, and endpoint calculations.
+Pick a preset or set the tracker geometry in pixels. Custom geometry keeps the same material and motion as the Switch, and the same live progress refraction and endpoint calculations.
 
 ```tsx
 <LiquidSlider size="small" defaultValue={[36]} />

@@ -5,6 +5,7 @@ import * as SwitchPrimitive from "@radix-ui/react-switch";
 
 import {
   liquidLensPresets,
+  liquidLightTokens,
   useLiquidDisplacement,
   type LiquidLensOptions,
 } from "../../hooks/use-liquid-displacement";
@@ -59,9 +60,9 @@ export const LiquidSwitch = forwardRef<
     forwardedRef,
   ) => {
     const motion = useLiquidMotion<HTMLButtonElement>({ maxStretch: 14 });
-    const displacement = useLiquidDisplacement<HTMLSpanElement>({
-      ...liquidLensPresets.switch,
-      ...lens,
+    const displacement = useLiquidDisplacement<HTMLButtonElement>({
+      lens: { ...liquidLensPresets.switch, ...lens },
+      lensSelector: '[data-slot="liquid-switch-thumb"]',
     });
     const metrics = geometry[size];
     const [uncontrolledChecked, setUncontrolledChecked] = useState(defaultChecked);
@@ -111,16 +112,17 @@ export const LiquidSwitch = forwardRef<
 
     return (
       <SwitchPrimitive.Root
-        ref={composeRefs(forwardedRef, motion.ref)}
+        ref={composeRefs(forwardedRef, motion.ref, displacement.ref)}
         data-slot="liquid-switch"
         disabled={disabled}
         checked={isChecked}
         onCheckedChange={updateChecked}
         className={cn(
+          liquidLightTokens,
           "liquid-switch group/liquid-switch relative flex-none cursor-pointer touch-none select-none rounded-full border-0 bg-transparent p-0",
-          "outline-none focus-visible:outline-[4px] focus-visible:outline-[rgba(0,122,255,.3)] focus-visible:outline-offset-[3px]",
+          "outline-none focus-visible:outline-[4px] focus-visible:outline-[color-mix(in_srgb,var(--liquid-accent,#0a84ff)_30%,transparent)] focus-visible:outline-offset-[3px]",
           "disabled:pointer-events-none disabled:cursor-default disabled:opacity-40",
-          "[--thumb-x:0px] data-[state=checked]:[--thumb-x:var(--thumb-travel)]",
+          "[--thumb-x:0px] [--switch-engaged-scale:1.4] data-[state=checked]:[--thumb-x:var(--thumb-travel)]",
           "[width:var(--switch-width)] [height:var(--switch-height)]",
           className,
         )}
@@ -213,45 +215,24 @@ export const LiquidSwitch = forwardRef<
         <SwitchPrimitive.Thumb
           data-slot="liquid-switch-thumb"
           className={cn(
-            "liquid-switch__thumb absolute overflow-hidden rounded-full bg-white",
+            "liquid-switch__thumb absolute rounded-full bg-white",
             "left-[var(--switch-inset)] top-[var(--switch-inset)] h-[calc(var(--switch-height)-var(--switch-inset)*2)] w-[var(--thumb-width)]",
-            "origin-center [transform:translate3d(var(--thumb-x),0,0)] shadow-[0_2px_5px_rgba(0,0,0,.2),0_.5px_1px_rgba(0,0,0,.08)]",
-            "will-change-[transform,width,height,margin-left]",
-            "[transition:transform_.46s_cubic-bezier(.16,1,.3,1),width_.3s_cubic-bezier(.18,1.28,.3,1),height_.3s_cubic-bezier(.18,1.28,.3,1),top_.3s_cubic-bezier(.16,1,.3,1),margin-left_.3s_cubic-bezier(.16,1,.3,1),background_.22s_ease,box-shadow_.26s_ease]",
-            "group-data-[interacting]/liquid-switch:-top-1.5 group-data-[interacting]/liquid-switch:ml-[calc(-4px+var(--liquid-offset))]",
-            "group-data-[interacting]/liquid-switch:h-[calc(var(--switch-height)+12px)] group-data-[interacting]/liquid-switch:w-[calc(var(--thumb-width)+8px+var(--liquid-stretch))]",
-            "group-data-[interacting]/liquid-switch:bg-white/20 group-data-[interacting]/liquid-switch:[transform:translate3d(var(--thumb-x),0,0)_scaleY(var(--liquid-squash))_skewX(var(--liquid-skew))]",
-            "group-data-[interacting]/liquid-switch:shadow-[0_7px_16px_rgba(0,0,0,.22),inset_0_0_7px_rgba(255,255,255,.9),0_0_0_.5px_rgba(255,255,255,.7)]",
-            "group-data-[dragging]/liquid-switch:[transition:width_.14s_cubic-bezier(.2,.72,.25,1),height_.14s_cubic-bezier(.2,.72,.25,1),top_.14s_cubic-bezier(.2,.72,.25,1),margin-left_.11s_cubic-bezier(.2,.72,.25,1),background_.14s_ease-out,box-shadow_.14s_ease-out,transform_.09s_cubic-bezier(.2,.72,.25,1)]",
-            "motion-reduce:transition-none",
+            // Position lives on `translate` so the engaged `scale` never multiplies the travel.
+            "origin-center [translate:var(--thumb-x)_0] shadow-[0_1px_3px_rgba(0,0,0,.16),0_0_0_.5px_rgba(0,0,0,.04)]",
+            "will-change-[translate,scale,transform,width]",
+            "[transition:translate_.46s_cubic-bezier(.16,1,.3,1),scale_.3s_cubic-bezier(.18,1.28,.3,1),transform_.3s_cubic-bezier(.16,1,.3,1),width_.3s_cubic-bezier(.18,1.28,.3,1),margin-left_.3s_cubic-bezier(.16,1,.3,1),background_.22s_ease,box-shadow_.26s_ease]",
+            // Engaging grows the capsule by one uniform factor, so its proportions and
+            // radius stay intact. Velocity stretch is the only non-uniform deformation.
+            "group-data-[interacting]/liquid-switch:[scale:var(--switch-engaged-scale)] group-data-[interacting]/liquid-switch:ml-[var(--liquid-offset)] group-data-[interacting]/liquid-switch:w-[calc(var(--thumb-width)+var(--liquid-stretch))]",
+            // While engaged the thumb turns into clear glass; the refraction filter on
+            // the switch bends the real track underneath it and adds the rim light.
+            "group-data-[interacting]/liquid-switch:bg-white/[.04] group-data-[interacting]/liquid-switch:[transform:scaleY(var(--liquid-squash))_skewX(var(--liquid-skew))]",
+            "group-data-[interacting]/liquid-switch:shadow-none",
+            "group-data-[dragging]/liquid-switch:[transition:translate_.09s_cubic-bezier(.2,.72,.25,1),scale_.14s_cubic-bezier(.2,.72,.25,1),transform_.09s_cubic-bezier(.2,.72,.25,1),width_.14s_cubic-bezier(.2,.72,.25,1),margin-left_.11s_cubic-bezier(.2,.72,.25,1),background_.14s_ease-out,box-shadow_.14s_ease-out]",
+            "motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:!bg-white",
           )}
-        >
-          <span
-            ref={displacement.targetRef}
-            data-slot="liquid-switch-refraction"
-            className={cn(
-              "liquid-switch__refraction absolute inset-0 z-0 rounded-[inherit] opacity-0 transition-opacity duration-150",
-              "bg-[linear-gradient(90deg,#d1d1d6_0_32%,#f5f5f7_46%_54%,#d1d1d6_68%_100%)] bg-[length:116%_64%] bg-center bg-no-repeat",
-              "group-data-[state=checked]/liquid-switch:bg-[linear-gradient(90deg,color-mix(in_srgb,var(--switch-tint),black_10%)_0_32%,color-mix(in_srgb,var(--switch-tint),white_42%)_46%_54%,color-mix(in_srgb,var(--switch-tint),black_10%)_68%_100%)]",
-              "group-data-[interacting]/liquid-switch:opacity-100",
-              "motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:!opacity-0 [@media(prefers-reduced-transparency:reduce)]:!filter-none",
-            )}
-            style={displacement.filterStyle}
-          />
-          <span
-            data-slot="liquid-switch-lens"
-            className="liquid-switch__lens absolute inset-0 z-[1] rounded-[inherit] bg-white/25 opacity-0 [backdrop-filter:blur(2.5px)_saturate(1.8)_brightness(1.09)] transition-opacity duration-150 group-data-[interacting]/liquid-switch:opacity-100 group-data-[interacting]/liquid-switch:[backdrop-filter:blur(1.5px)_saturate(2)_brightness(1.18)] motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(245,245,247,.92)] [@media(prefers-reduced-transparency:reduce)]:[backdrop-filter:none]"
-          />
-          <span
-            data-slot="liquid-switch-rim"
-            className="liquid-switch__rim absolute inset-[.5px] z-[2] rounded-[inherit] border-[.5px] border-white/80 opacity-0 shadow-[inset_1px_1px_1.5px_rgba(255,255,255,.95),inset_-1px_-1px_1.5px_rgba(0,0,0,.12)] transition-opacity duration-150 group-data-[interacting]/liquid-switch:opacity-100 motion-reduce:transition-none"
-          />
-          <span
-            data-slot="liquid-switch-light"
-            className="liquid-switch__light absolute -inset-1/4 z-[3] rounded-[inherit] bg-[radial-gradient(circle_at_var(--liquid-light-x)_38%,rgba(255,255,255,1),rgba(255,255,255,.42)_20%,transparent_52%)] opacity-0 transition-opacity duration-150 group-data-[interacting]/liquid-switch:opacity-100 motion-reduce:transition-none"
-          />
-          {displacement.filter}
-        </SwitchPrimitive.Thumb>
+        />
+        {displacement.filter}
       </SwitchPrimitive.Root>
     );
   },

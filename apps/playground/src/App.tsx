@@ -219,7 +219,7 @@ function App() {
               <p className="kicker">APPLE COMPONENT STUDY · 002</p>
               <h2>Slider, translated<br />for the web.</h2>
             </div>
-            <p>A native range input with a live glass tracker. Press, click, or drag—the semantic value and custom material stay synchronized.</p>
+            <p>A Radix slider with a live glass tracker. Press, click, or drag: the tracker turns to clear glass and bends the real rail beneath it.</p>
           </div>
           <div className="slider-stage">
             <div className="slider-orb slider-orb-one" />

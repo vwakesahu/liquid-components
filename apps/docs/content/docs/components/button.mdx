@@ -1,6 +1,6 @@
 ---
 title: Liquid Button
-description: A familiar button at rest with Liquid Glass feedback during interaction.
+description: An ordinary button at rest that turns to Liquid Glass while you press it.
 ---
 
 <ComponentPreview name="button" />
@@ -23,7 +23,7 @@ export function ContinueButton() {
 
 ## Variants
 
-The default button uses the neutral secondary treatment. Use `primary` for the blue emphasized action. Destructive actions keep that secondary surface and communicate risk with red text instead of a heavy red fill. Every variant stays intentionally ordinary at rest; Liquid expansion, spring motion, refraction, and rim light appear only during interaction.
+The default is the neutral secondary button. Use `primary` for the emphasized action, it's blue. `destructive` keeps the secondary surface and shows the risk with red text, not a heavy red fill. These all look ordinary at rest on purpose, the expansion, spring, refraction and rim light only show up while you interact with them.
 
 <ComponentPreview name="button-variants" />
 
@@ -34,6 +34,16 @@ The default button uses the neutral secondary treatment. Use `primary` for the b
 <LiquidButton variant="outline">Outline</LiquidButton>
 <LiquidButton variant="ghost">Ghost</LiquidButton>
 <LiquidButton variant="link">Learn more</LiquidButton>
+```
+
+## Glass
+
+<ComponentPreview name="button-glass" />
+
+`glass` is already glass at rest, it refracts and frosts whatever sits behind it. Pressing grows the whole glass by one uniform factor, so its proportions and corner radius stay intact. Use it over images, video or other rich content.
+
+```tsx
+<LiquidButton variant="glass">Glass</LiquidButton>
 ```
 
 ## Sizes
@@ -50,7 +60,7 @@ The default button uses the neutral secondary treatment. Use `primary` for the b
 
 <ComponentPreview name="button-status" />
 
-Keep asynchronous state in your application and pass it to the button. Each state morphs the capsule geometry, material color, refraction map, icon, and label together.
+The button doesn't run your request, keep the async state in your app and pass it in. Each change morphs the capsule's shape, material colour, refraction map, icon and label together.
 
 ```tsx
 import { useState } from "react"
@@ -85,9 +95,11 @@ export function SubmitButton() {
 }
 ```
 
-The status variant supports `idle`, `loading`, `error`, and `success`. Error uses a secondary surface with red text, while Success uses a filled green surface. Loading spring-morphs into a compact spinner-only control; `loadingLabel` remains available to assistive technology through the polite status announcement. On press and hold, one internal tracker body expands beyond the button's stable layout bounds while its refraction, rim, and interaction light appear together. Pointer movement can reposition the highlight while held, but it never moves, drags, or velocity-stretches the capsule.
+With `variant="status"`, `status` takes `idle`, `loading`, `error` or `success`. Error is the secondary surface with red text, success is a filled green surface. Loading springs into a compact control with only a spinner, and `loadingLabel` still reaches assistive technology through a polite status announcement.
 
-Pass `tint`, `errorTint`, or `successTint` to change the three semantic colors:
+Press and hold and one internal tracker grows past the button's layout bounds, which don't change, while its refraction, rim and light come in together. Moving the pointer while you hold moves the highlight, but the capsule itself never moves, drags or stretches with velocity.
+
+Pass `tint`, `errorTint` or `successTint` to change the three semantic colours.
 
 ```tsx
 <LiquidButton variant="destructive" errorTint="#dc2626">
@@ -103,4 +115,4 @@ Pass `tint`, `errorTint`, or `successTint` to change the three semantic colors:
 </LiquidButton>
 ```
 
-You can also customize the stable `data-slot` layers with Tailwind. Native button behavior, keyboard activation, form types, focus, disabled state, reduced motion, and reduced transparency are preserved. The Link variant has no button surface or glass treatment; a short underline is its only click feedback.
+Every layer has a stable `data-slot`, so you can style it with Tailwind. It's still a native button, keyboard activation, form types, focus, the disabled state, reduced motion and reduced transparency all work the way they normally do. `link` has no button surface and no glass, a short underline is its only click feedback.

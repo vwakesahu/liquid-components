@@ -1,4 +1,26 @@
 {
   "title": "Components",
-  "pages": ["button", "switch", "slider", "tabs", "video-player"]
+  "pages": [
+    "button",
+    "switch",
+    "slider",
+    "stepper",
+    "wheel-picker",
+    "tabs",
+    "tab-bar",
+    "page-control",
+    "progress",
+    "glass",
+    "toolbar",
+    "menu",
+    "context-menu",
+    "popover",
+    "tooltip",
+    "toast",
+    "drawer",
+    "alert",
+    "search-field",
+    "island",
+    "video-player"
+  ]
 }

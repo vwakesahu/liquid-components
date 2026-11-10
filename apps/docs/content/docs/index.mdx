@@ -1,27 +1,24 @@
 ---
 title: Liquid UI
-description: Liquid Glass components and interaction primitives designed for the shadcn ecosystem.
+description: Liquid Glass components and interaction primitives for React, installed as source through shadcn.
 ---
 
-Liquid UI is an open-code component registry for interfaces that need tactile, refractive controls. It extends shadcn/ui instead of replacing it: Radix owns semantics and accessibility, while Liquid UI owns the material, displacement, pointer physics, and spring motion.
+<HomeHero />
 
-<Callout type="idea" title="Enjoying Liquid UI?">
-  If these components help your project, [give Liquid UI a star on GitHub](https://github.com/vwakesahu/liquid-components). It helps more developers discover the project and supports the next component release.
-</Callout>
+<HomePlayground />
 
-## Components
-
-- **Liquid Switch** — a draggable binary control with a refractive tracker.
-- **Liquid Slider** — a value control whose fill remains synchronized with its lens.
-- **Liquid Tabs** — a toggle group with one measured, draggable selection indicator.
-- **Liquid Video Player** — native video semantics with shared liquid controls and WebGL refraction.
+<ComponentGallery />
 
 ## Open code
 
-Components are installed as source through the shadcn CLI. There is no permanent Liquid UI runtime package: you receive the components, hooks, styles, and utilities needed by each item.
+Components install as source through the shadcn CLI, so the code lands in your project and there's no Liquid UI runtime to depend on. You get the component, its hooks and its utilities, and they're yours to change.
 
 ```npm
 npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-switch.json
 ```
 
-Start with [installation](/docs/installation), then open a component page to try its live preview.
+## Built on Radix
+
+Radix is the set of headless primitives underneath, it owns the semantics, focus and keyboard behaviour. Liquid UI adds the material, the refraction, the pointer physics and the spring motion on top. Start with [installation](/docs/installation), or read how the [material and motion](/docs/foundations/material) work.
+
+If it helps your project, [star Liquid UI on GitHub](https://github.com/vwakesahu/liquid-components).

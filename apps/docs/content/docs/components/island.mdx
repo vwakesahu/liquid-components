@@ -1,0 +1,90 @@
+---
+title: "Liquid Island"
+description: "A Dynamic Island that morphs between compact and expanded."
+---
+
+<ComponentPreview name="island" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-island.json
+```
+
+## Usage
+
+```tsx
+import { LiquidIsland } from "@/components/ui/liquid-island"
+
+const [expanded, setExpanded] = useState(false)
+
+<LiquidIsland
+  expanded={expanded}
+  onExpandedChange={setExpanded}
+  leading={<TimerIcon />}
+  trailing="4:59"
+>
+  {/* expanded content */}
+</LiquidIsland>
+```
+
+The island's width, height and corner radius move together on the iOS spring, so it stays a capsule while it grows. Compact shows `leading` and `trailing`, the expanded content fades in once the shape has opened. It responds to click, Enter, Space and Escape.
+
+## Examples
+
+### Now playing
+
+<ComponentPreview name="island-music" />
+
+```tsx
+<LiquidIsland
+  expanded={expanded}
+  onExpandedChange={setExpanded}
+  expandedSize={{ width: 360, height: 172 }}
+  leading={<AlbumArt />}
+  trailing={<Waveform />}
+>
+  <Player />
+</LiquidIsland>
+```
+
+### Calls
+
+<ComponentPreview name="island-call" />
+
+```tsx
+<LiquidIsland
+  expanded={call === "ringing"}
+  compactSize={call === "idle" ? { width: 126, height: 37 } : undefined}
+  leading={call === "active" && <PhoneIcon />}
+  trailing={call === "active" && duration}
+>
+  <Caller />
+</LiquidIsland>
+```
+
+The island grows from the idle pill when a call arrives, then settles into a compact activity with a running timer.
+
+### Brief alerts
+
+<ComponentPreview name="island-connect" />
+
+```tsx
+setExpanded(true)
+setTimeout(() => setExpanded(false), 2800)
+```
+
+Expand for a moment to confirm something, then go back to idle.
+
+## API
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `expanded` | `boolean` | `false` |
+| `onExpandedChange` | `(expanded: boolean) => void` | none |
+| `leading` | `ReactNode` | none |
+| `trailing` | `ReactNode` | none |
+| `expandedSize` | `{ width: number; height: number }` | `{ width: 360, height: 84 }` |
+| `compactSize` | `{ width: number; height: number }` | `{ width: 168, height: 37 }` |
+
+Buttons inside the expanded island should call `event.stopPropagation()`, so a press doesn't also toggle the island.

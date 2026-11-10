@@ -1,15 +1,13 @@
 ---
 title: Credits and references
-description: The design systems, research, and open-source projects that informed Liquid UI.
+description: The design systems, research and open source projects behind Liquid UI.
 ---
 
-Liquid UI is an independent web implementation. It is not affiliated with, endorsed by, or sponsored by Apple Inc. or Aave Labs.
+Liquid UI is an independent web implementation. It isn't affiliated with, endorsed by or sponsored by Apple Inc. or Aave Labs.
 
 ## Apple design team
 
-Apple created and introduced the Liquid Glass design language. Its platform controls, interaction behavior, material hierarchy, concentric geometry, lensing, and accessibility guidance are the primary design reference for this project.
-
-We referred to:
+Apple created and introduced the Liquid Glass design language. Its platform controls, interaction behaviour, material hierarchy, concentric geometry, lensing and accessibility guidance are the main design reference for this project. We worked from these:
 
 - [Liquid Glass technology overview](https://developer.apple.com/documentation/technologyoverviews/liquid-glass)
 - [Human Interface Guidelines: Materials](https://developer.apple.com/design/human-interface-guidelines/materials)
@@ -17,25 +15,33 @@ We referred to:
 - [Get to know the new design system](https://developer.apple.com/videos/play/wwdc2025/356/)
 - [Build a SwiftUI app with the new design](https://developer.apple.com/videos/play/wwdc2025/323/)
 
-Apple's rendering technology and source code are proprietary. Liquid UI does not contain Apple framework code or claim pixel-identical rendering. It translates observable interaction principles using browser APIs.
+Apple's rendering technology and source code are proprietary. Liquid UI has no Apple framework code in it and doesn't claim pixel-identical rendering, it recreates the interaction principles you can observe, using browser APIs.
 
-## Aave Labs design and engineering team
+## Aave Labs
 
-Aave Labs published [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web), which was the main engineering reference for the cross-browser refraction architecture.
+The Aave Labs design and engineering team published [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web), and it was the main engineering reference for the cross-browser refraction here. What we studied from it:
 
-That article informed our study of:
-
-- Generated red-and-green displacement maps driving `feDisplacementMap`.
-- Refracting intentional copies of component fills instead of sampling arbitrary page pixels.
-- Computing a symmetric rounded-rectangle map by quadrants.
+- Generated red and green displacement maps driving `feDisplacementMap`.
+- Refracting intentional copies of a component's fills instead of sampling arbitrary page pixels.
+- Computing a symmetric rounded rectangle map by quadrants.
 - Refreshing SVG filter identifiers for Safari.
-- Using the same displacement model in WebGL when live video cannot pass through Safari's SVG filter pipeline.
+- Using the same displacement model in WebGL when live video can't pass through Safari's SVG filter pipeline.
 
-Aave's article credits **Abhijeet Singh** for leading research and development, **Lochie Axon** for writing, **Alex Vanderzon** and **Ana Howard** for design direction, and the wider Aave Labs team for testing and refinement. We gratefully acknowledge their decision to publish the technique and browser findings.
+Aave's article credits Abhijeet Singh for leading research and development, Lochie Axon for writing, Alex Vanderzon and Ana Howard for design direction, and the wider Aave Labs team for testing and refinement. Thank you to them for choosing to publish the technique and their browser findings.
 
-Liquid UI's source was implemented independently for this project and is not an Aave component release.
+Liquid UI's source was written independently for this project, it isn't an Aave component release.
 
-## Open-source foundations
+## Family
 
-- [shadcn/ui](https://ui.shadcn.com) for the open-code registry and distribution model.
-- [Radix Primitives](https://www.radix-ui.com/primitives) for accessible Switch, Slider, and Tabs behavior.
+Liquid Drawer follows the drawer in [Family](https://family.co), designed by Benji Taylor and the Family team. It's a floating tray that fits its content and morphs its height as one view gives way to the next. Liquid UI's drawer is an independent build in Liquid Glass and isn't affiliated with Family.
+
+## Open source
+
+- [shadcn/ui](https://ui.shadcn.com). The open code registry and distribution model.
+- [Radix Primitives](https://www.radix-ui.com/primitives). Accessible behaviour for Switch, Slider and Tabs.
+- [Vaul](https://vaul.emilkowal.ski) by Emil Kowalski. Liquid Drawer follows its drag feel and easing curve.
+- [Notionists](https://heyzoish.gumroad.com/l/notionists) by Zoish (CC0), generated with [DiceBear](https://www.dicebear.com). The avatars in the examples.
+
+## Photos
+
+The photos in the examples are from [Unsplash](https://unsplash.com), served through [Lorem Picsum](https://picsum.photos) and used under the Unsplash License. Thank you to [Alexey Topolyanskiy](https://unsplash.com/photos/-oWyJoSqBRM), [Joseph Barrientos](https://unsplash.com/photos/xcC5ozHk_N8), [Anna Popović](https://unsplash.com/photos/x7HJdJZqplo), [Paul Jarvis](https://unsplash.com/photos/3MtiSMdnoCo), [Austin Neill](https://unsplash.com/photos/erTjj730fMk), [Margaret Barley](https://unsplash.com/photos/Qo51KwK1dKg), [Andrew Ridley](https://unsplash.com/photos/Kt5hRENuotI), [Wolfgang Lutz](https://unsplash.com/photos/yOujaSETXlo), [Christian Joudrey](https://unsplash.com/photos/mWRR1xj95hg), [Go Wild](https://unsplash.com/photos/V0yAek6BgGk), [sergee bee](https://unsplash.com/photos/bIQiMWxX_WU), [Kevin Young](https://unsplash.com/photos/-icmOdYWXuQ), [Oleg Chursin](https://unsplash.com/photos/IoCWq07GaG4), [Nicholas Swanson](https://unsplash.com/photos/SyBYM8R6VU4), [veeterzy](https://unsplash.com/photos/OJJIaFZOeX4), [Karl Fredrickson](https://unsplash.com/photos/TYIzeCiZ_60), [Marat Gilyadzinov](https://unsplash.com/photos/wpTWYBll4_w), [Jay Ruzesky](https://unsplash.com/photos/h13Y8vyIXNU), [Vashishtha Jogi](https://unsplash.com/photos/bClr95glx6k).

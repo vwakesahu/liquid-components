@@ -1,0 +1,37 @@
+---
+title: Liquid Popover
+description: A glass panel that springs out of its trigger.
+---
+
+<ComponentPreview name="popover" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-popover.json
+```
+
+## Usage
+
+```tsx
+import {
+  LiquidPopover,
+  LiquidPopoverClose,
+  LiquidPopoverContent,
+  LiquidPopoverTrigger,
+} from "@/components/ui/liquid-popover"
+
+export function DisplaySettings() {
+  return (
+    <LiquidPopover>
+      <LiquidPopoverTrigger variant="outline">Display</LiquidPopoverTrigger>
+      <LiquidPopoverContent>
+        …
+        <LiquidPopoverClose>Done</LiquidPopoverClose>
+      </LiquidPopoverContent>
+    </LiquidPopover>
+  )
+}
+```
+
+The panel is Liquid Glass and springs out of its trigger. Radix Popover handles focus, Escape, outside clicks and collision-aware placement.

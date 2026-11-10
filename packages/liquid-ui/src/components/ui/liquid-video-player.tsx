@@ -82,7 +82,7 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
         if (hideTimer.current !== null) window.clearTimeout(hideTimer.current);
       };
     }, []);
-    useEffect(() => renderer.invalidate(), [controlsVisible, paused, renderer.invalidate]);
+    useEffect(() => renderer.invalidate(), [controlsVisible, currentTime, paused, renderer.invalidate]);
 
     const showControls = () => {
       setControlsVisible(true);
@@ -233,7 +233,7 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
           type="button"
           data-liquid-video-lens
           data-slot="liquid-video-center-play"
-          className="liquid-video__center-play pointer-events-none absolute left-1/2 top-1/2 z-[3] grid h-[58px] w-16 -translate-x-1/2 -translate-y-1/2 scale-[.86] cursor-pointer place-items-center rounded-full border-[.5px] border-white/50 bg-white/20 p-0 text-white opacity-0 shadow-[0_9px_24px_rgba(0,0,0,.28),inset_1px_1px_1.5px_rgba(255,255,255,.62),inset_-1px_-1px_1.5px_rgba(0,0,0,.18)] [backdrop-filter:blur(2px)_saturate(1.7)] [transition:width_.42s_cubic-bezier(.18,1.28,.3,1),height_.42s_cubic-bezier(.18,1.28,.3,1),transform_.42s_cubic-bezier(.18,1.28,.3,1),opacity_.2s_ease] active:h-[66px] active:w-[72px] focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 group-data-[paused]/liquid-video:pointer-events-auto group-data-[paused]/liquid-video:scale-100 group-data-[paused]/liquid-video:opacity-100 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)] [@media(prefers-reduced-transparency:reduce)]:[backdrop-filter:none]"
+          className="liquid-video__center-play pointer-events-none absolute left-1/2 top-1/2 z-[3] grid h-[58px] w-16 -translate-x-1/2 -translate-y-1/2 scale-[.86] cursor-pointer place-items-center rounded-full border-[.5px] border-white/50 bg-white/10 p-0 text-white opacity-0 shadow-[0_9px_24px_rgba(0,0,0,.28),inset_1px_1px_1.5px_rgba(255,255,255,.5),inset_-1px_-1px_1.5px_rgba(0,0,0,.18)] [transition:scale_.42s_cubic-bezier(.18,1.28,.3,1),transform_.42s_cubic-bezier(.18,1.28,.3,1),opacity_.2s_ease] active:scale-[1.12] focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 group-data-[paused]/liquid-video:pointer-events-auto group-data-[paused]/liquid-video:scale-100 group-data-[paused]/liquid-video:opacity-100 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
           aria-label={paused ? "Play video" : "Pause video"}
           onClick={() => void togglePlayback()}
         >
@@ -241,13 +241,14 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
         </button>
 
         <div
+          data-liquid-video-lens
           data-slot="liquid-video-controls"
-          className="liquid-video__controls pointer-events-none absolute bottom-4 left-4 right-4 z-[4] flex min-h-[58px] translate-y-3 items-center gap-[7px] rounded-[20px] border-[.5px] border-white/25 bg-[rgba(18,18,20,.3)] p-2 opacity-0 shadow-[0_12px_32px_rgba(0,0,0,.25),inset_0_1px_1px_rgba(255,255,255,.14)] [backdrop-filter:blur(18px)_saturate(1.35)] [transition:opacity_.28s_ease,transform_.4s_cubic-bezier(.16,1,.3,1)] group-data-[controls-visible]/liquid-video:pointer-events-auto group-data-[controls-visible]/liquid-video:translate-y-0 group-data-[controls-visible]/liquid-video:opacity-100 max-sm:bottom-2 max-sm:left-2 max-sm:right-2 max-sm:min-h-[52px] max-sm:gap-[5px] max-sm:p-1.5 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)] [@media(prefers-reduced-transparency:reduce)]:[backdrop-filter:none]"
+          className="liquid-video__controls pointer-events-none absolute bottom-4 left-4 right-4 z-[4] flex min-h-[58px] translate-y-3 items-center gap-[7px] rounded-[20px] border-[.5px] border-white/25 bg-[rgba(18,18,20,.34)] p-2 opacity-0 shadow-[0_12px_32px_rgba(0,0,0,.25),inset_0_1px_1px_rgba(255,255,255,.14)] [transition:opacity_.28s_ease,transform_.4s_cubic-bezier(.16,1,.3,1)] group-data-[controls-visible]/liquid-video:pointer-events-auto group-data-[controls-visible]/liquid-video:translate-y-0 group-data-[controls-visible]/liquid-video:opacity-100 max-sm:bottom-2 max-sm:left-2 max-sm:right-2 max-sm:min-h-[52px] max-sm:gap-[5px] max-sm:p-1.5 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
         >
           <button
             type="button"
             data-liquid-video-lens
-            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:width_.34s_cubic-bezier(.18,1.28,.3,1),height_.34s_cubic-bezier(.18,1.28,.3,1),transform_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:h-11 active:w-[46px] active:scale-y-[.96] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:size-9 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
+            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:scale_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:scale-[1.12] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:size-9 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
             aria-label={paused ? "Play" : "Pause"}
             onClick={() => void togglePlayback()}
           >
@@ -256,7 +257,7 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
           <button
             type="button"
             data-liquid-video-lens
-            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:width_.34s_cubic-bezier(.18,1.28,.3,1),height_.34s_cubic-bezier(.18,1.28,.3,1),transform_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:h-11 active:w-[46px] active:scale-y-[.96] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:hidden motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
+            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:scale_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:scale-[1.12] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:hidden motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
             aria-label={`Back ${skipSeconds} seconds`}
             onClick={() => skip(-skipSeconds)}
           >
@@ -265,7 +266,7 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
           <button
             type="button"
             data-liquid-video-lens
-            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:width_.34s_cubic-bezier(.18,1.28,.3,1),height_.34s_cubic-bezier(.18,1.28,.3,1),transform_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:h-11 active:w-[46px] active:scale-y-[.96] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:hidden motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
+            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:scale_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:scale-[1.12] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:hidden motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
             aria-label={`Forward ${skipSeconds} seconds`}
             onClick={() => skip(skipSeconds)}
           >
@@ -276,7 +277,7 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
           </span>
           <div className="liquid-video__scrubber flex h-[42px] min-w-[100px] flex-1 items-center overflow-visible px-1.5">
             <LiquidSlider
-              className="w-full flex-1 [--slider-track-color:rgba(255,255,255,.24)] [&_[data-slot=liquid-slider-thumb]]:bg-white/85 [&_[data-slot=liquid-slider-thumb]]:shadow-[0_4px_10px_rgba(0,0,0,.25),inset_1px_1px_1px_rgba(255,255,255,.55)]"
+              className="w-full flex-1 [--slider-track-color:rgba(255,255,255,.24)] [&:not([data-interacting])_[data-slot=liquid-slider-thumb]]:bg-white/85 [&:not([data-interacting])_[data-slot=liquid-slider-thumb]]:shadow-[0_4px_10px_rgba(0,0,0,.25),inset_1px_1px_1px_rgba(255,255,255,.55)]"
               size="small"
               tint="rgba(255,255,255,.92)"
               min={0}
@@ -291,7 +292,7 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
           <button
             type="button"
             data-liquid-video-lens
-            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:width_.34s_cubic-bezier(.18,1.28,.3,1),height_.34s_cubic-bezier(.18,1.28,.3,1),transform_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:h-11 active:w-[46px] active:scale-y-[.96] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:size-9 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
+            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:scale_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:scale-[1.12] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:size-9 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
             aria-label={muted || volume === 0 ? "Unmute" : "Mute"}
             aria-pressed={muted || volume === 0}
             onClick={toggleMuted}
@@ -301,7 +302,7 @@ export const LiquidVideoPlayer = forwardRef<HTMLVideoElement, LiquidVideoPlayerP
           <button
             type="button"
             data-liquid-video-lens
-            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:width_.34s_cubic-bezier(.18,1.28,.3,1),height_.34s_cubic-bezier(.18,1.28,.3,1),transform_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:h-11 active:w-[46px] active:scale-y-[.96] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:size-9 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
+            className="liquid-video__button grid size-10 flex-none cursor-pointer place-items-center rounded-full border-[.5px] border-white/30 bg-white/15 p-0 text-white shadow-[0_4px_11px_rgba(0,0,0,.18),inset_1px_1px_1px_rgba(255,255,255,.32)] [transition:scale_.34s_cubic-bezier(.18,1.28,.3,1),background_.2s_ease] active:scale-[1.12] active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white/90 focus-visible:outline-offset-2 max-sm:size-9 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(28,28,30,.94)]"
             aria-label="Enter fullscreen"
             onClick={() => void toggleFullscreen()}
           >

@@ -1,27 +1,26 @@
 ---
 title: Material and motion
-description: The optical layers, state model, and constraints shared by every Liquid UI component.
+description: The optical layers, states and renderer limits every Liquid UI component shares.
 ---
 
-Liquid UI treats glass as an interaction material, not permanent decoration. Controls remain quiet at rest and reveal stronger refraction, lighting, and deformation when engaged.
+Glass in Liquid UI is something you interact with, not decoration that's always on. A control stays quiet at rest and only shows the stronger refraction, light and deformation while it's engaged.
 
-## Shared anatomy
+## Surface and lens
 
-Every tracker combines four coordinated layers:
+Every component is two layers, a surface and a lens. The surface is the component's real content, the track, the rail, the labels or the button face. The lens is the glass body that moves and changes shape, it's opaque at rest and turns clear while engaged.
 
-1. A stable state surface.
-2. A generated displacement map that bends component pixels.
-3. A chromatic and specular edge treatment.
-4. Pointer-positioned light and velocity-driven deformation.
+Refraction happens on the surface itself. While engaged, the surface is filtered in place, a generated lens map positioned at the lens bends the surface's own pixels into the rim and adds the rim highlight, shade, chromatic edge and glass shadow.
+
+Nothing is sampled from behind the glass, so there's no duplicate content to keep in sync. At rest the filter is removed completely.
 
 ## Interaction states
 
-The shared motion model moves through rest, engage, hold or drag, and settle. Position, shape, light, and shadow resolve together. A capsule remains a capsule in every state.
+The shared motion model goes from rest to engage, then hold or drag, then settle. Position, shape, light and shadow resolve together, and a capsule stays a capsule in every state.
 
-## Renderer boundary
+## Two renderers
 
-Live DOM uses an SVG `feDisplacementMap`. Video uses the same generated map in WebGL because Safari does not reliably pass live video pixels through SVG filters. Accessibility and input semantics remain native even when the optical renderer is unavailable.
+Live DOM goes through an SVG `feDisplacementMap`. Video uses the same generated maps in WebGL, one per control, because Safari doesn't reliably pass live video pixels through SVG filters. Accessibility and input stay native, so they keep working even when the optical renderer isn't available.
 
 ## Reduced motion
 
-When a user requests reduced motion, the controls keep their state and accessibility behavior while removing nonessential spring and deformation transitions.
+With reduced motion on, controls keep their state and accessibility behaviour and drop the spring and deformation transitions that aren't essential.

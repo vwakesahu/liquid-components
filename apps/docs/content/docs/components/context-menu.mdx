@@ -1,0 +1,64 @@
+---
+title: "Liquid Context Menu"
+description: "Press and hold to lift a preview, with a glass menu beside it."
+---
+
+<ComponentPreview name="context-menu" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-context-menu.json
+```
+
+## Usage
+
+```tsx
+import {
+  LiquidContextMenu,
+  LiquidContextMenuContent,
+  LiquidContextMenuItem,
+  LiquidContextMenuTrigger,
+} from "@/components/ui/liquid-context-menu"
+
+<LiquidContextMenu>
+  <LiquidContextMenuTrigger>
+    <MessageBubble />
+  </LiquidContextMenuTrigger>
+  <LiquidContextMenuContent>
+    <LiquidContextMenuItem onSelect={copy}>Copy</LiquidContextMenuItem>
+    <LiquidContextMenuItem destructive onSelect={remove}>Delete</LiquidContextMenuItem>
+  </LiquidContextMenuContent>
+</LiquidContextMenu>
+```
+
+Press and hold, right-click or press the menu key. The content gives a little under your finger, then a copy of it lifts above a blurred backdrop and the menu opens beside it, anchored to the content and not the pointer. When the menu closes the copy settles back into place.
+
+The content keeps its own behaviour, a click still clicks and the press that opened the menu doesn't count as one. Items, labels and separators are the ones from [Menu](/docs/components/menu), so the highlight is the same gliding lens.
+
+## Examples
+
+### Link preview
+
+<ComponentPreview name="context-menu-link" />
+
+```tsx
+<LiquidContextMenuTrigger>
+  <a href="/docs/components/switch">…</a>
+</LiquidContextMenuTrigger>
+```
+
+## API
+
+| Component | Props |
+| --- | --- |
+| `LiquidContextMenu` | `onOpenChange`, `modal` |
+| `LiquidContextMenuTrigger` | `disabled`, and any `div` prop |
+| `LiquidContextMenuContent` | `side` (`"bottom"`), `align` (`"start"`), `sideOffset` (`14`) |
+| `LiquidContextMenuItem` | `destructive`, `onSelect`, `disabled` |
+
+The copy is a static clone of the trigger, so style the content with classes that don't depend on its parent.
+
+## Keyboard
+
+Focus something inside the trigger and press the menu key, or `Shift` `F10`. Arrow keys move through the items, `Enter` selects and `Escape` closes and returns focus.

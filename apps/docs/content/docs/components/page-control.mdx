@@ -1,0 +1,48 @@
+---
+title: "Liquid Page Control"
+description: "Page dots in a glass capsule, with a pill that glides between them."
+---
+
+<ComponentPreview name="page-control" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-page-control.json
+```
+
+## Usage
+
+```tsx
+import { LiquidPageControl } from "@/components/ui/liquid-page-control"
+
+const [page, setPage] = useState(0)
+
+<LiquidPageControl count={3} value={page} onValueChange={setPage} aria-label="Slide" />
+```
+
+The current page is a pill that glides to its dot and stretches on the way. Tap a dot to go there, tap beside the dots to step one page, or press and scrub across the capsule, it grows under your finger while you do. In the carousel above, swiping the slides moves the control and the control scrolls the slides.
+
+## Examples
+
+### Many pages
+
+<ComponentPreview name="page-control-many" />
+
+```tsx
+<LiquidPageControl count={8} value={page} onValueChange={setPage} aria-label="Home screen page" />
+```
+
+## API
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `count` | `number` | none |
+| `value` | `number` | none |
+| `defaultValue` | `number` | `0` |
+| `onValueChange` | `(page: number) => void` | none |
+| `lens` | `LiquidGlassOptions` | none |
+
+## Keyboard
+
+The control is a slider. Arrow keys step, and `Home` and `End` jump to the first and last page.

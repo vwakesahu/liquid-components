@@ -13,46 +13,54 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import {
   liquidLensPresets,
+  liquidLightTokens,
   useLiquidDisplacement,
   type LiquidLensOptions,
 } from "../../hooks/use-liquid-displacement";
-import { cn, composeRefs } from "../../lib/utils";
+import { liquidGlassMaterial, useLiquidGlass } from "../../hooks/use-liquid-glass";
+import { cn, composeRefs, liquidSpring } from "../../lib/utils";
 
 const liquidButtonVariants = cva(
   [
     "liquid-button group/liquid-button relative isolate inline-grid min-w-0 touch-manipulation select-none place-items-center overflow-visible whitespace-nowrap border-0 bg-transparent align-middle",
     "h-[var(--liquid-button-height)] rounded-[var(--liquid-button-radius)] px-[var(--liquid-button-padding)] text-sm font-medium leading-none tracking-[-.01em] text-[#18181b]",
-    "cursor-pointer outline-none focus-visible:outline-[4px] focus-visible:outline-[rgba(0,122,255,.28)] focus-visible:outline-offset-[3px]",
+    "cursor-pointer outline-none focus-visible:outline-[4px] focus-visible:outline-[color-mix(in_srgb,var(--liquid-accent,#0a84ff)_28%,transparent)] focus-visible:outline-offset-[3px]",
     "disabled:pointer-events-none disabled:cursor-default",
-    "[--liquid-button-height:40px] [--liquid-button-padding:16px] [--liquid-button-radius:12px] [--liquid-button-expand-x:4px] [--liquid-button-expand-y:4px]",
-    "[--liquid-button-rest-surface:#f4f4f5] [--liquid-button-active-surface:rgba(244,244,245,.66)] [--liquid-button-refraction-tint:#d4d4d8] [--liquid-button-idle-border:#e4e4e7]",
-    "dark:text-[#fafafa] dark:[--liquid-button-rest-surface:#27272a] dark:[--liquid-button-active-surface:rgba(63,63,70,.68)] dark:[--liquid-button-refraction-tint:#52525b] dark:[--liquid-button-idle-border:rgba(255,255,255,.2)]",
+    "[--liquid-button-height:40px] [--liquid-button-padding:16px] [--liquid-button-radius:12px] [--liquid-button-engaged-scale:1.08]",
+    "[--liquid-button-rest-surface:#f4f4f5] [--liquid-button-active-surface:rgba(244,244,245,.66)] [--liquid-button-idle-border:#e4e4e7]",
+    "dark:text-[#fafafa] dark:[--liquid-button-rest-surface:#27272a] dark:[--liquid-button-active-surface:rgba(63,63,70,.68)] dark:[--liquid-button-idle-border:rgba(255,255,255,.2)]",
   ],
   {
     variants: {
       variant: {
         default: "",
         primary:
-          "text-white [--liquid-button-rest-surface:var(--liquid-button-tint)] [--liquid-button-active-surface:color-mix(in_srgb,var(--liquid-button-tint),transparent_38%)] [--liquid-button-refraction-tint:var(--liquid-button-tint)] [--liquid-button-idle-border:rgba(255,255,255,.24)] dark:text-white dark:[--liquid-button-rest-surface:var(--liquid-button-tint)] dark:[--liquid-button-active-surface:color-mix(in_srgb,var(--liquid-button-tint),transparent_38%)] dark:[--liquid-button-refraction-tint:var(--liquid-button-tint)]",
+          "text-white [--liquid-button-rest-surface:var(--liquid-button-tint)] [--liquid-button-active-surface:color-mix(in_srgb,var(--liquid-button-tint),transparent_38%)] [--liquid-button-idle-border:rgba(255,255,255,.24)] dark:text-white dark:[--liquid-button-rest-surface:var(--liquid-button-tint)] dark:[--liquid-button-active-surface:color-mix(in_srgb,var(--liquid-button-tint),transparent_38%)]",
         secondary:
-          "text-[#18181b] [--liquid-button-rest-surface:#f4f4f5] [--liquid-button-active-surface:rgba(244,244,245,.66)] [--liquid-button-refraction-tint:#d4d4d8] [--liquid-button-idle-border:#e4e4e7]",
+          "text-[#18181b] [--liquid-button-rest-surface:#f4f4f5] [--liquid-button-active-surface:rgba(244,244,245,.66)] [--liquid-button-idle-border:#e4e4e7]",
         destructive:
-          "text-[var(--liquid-button-error-tint)] [--liquid-button-rest-surface:#f4f4f5] [--liquid-button-active-surface:rgba(244,244,245,.66)] [--liquid-button-refraction-tint:#d4d4d8] [--liquid-button-idle-border:#e4e4e7] dark:text-[var(--liquid-button-error-tint)] dark:[--liquid-button-rest-surface:#27272a] dark:[--liquid-button-active-surface:rgba(63,63,70,.68)] dark:[--liquid-button-refraction-tint:#52525b] dark:[--liquid-button-idle-border:#3f3f46]",
+          "text-[var(--liquid-button-error-tint)] [--liquid-button-rest-surface:#f4f4f5] [--liquid-button-active-surface:rgba(244,244,245,.66)] [--liquid-button-idle-border:#e4e4e7] dark:text-[var(--liquid-button-error-tint)] dark:[--liquid-button-rest-surface:#27272a] dark:[--liquid-button-active-surface:rgba(63,63,70,.68)] dark:[--liquid-button-idle-border:#3f3f46]",
         outline:
-          "text-[#18181b] [--liquid-button-rest-surface:#fff] [--liquid-button-active-surface:rgba(255,255,255,.56)] [--liquid-button-refraction-tint:#d4d4d8] [--liquid-button-idle-border:#e4e4e7] dark:text-[#fafafa] dark:[--liquid-button-rest-surface:#18181b] dark:[--liquid-button-active-surface:rgba(39,39,42,.68)] dark:[--liquid-button-refraction-tint:#52525b] dark:[--liquid-button-idle-border:#3f3f46]",
+          "text-[#18181b] [--liquid-button-rest-surface:#fff] [--liquid-button-active-surface:rgba(255,255,255,.56)] [--liquid-button-idle-border:#e4e4e7] dark:text-[#fafafa] dark:[--liquid-button-rest-surface:#18181b] dark:[--liquid-button-active-surface:rgba(39,39,42,.68)] dark:[--liquid-button-idle-border:#3f3f46]",
         ghost:
-          "text-[#18181b] [--liquid-button-rest-surface:transparent] [--liquid-button-active-surface:rgba(24,24,27,.08)] [--liquid-button-refraction-tint:rgba(113,113,122,.5)] [--liquid-button-idle-border:transparent] hover:[--liquid-button-rest-surface:rgba(24,24,27,.06)] dark:text-[#fafafa] dark:[--liquid-button-active-surface:rgba(250,250,250,.08)] dark:[--liquid-button-refraction-tint:rgba(161,161,170,.5)] dark:hover:[--liquid-button-rest-surface:rgba(250,250,250,.07)]",
+          "text-[#18181b] [--liquid-button-rest-surface:transparent] [--liquid-button-active-surface:rgba(24,24,27,.08)] [--liquid-button-idle-border:transparent] hover:[--liquid-button-rest-surface:rgba(24,24,27,.06)] dark:text-[#fafafa] dark:[--liquid-button-rest-surface:transparent] dark:[--liquid-button-active-surface:rgba(250,250,250,.08)] dark:hover:[--liquid-button-rest-surface:rgba(250,250,250,.07)]",
+        glass: [
+          "text-[#18181b] dark:text-white [--liquid-button-rest-surface:transparent] [--liquid-button-active-surface:transparent] [--liquid-button-idle-border:transparent] dark:[--liquid-button-rest-surface:transparent] dark:[--liquid-button-active-surface:transparent] dark:[--liquid-button-idle-border:transparent]",
+          // Glass is the surface at rest; pressing grows the whole glass by one factor.
+          "[transition:scale_.6s_var(--liquid-spring)] data-[interacting]:[scale:var(--liquid-button-engaged-scale)] motion-reduce:transition-none",
+          liquidGlassMaterial,
+        ],
         link:
-          "h-9 px-1 font-[450] text-[#52525b] [--liquid-button-expand-x:0px] [--liquid-button-expand-y:0px] dark:text-[#a1a1aa]",
+          "h-9 px-1 font-[450] text-[#52525b] dark:text-[#a1a1aa]",
         status:
-          "w-[var(--liquid-button-status-width)] px-0 text-white [--liquid-button-radius:999px] [--liquid-button-status-width:142px] [--liquid-button-rest-surface:var(--liquid-button-tint)] [--liquid-button-active-surface:color-mix(in_srgb,var(--liquid-button-tint),transparent_38%)] [--liquid-button-refraction-tint:var(--liquid-button-tint)] [--liquid-button-idle-border:rgba(255,255,255,.24)] [transition:width_.56s_cubic-bezier(.18,1.28,.3,1),min-height_.42s_cubic-bezier(.18,1.28,.3,1),box-shadow_.42s_cubic-bezier(.18,1.28,.3,1),color_.42s_cubic-bezier(.18,1.28,.3,1)] dark:text-white",
+          "w-[var(--liquid-button-status-width)] px-0 text-white [--liquid-button-radius:999px] [--liquid-button-status-width:142px] [--liquid-button-rest-surface:var(--liquid-button-tint)] [--liquid-button-active-surface:color-mix(in_srgb,var(--liquid-button-tint),transparent_38%)] [--liquid-button-idle-border:rgba(255,255,255,.24)] [transition:width_.56s_cubic-bezier(.18,1.28,.3,1),min-height_.42s_cubic-bezier(.18,1.28,.3,1),box-shadow_.42s_cubic-bezier(.18,1.28,.3,1),color_.42s_cubic-bezier(.18,1.28,.3,1)] dark:text-white",
       },
       size: {
         small:
-          "text-[13px] [--liquid-button-height:36px] [--liquid-button-padding:12px] [--liquid-button-radius:10px] [--liquid-button-expand-x:3px] [--liquid-button-expand-y:3px]",
+          "text-[13px] [--liquid-button-height:36px] [--liquid-button-padding:12px] [--liquid-button-radius:10px]",
         regular: "",
         large:
-          "text-[15px] [--liquid-button-height:44px] [--liquid-button-padding:20px] [--liquid-button-radius:14px] [--liquid-button-expand-x:5px] [--liquid-button-expand-y:5px]",
+          "text-[15px] [--liquid-button-height:44px] [--liquid-button-padding:20px] [--liquid-button-radius:14px]",
       },
     },
     defaultVariants: {
@@ -83,9 +91,9 @@ type ButtonStyle = CSSProperties & {
   "--liquid-button-radius"?: string;
   "--liquid-button-rest-surface"?: string;
   "--liquid-button-active-surface"?: string;
-  "--liquid-button-refraction-tint"?: string;
   "--liquid-light-x": string;
   "--liquid-light-y": string;
+  "--liquid-spring": string;
 };
 
 const minimumPulse = 380;
@@ -129,7 +137,7 @@ export const LiquidButton = forwardRef<HTMLButtonElement, LiquidButtonProps>(
       variant = "default",
       status = "idle",
       size = "regular",
-      tint = "#0a84ff",
+      tint = "var(--liquid-accent, #0a84ff)",
       errorTint = "#ef4444",
       successTint = "#30d158",
       lens,
@@ -155,13 +163,16 @@ export const LiquidButton = forwardRef<HTMLButtonElement, LiquidButtonProps>(
     const releaseTimer = useRef<number | null>(null);
     const [interacting, setInteracting] = useState(false);
     const isStatusButton = variant === "status";
+    const isGlass = variant === "glass";
     const currentStatus = isStatusButton ? status : "idle";
     const isLoading = currentStatus === "loading";
     const isDisabled = disabled || isLoading;
-    const displacement = useLiquidDisplacement<HTMLSpanElement>({
-      ...liquidLensPresets.button,
-      ...lens,
+    const displacement = useLiquidDisplacement<HTMLButtonElement>({
+      lens: { ...liquidLensPresets.button, ...lens },
+      lensSelector: '[data-slot="liquid-button-body"]',
+      enabled: !isGlass,
     });
+    const glass = useLiquidGlass<HTMLButtonElement>({ refraction: 7, bezel: 11, frost: 3 }, isGlass);
 
     useEffect(() => {
       return () => {
@@ -212,12 +223,12 @@ export const LiquidButton = forwardRef<HTMLButtonElement, LiquidButtonProps>(
       "--liquid-button-success-tint": successTint,
       "--liquid-light-x": "50%",
       "--liquid-light-y": "36%",
+      "--liquid-spring": liquidSpring,
       ...(isStatusButton ? { "--liquid-button-radius": "999px" } : {}),
       ...(isStatusButton && currentStatus === "success"
         ? {
             "--liquid-button-rest-surface": successTint,
             "--liquid-button-active-surface": `color-mix(in srgb, ${successTint}, transparent 38%)`,
-            "--liquid-button-refraction-tint": successTint,
           }
         : {}),
       ...style,
@@ -225,23 +236,26 @@ export const LiquidButton = forwardRef<HTMLButtonElement, LiquidButtonProps>(
 
     return (
       <button
-        ref={composeRefs(forwardedRef, rootRef)}
+        ref={composeRefs(forwardedRef, rootRef, displacement.ref, glass.ref)}
         type={type}
         data-slot="liquid-button"
         data-variant={variant}
         data-status={currentStatus}
         data-interacting={interacting || undefined}
+        data-liquid-glass-group={isGlass ? "" : undefined}
+        data-liquid-glass-shape={isGlass ? "" : undefined}
         disabled={isDisabled}
         aria-busy={isLoading || undefined}
         className={cn(
           liquidButtonVariants({ variant, size }),
+          liquidLightTokens,
           isStatusButton && "rounded-full",
           disabled && !isLoading && "opacity-[.42]",
           isStatusButton && size === "small" && "[--liquid-button-status-width:122px]",
           isStatusButton && size === "large" && "[--liquid-button-status-width:166px]",
           isStatusButton && currentStatus === "loading" && "pointer-events-none cursor-wait [--liquid-button-status-width:48px]",
-          isStatusButton && currentStatus === "error" && "text-[var(--liquid-button-error-tint)] [--liquid-button-status-width:154px] [--liquid-button-rest-surface:#f4f4f5] [--liquid-button-active-surface:rgba(244,244,245,.66)] [--liquid-button-refraction-tint:#d4d4d8] [--liquid-button-idle-border:#e4e4e7] dark:text-[var(--liquid-button-error-tint)] dark:[--liquid-button-rest-surface:#27272a] dark:[--liquid-button-active-surface:rgba(63,63,70,.68)] dark:[--liquid-button-refraction-tint:#52525b] dark:[--liquid-button-idle-border:#3f3f46]",
-          isStatusButton && currentStatus === "success" && "text-white [--liquid-button-status-width:136px] [--liquid-button-rest-surface:var(--liquid-button-success-tint)] [--liquid-button-active-surface:color-mix(in_srgb,var(--liquid-button-success-tint),transparent_38%)] [--liquid-button-refraction-tint:var(--liquid-button-success-tint)]",
+          isStatusButton && currentStatus === "error" && "text-[var(--liquid-button-error-tint)] [--liquid-button-status-width:154px] [--liquid-button-rest-surface:#f4f4f5] [--liquid-button-active-surface:rgba(244,244,245,.66)] [--liquid-button-idle-border:#e4e4e7] dark:text-[var(--liquid-button-error-tint)] dark:[--liquid-button-rest-surface:#27272a] dark:[--liquid-button-active-surface:rgba(63,63,70,.68)] dark:[--liquid-button-idle-border:#3f3f46]",
+          isStatusButton && currentStatus === "success" && "text-white [--liquid-button-status-width:136px] [--liquid-button-rest-surface:var(--liquid-button-success-tint)] [--liquid-button-active-surface:color-mix(in_srgb,var(--liquid-button-success-tint),transparent_38%)]",
           isStatusButton && size === "small" && currentStatus === "loading" && "[--liquid-button-status-width:44px]",
           isStatusButton && size === "small" && currentStatus === "error" && "[--liquid-button-status-width:132px]",
           isStatusButton && size === "small" && currentStatus === "success" && "[--liquid-button-status-width:116px]",
@@ -256,7 +270,11 @@ export const LiquidButton = forwardRef<HTMLButtonElement, LiquidButtonProps>(
             onPointerDown?.(event);
             return;
           }
-          event.currentTarget.setPointerCapture(event.pointerId);
+          try {
+            event.currentTarget.setPointerCapture(event.pointerId);
+          } catch {
+            // The pointer may already be gone (fast taps, synthetic events); the press still counts.
+          }
           setLightFromPointer(event);
           engage(event.timeStamp);
           onPointerDown?.(event);
@@ -292,42 +310,37 @@ export const LiquidButton = forwardRef<HTMLButtonElement, LiquidButtonProps>(
         }}
         {...props}
       >
+        {glass.layers}
+        <span
+          data-slot="liquid-button-surface"
+          className={cn(
+            "liquid-button__surface pointer-events-none absolute inset-0 z-0 rounded-[inherit] bg-[var(--liquid-button-rest-surface)]",
+            "[transition:background_.42s_cubic-bezier(.18,1.28,.3,1)] motion-reduce:transition-none",
+            (variant === "link" || isGlass) && "hidden",
+          )}
+          aria-hidden="true"
+        />
         <span
           data-slot="liquid-button-body"
           className={cn(
-            "liquid-button__body pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit]",
-            "shadow-[inset_0_0_0_1px_var(--liquid-button-idle-border),0_1px_2px_rgba(0,0,0,.1)] will-change-[inset,border-radius]",
-            "[transition:inset_.42s_cubic-bezier(.18,1.28,.3,1),border-radius_.42s_cubic-bezier(.18,1.28,.3,1),box-shadow_.34s_ease]",
-            "group-data-[interacting]/liquid-button:inset-[calc(var(--liquid-button-expand-y)*-1)_calc(var(--liquid-button-expand-x)*-1)] group-data-[interacting]/liquid-button:rounded-[calc(var(--liquid-button-radius)+5px)]",
-            "group-data-[interacting]/liquid-button:shadow-[0_7px_16px_rgba(0,0,0,.22),inset_0_0_7px_rgba(255,255,255,.8),0_0_0_.5px_rgba(255,255,255,.7)]",
-            "dark:shadow-[inset_0_0_0_1px_var(--liquid-button-idle-border),0_1px_3px_rgba(0,0,0,.34),0_.5px_0_rgba(255,255,255,.1)] dark:group-data-[interacting]/liquid-button:shadow-[0_9px_22px_rgba(0,0,0,.46),inset_0_0_9px_rgba(255,255,255,.2),0_0_0_.5px_rgba(255,255,255,.24)]",
-            "motion-reduce:transition-none",
+            // The body is the lens. It swells past the resting surface while pressed,
+            // and the button's refraction filter bends the surface's edge into its rim.
+            "liquid-button__body pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-[inherit]",
+            "shadow-[inset_0_0_0_1px_var(--liquid-button-idle-border),0_1px_2px_rgba(0,0,0,.1)] will-change-[scale]",
+            "[transition:scale_.6s_var(--liquid-spring),box-shadow_.34s_ease]",
+            // One uniform growth factor keeps the button's proportions and corner radius intact.
+            "group-data-[interacting]/liquid-button:[scale:var(--liquid-button-engaged-scale)]",
+            "group-data-[interacting]/liquid-button:shadow-[inset_0_0_0_1px_var(--liquid-button-idle-border)]",
+            "dark:shadow-[inset_0_0_0_1px_var(--liquid-button-idle-border),0_1px_3px_rgba(0,0,0,.34),0_.5px_0_rgba(255,255,255,.1)] dark:group-data-[interacting]/liquid-button:shadow-[inset_0_0_0_1px_var(--liquid-button-idle-border)]",
+            "motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:group-data-[interacting]/liquid-button:bg-[var(--liquid-button-rest-surface)]",
             (variant === "ghost" || variant === "link") && "shadow-none dark:shadow-none",
-            variant === "link" && "hidden",
+            (variant === "link" || isGlass) && "hidden",
           )}
           aria-hidden="true"
         >
           <span
-            data-slot="liquid-button-surface"
-            className="liquid-button__surface pointer-events-none absolute inset-0 z-0 rounded-[inherit] bg-[var(--liquid-button-rest-surface)] [transition:background_.42s_cubic-bezier(.18,1.28,.3,1),box-shadow_.42s_cubic-bezier(.18,1.28,.3,1)] group-data-[interacting]/liquid-button:bg-[var(--liquid-button-active-surface)] motion-reduce:transition-none"
-          />
-          <span
-            ref={displacement.targetRef}
-            data-slot="liquid-button-refraction"
-            className="liquid-button__refraction pointer-events-none absolute inset-0 z-[1] scale-x-[1.04] scale-y-[1.02] rounded-[inherit] bg-[linear-gradient(105deg,color-mix(in_srgb,var(--liquid-button-refraction-tint),black_10%)_0%,var(--liquid-button-refraction-tint)_30%,color-mix(in_srgb,var(--liquid-button-refraction-tint),white_38%)_49%,var(--liquid-button-refraction-tint)_68%,color-mix(in_srgb,var(--liquid-button-refraction-tint),black_8%)_100%)] bg-[length:124%_100%] bg-center bg-no-repeat opacity-0 [transition:opacity_.38s_cubic-bezier(.18,1.28,.3,1),transform_.42s_cubic-bezier(.18,1.28,.3,1)] group-data-[interacting]/liquid-button:scale-x-[1.1] group-data-[interacting]/liquid-button:scale-y-[1.04] group-data-[interacting]/liquid-button:opacity-100 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:!opacity-0 [@media(prefers-reduced-transparency:reduce)]:!filter-none"
-            style={displacement.filterStyle}
-          />
-          <span
-            data-slot="liquid-button-lens"
-            className="liquid-button__lens pointer-events-none absolute inset-0 z-[2] rounded-[inherit] bg-[radial-gradient(ellipse_at_var(--liquid-light-x)_var(--liquid-light-y),rgba(255,255,255,.2),transparent_48%),rgba(255,255,255,.12)] opacity-0 shadow-[inset_2px_0_2px_rgba(85,205,255,.12),inset_-2px_0_2px_rgba(255,100,135,.1)] [backdrop-filter:blur(1px)_saturate(2.1)_brightness(1.16)] transition-opacity duration-200 group-data-[interacting]/liquid-button:opacity-100 motion-reduce:transition-none [@media(prefers-reduced-transparency:reduce)]:bg-[rgba(245,245,247,.92)] [@media(prefers-reduced-transparency:reduce)]:[backdrop-filter:none] dark:[@media(prefers-reduced-transparency:reduce)]:bg-[rgba(72,72,78,.94)]"
-          />
-          <span
-            data-slot="liquid-button-rim"
-            className="liquid-button__rim pointer-events-none absolute inset-[.5px] z-[3] rounded-[inherit] border-[.5px] border-white/80 opacity-0 shadow-[inset_1px_1px_2px_rgba(255,255,255,.95),inset_-1px_-1px_2px_rgba(0,0,0,.12)] transition-opacity duration-200 group-data-[interacting]/liquid-button:opacity-100 motion-reduce:transition-none"
-          />
-          <span
             data-slot="liquid-button-light"
-            className="liquid-button__light pointer-events-none absolute -inset-1/4 z-[4] rounded-[inherit] bg-[radial-gradient(circle_at_var(--liquid-light-x)_var(--liquid-light-y),white,rgba(255,255,255,.42)_20%,transparent_52%)] opacity-0 transition-opacity duration-200 group-data-[interacting]/liquid-button:opacity-100 motion-reduce:transition-none"
+            className="liquid-button__light pointer-events-none absolute -inset-1/4 rounded-[inherit] bg-[radial-gradient(circle_at_var(--liquid-light-x)_var(--liquid-light-y),rgba(255,255,255,.34),rgba(255,255,255,.1)_22%,transparent_50%)] opacity-0 transition-opacity duration-200 group-data-[interacting]/liquid-button:opacity-100 motion-reduce:transition-none"
           />
         </span>
         {isStatusButton ? (

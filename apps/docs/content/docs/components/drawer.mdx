@@ -1,0 +1,68 @@
+---
+title: "Liquid Drawer"
+description: "A glass drawer that grows out of its button and morphs between views."
+---
+
+<ComponentPreview name="drawer" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-drawer.json
+```
+
+## Usage
+
+```tsx
+import {
+  LiquidDrawer,
+  LiquidDrawerContent,
+  LiquidDrawerTitle,
+  LiquidDrawerTrigger,
+} from "@/components/ui/liquid-drawer"
+
+const [view, setView] = useState("album")
+
+<LiquidDrawer onOpenChange={(open) => open && setView("album")}>
+  <LiquidDrawerTrigger>Album options</LiquidDrawerTrigger>
+  <LiquidDrawerContent view={view}>
+    {view === "album" && <AlbumOptions onShare={() => setView("share")} />}
+    {view === "share" && <ShareOptions onBack={() => setView("album")} />}
+  </LiquidDrawerContent>
+</LiquidDrawer>
+```
+
+The drawer grows out of the button that opened it, the way an iOS 26 sheet does, and pours back into it when it closes. It floats above the bottom edge and is as tall as its content. Change `view` and it cross-fades to the new content while its height morphs to fit, and the old view keeps its state while it fades out.
+
+Pull it up and the glass stretches, then springs back. Drag it down or flick it to close. Escape, the backdrop and any `LiquidDrawerClose` close it too. Radix Dialog traps focus while it's open.
+
+## Examples
+
+### Stay open
+
+<ComponentPreview name="drawer-required" />
+
+```tsx
+<LiquidDrawerContent closeOnOutsideClick={false} closeOnDrag={false}>
+  …
+</LiquidDrawerContent>
+```
+
+When the user has to choose, a click on the backdrop nudges the drawer instead of closing it, and dragging only rubber-bands. Escape still closes it, so keyboard users are never trapped.
+
+## API
+
+`LiquidDrawerContent`
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `view` | `string \| number` | none |
+| `closeOnOutsideClick` | `boolean` | `true` |
+| `closeOnDrag` | `boolean` | `true` |
+| `lens` | `LiquidGlassOptions` | none |
+
+`LiquidDrawer` takes `open`, `defaultOpen` and `onOpenChange`, like Radix Dialog. Drags never start on buttons, fields or switches, add `data-drawer-no-drag` to anything else that shouldn't start one.
+
+## Credits
+
+The tray design, a floating card that morphs between views, comes from the [Family](https://family.co) drawer by Benji Taylor and the Family team. The drag feel and easing curve follow Emil Kowalski's [Vaul](https://vaul.emilkowal.ski).

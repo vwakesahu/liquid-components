@@ -1,0 +1,96 @@
+---
+title: Liquid Wheel Picker
+description: The iOS wheel picker, like the alarm time in the Clock app.
+---
+
+<ComponentPreview name="wheel-picker" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-wheel-picker.json
+```
+
+## Usage
+
+```tsx
+import { LiquidWheel, LiquidWheelPicker } from "@/components/ui/liquid-wheel-picker"
+
+const hours = Array.from({ length: 12 }, (_, i) => String(i + 1))
+const minutes = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"))
+
+export function AlarmTime() {
+  return (
+    <LiquidWheelPicker aria-label="Alarm time">
+      <LiquidWheel aria-label="Hour" options={hours} defaultValue="7" />
+      <LiquidWheel aria-label="Minute" options={minutes} defaultValue="30" />
+      <LiquidWheel aria-label="Period" options={["AM", "PM"]} defaultValue="AM" />
+    </LiquidWheelPicker>
+  )
+}
+```
+
+Scroll it, drag it or use the arrow keys. Rows curve around a drum and snap into the band. While a wheel turns, the band becomes a glass lens that magnifies whichever row is passing through it. Each wheel is a `spinbutton` to assistive technology.
+
+## Examples
+
+### Date
+
+<ComponentPreview name="wheel-date" />
+
+The day wheel follows the month and year, so February never offers the 30th.
+
+### Timer
+
+<ComponentPreview name="wheel-timer" />
+
+```tsx
+<LiquidWheel aria-label="Minutes" options={minutes} unit="min" />
+```
+
+`unit` pins a label beside the selected row, like the timer in the Clock app.
+
+### One column
+
+<ComponentPreview name="wheel-repeat" />
+
+Options can be any text, not just numbers.
+
+### Controlled
+
+<ComponentPreview name="wheel-controlled" />
+
+```tsx
+const [hour, setHour] = useState("7")
+
+<LiquidWheel aria-label="Hour" options={hours} value={hour} onValueChange={setHour} />
+```
+
+`onValueChange` fires once the wheel settles on a row, not on every frame of a spin.
+
+## API
+
+### LiquidWheel
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `options` | `Array<string \| number \| { value, label }>` | none |
+| `value` | `string` | none |
+| `defaultValue` | `string` | first option |
+| `onValueChange` | `(value: string) => void` | none |
+| `unit` | `ReactNode` | none |
+| `aria-label` | `string` | required |
+
+### LiquidWheelPicker
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `lens` | `LiquidLensOptions` | gentle magnifier |
+
+## Keyboard
+
+| Key | Action |
+| --- | --- |
+| `↑` `↓` | Previous or next row |
+| `Page Up` `Page Down` | Five rows |
+| `Home` `End` | First or last row |

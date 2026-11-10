@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import type { TOCItemType } from "fumadocs-core/toc";
 import type { MDXContent } from "mdx/types";
 import { ComponentPreview } from "../../../components/component-preview";
+import { ComponentGallery, HomeHero, HomePlayground } from "../../../components/home";
 import { siteConfig } from "../../../lib/site";
 import { source } from "../../../lib/source";
 
@@ -32,15 +33,19 @@ export default async function Page({
   };
   const MDX = data.body;
 
+  // The overview is a landing page: its hero replaces the title block.
+  const landing = page.url === "/docs";
+
   return (
     <DocsPage
       toc={data.toc}
-      full={data.full}
+      full={data.full ?? landing}
       tableOfContent={{ style: "clerk" }}
+      breadcrumb={{ enabled: !landing }}
     >
-      <DocsTitle>{data.title}</DocsTitle>
-      {data.description && (
-        <DocsDescription>{data.description}</DocsDescription>
+      {!landing && <DocsTitle className="docs-title">{data.title}</DocsTitle>}
+      {!landing && data.description && (
+        <DocsDescription className="docs-description">{data.description}</DocsDescription>
       )}
       <DocsBody>
         <MDX
@@ -53,6 +58,9 @@ export default async function Page({
             Tab,
             Tabs,
             ComponentPreview,
+            ComponentGallery,
+            HomeHero,
+            HomePlayground,
           }}
         />
       </DocsBody>
@@ -75,8 +83,8 @@ export async function generateMetadata({
   const description = page.data.description ?? siteConfig.description;
   const isOverview = page.url === "/docs";
   const socialTitle = isOverview
-    ? `${siteConfig.name} — Liquid Glass components for shadcn/ui`
-    : `${page.data.title} · ${siteConfig.name}`;
+    ? `${siteConfig.name}, Liquid Glass components for shadcn/ui`
+    : `${page.data.title} | ${siteConfig.name}`;
 
   return {
     title: isOverview ? { absolute: socialTitle } : page.data.title,
@@ -96,7 +104,7 @@ export async function generateMetadata({
           url: siteConfig.ogImage,
           width: 1200,
           height: 630,
-          alt: "Liquid UI — Liquid Glass components for React and shadcn/ui",
+          alt: "Liquid UI, Liquid Glass components for React and shadcn/ui",
         },
       ],
     },

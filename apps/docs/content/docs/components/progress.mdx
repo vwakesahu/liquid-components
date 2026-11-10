@@ -1,0 +1,69 @@
+---
+title: "Liquid Progress"
+description: "The iOS progress bar, download ring and activity indicator."
+---
+
+<ComponentPreview name="progress" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-progress.json
+```
+
+## Usage
+
+```tsx
+import { LiquidProgress, LiquidProgressRing, LiquidSpinner } from "@/components/ui/liquid-progress"
+
+<LiquidProgress value={42} aria-label="Upload" />
+<LiquidProgressRing value={42} aria-label="Download" />
+<LiquidSpinner />
+```
+
+Pass `value={null}` while there's nothing to measure yet, the bar sweeps and the ring spins. The fill eases to each new value, so steady updates read as one smooth motion.
+
+## Examples
+
+### Uploads
+
+<ComponentPreview name="progress-upload" />
+
+```tsx
+<LiquidProgress value={sent} max={size} size="small" aria-label={`Uploading ${name}`} />
+```
+
+Pass `max` to count in your own units, here megabytes.
+
+### Downloads
+
+<ComponentPreview name="progress-ring" />
+
+```tsx
+{waiting && <LiquidProgressRing value={null} />}
+{loading && (
+  <button aria-label="Stop download" onClick={stop}>
+    <LiquidProgressRing value={progress} />
+  </button>
+)}
+```
+
+The ring's centre shows a stop square by default. Pass children to draw something else.
+
+### Activity indicator
+
+<ComponentPreview name="spinner" />
+
+```tsx
+<LiquidSpinner aria-label="Loading messages" />
+```
+
+## API
+
+| Component | Props |
+| --- | --- |
+| `LiquidProgress` | `value` (`null`), `max` (`100`), `size` (`"regular"`), `tint` |
+| `LiquidProgressRing` | `value` (`null`), `max` (`100`), `size` (`28`), `tint`, `children` |
+| `LiquidSpinner` | `size` (`20`), `aria-label` (`"Loading"`) |
+
+The bar and ring are `progressbar`s, give each one an `aria-label`. The spinner is a `status`.

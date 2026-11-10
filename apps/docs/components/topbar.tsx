@@ -1,97 +1,89 @@
 "use client";
 
+import { LiquidTooltip, LiquidTooltipContent, LiquidTooltipProvider, LiquidTooltipShortcut, LiquidTooltipTrigger } from "@liquid-ui/core";
 import { useSearchContext } from "fumadocs-ui/contexts/search";
-import { MenuIcon, SearchIcon, XIcon } from "lucide-react";
+import { ArrowRight, MenuIcon, SearchIcon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { siteConfig } from "../lib/site";
-import { contents } from "./sidebar-content";
-import { cn } from "../lib/utils";
+import { GitHubIcon } from "./github-icon";
+import { toggleDocsMenu, useDocsMenu } from "./mobile-nav";
+import { ThemeToggle } from "./theme-toggle";
 
+/**
+ * One quiet row: the mark on the left, search and the one call to action on the
+ * right. On phones the menu button opens every page in a panel.
+ */
 export function Topbar() {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
   const { setOpenSearch } = useSearchContext();
-
-  // close the mobile drawer on navigation
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  const menuOpen = useDocsMenu();
 
   return (
-    <>
-      <header className="fixed inset-x-0 top-0 z-40 flex h-(--landing-topbar-height) items-center justify-between border-b border-foreground/5 bg-background px-4">
-        <Link href="/docs" className="flex items-center gap-2">
-          <span className="liquid-logo-mark" aria-hidden="true" />
-          <span className="text-[15px] font-bold tracking-tight text-foreground">
-            {siteConfig.name}
-          </span>
-          <span className="mt-px font-mono text-[10px] uppercase tracking-wider text-foreground/45">
-            docs
-          </span>
-        </Link>
+    <header className="topbar fixed inset-x-0 top-0 z-40 flex h-(--landing-topbar-height) items-center justify-between gap-3 border-b border-[var(--line)] bg-background/85 px-4 backdrop-blur-xl lg:px-5">
+      <Link href="/docs" className="flex items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
+        <span className="liquid-logo-mark" aria-hidden="true" />
+        <span className="text-[15px] font-semibold tracking-[-0.01em] text-[var(--ink)]">{siteConfig.name}</span>
+      </Link>
 
-        <div className="flex items-center gap-1">
-          <Link
-            href="/docs/components/switch"
-            className="hidden px-2 py-1 text-[13px] text-foreground/55 transition-colors hover:text-foreground sm:block"
-          >
-            Components
-          </Link>
-          <button
-            type="button"
-            aria-label="Search"
-            onClick={() => setOpenSearch(true)}
-            className="inline-flex size-8 items-center justify-center text-foreground/55 transition-colors hover:text-foreground lg:hidden"
-          >
-            <SearchIcon className="size-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="Menu"
-            onClick={() => setOpen((v) => !v)}
-            className="inline-flex size-8 items-center justify-center text-foreground/55 transition-colors hover:text-foreground lg:hidden"
-          >
-            {open ? <XIcon className="size-4.5" /> : <MenuIcon className="size-4.5" />}
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile navigation drawer */}
-      {open && (
-        <div className="fixed inset-x-0 bottom-0 top-(--landing-topbar-height) z-40 overflow-y-auto bg-background lg:hidden">
-          {contents.map((section) => (
-            <div key={section.title}>
-              <div className="flex items-center gap-2 border-b border-foreground/6 bg-foreground/3 px-4 py-2.5 text-sm font-medium text-foreground">
-                <section.Icon className="size-4.5" />
-                {section.title}
-              </div>
-              <div className="py-1">
-                {section.list.map((item) =>
-                  item.href ? (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-2.5 px-4 py-2 text-[14px] transition-colors",
-                        pathname === item.href
-                          ? "bg-foreground/6 text-foreground"
-                          : "text-foreground/65 hover:text-foreground",
-                      )}
-                    >
-                      <span className="flex size-5 shrink-0 items-center justify-center [&>svg]:size-[14px]">
-                        <item.icon className="text-foreground/75" />
-                      </span>
-                      {item.title}
-                    </Link>
-                  ) : null,
-                )}
-              </div>
+      <LiquidTooltipProvider>
+      <div className="flex items-center gap-1.5">
+        <button
+          type="button"
+          onClick={() => setOpenSearch(true)}
+          className="topbar__search hidden h-9 w-[240px] items-center gap-2 rounded-full border border-[var(--line)] px-3.5 text-[13px] text-[var(--grey)] transition-colors hover:border-[var(--line-strong)] hover:text-[var(--ink)] md:flex"
+        >
+          <SearchIcon className="size-3.5" aria-hidden="true" />
+          <span>Search components</span>
+          <kbd className="ml-auto font-sans text-[11px] text-[var(--grey-light)]">⌘K</kbd>
+        </button>
+        <button
+          type="button"
+          aria-label="Search"
+          onClick={() => setOpenSearch(true)}
+          className="inline-flex size-9 items-center justify-center rounded-full text-[var(--grey)] transition-colors hover:bg-[var(--fill)] hover:text-[var(--ink)] md:hidden"
+        >
+          <SearchIcon className="size-4" aria-hidden="true" />
+        </button>
+        <LiquidTooltip>
+          <LiquidTooltipTrigger asChild>
+            <a
+              href={siteConfig.repository}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="GitHub"
+              className="hidden size-9 items-center sm:inline-flex justify-center rounded-full text-[var(--grey)] transition-colors hover:bg-[var(--fill)] hover:text-[var(--ink)]"
+            >
+              <GitHubIcon className="size-4" />
+            </a>
+          </LiquidTooltipTrigger>
+          <LiquidTooltipContent side="bottom">Source on GitHub</LiquidTooltipContent>
+        </LiquidTooltip>
+        <LiquidTooltip>
+          <LiquidTooltipTrigger asChild>
+            <div className="[&_button]:size-9 [&_button]:rounded-full [&_button:hover]:bg-[var(--fill)]">
+              <ThemeToggle />
             </div>
-          ))}
-        </div>
-      )}
-    </>
+          </LiquidTooltipTrigger>
+          <LiquidTooltipContent side="bottom">Light or dark</LiquidTooltipContent>
+        </LiquidTooltip>
+        <button
+          type="button"
+          aria-label={menuOpen ? "Close menu" : "Menu"}
+          aria-expanded={menuOpen}
+          aria-controls="docs-menu"
+          onClick={toggleDocsMenu}
+          className="inline-flex size-9 items-center justify-center rounded-full text-[var(--ink)] transition-colors hover:bg-[var(--fill)] lg:hidden"
+        >
+          {menuOpen ? <XIcon className="size-[18px]" aria-hidden="true" /> : <MenuIcon className="size-[18px]" aria-hidden="true" />}
+        </button>
+        <Link
+          href="/docs/installation"
+          className="ml-1 hidden h-9 items-center gap-1.5 rounded-full bg-[var(--cta-bg)] px-4 text-[13px] font-semibold text-[var(--cta-ink)] transition-opacity hover:opacity-85 sm:inline-flex"
+        >
+          Get started
+          <ArrowRight className="size-3.5" aria-hidden="true" />
+        </Link>
+      </div>
+      </LiquidTooltipProvider>
+    </header>
   );
 }

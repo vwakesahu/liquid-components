@@ -1,13 +1,11 @@
 ---
 title: Installation
-description: Add Liquid UI components to a React project with Bun and the shadcn CLI.
+description: Add Liquid UI components to a React project with the shadcn CLI.
 ---
 
 ## Requirements
 
-- React 19 or a compatible React 18 project.
-- A `components.json` file configured for shadcn/ui.
-- npm, pnpm, Yarn, or Bun. Pick the package manager your project already uses.
+You need React 19 or a compatible React 18 project, and a `components.json` set up for shadcn/ui. Any of npm, pnpm, Yarn or Bun works, use whichever your project already has.
 
 ## Install a component
 
@@ -15,30 +13,30 @@ description: Add Liquid UI components to a React project with Bun and the shadcn
 npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-switch.json
 ```
 
-The CLI installs the component source, shared motion hook, displacement renderer, utilities, CSS, and external dependencies. Review the diff and commit those files as part of your application.
+The CLI copies in the component source, the shared motion hook, the displacement renderer, the utilities and the CSS, and installs the external dependencies. Read the diff and commit it, those files are part of your app now.
 
-Liquid UI uses Bun for developing and validating this repository. That does not create a Bun runtime dependency in installed components.
+This repo uses Bun for development and checks. The components you install don't depend on Bun.
 
-## Optional namespace
+## Install by name
 
-Register the hosted collection once:
+Register the hosted registry once as `@liquid`, so you don't paste the full URL every time.
 
 ```npm
 npx shadcn@latest registry add '@liquid=https://liquidcomponents.xyz/r/{name}.json'
 ```
 
-Then install any component by name:
+After that any component installs by name.
 
 ```npm
 npx shadcn@latest add @liquid/liquid-slider
 ```
 
-## Styles are automatic
+## Styles
 
-There is no CSS setup step. Liquid UI follows the shadcn component model: visual rules live as Tailwind utilities in the installed component source. Runtime CSS variables carry pointer position, geometry, and refraction values without requiring a separate stylesheet or global import.
+There's no CSS setup step. Like any shadcn component, the visual rules are Tailwind utilities in the source you just installed. Pointer position, geometry and refraction values are CSS variables set at runtime, so there's no separate stylesheet or global import to add.
 
-Reduced-motion and reduced-transparency fallbacks are expressed alongside the affected layers, so they travel with the component.
+The reduced motion and reduced transparency fallbacks sit next to the layers they change, so they travel with the component.
 
-## Tailwind
+## Customizing
 
-Use `className`, stable `data-slot` attributes, or CSS variables to customize a component. The registry targets projects configured with Tailwind through shadcn’s `components.json`.
+Use `className`, the stable `data-slot` attributes or the CSS variables to change a component. The registry expects Tailwind set up through shadcn's `components.json`.

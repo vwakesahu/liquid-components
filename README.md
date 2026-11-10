@@ -6,7 +6,7 @@ Liquid UI is an independent React component study that translates the observable
 
 The project is not an Apple rendering clone. Apple’s Liquid Glass renderer is proprietary and supplied automatically by system frameworks. This project uses browser-native layers, pointer input, and motion to recreate the important design qualities in reusable web components.
 
-The current components are `LiquidButton`, `LiquidSwitch`, `LiquidSlider`, `LiquidTabs`, and `LiquidVideoPlayer`. The same material and interaction system will be reused for QR interactions next.
+The current components are `LiquidButton`, `LiquidSwitch`, `LiquidSlider`, `LiquidTabs`, `LiquidGlass` (with `LiquidGlassGroup`), `LiquidToolbar`, `LiquidMenu`, and `LiquidVideoPlayer`. The same material and interaction system will be reused for QR interactions next.
 
 Detailed engineering context:
 
@@ -15,6 +15,7 @@ Detailed engineering context:
 - [Liquid Switch implementation guide](docs/liquid-switch.md)
 - [Liquid Tabs implementation guide](docs/liquid-tabs.md)
 - [Liquid displacement renderer](docs/liquid-displacement.md)
+- [Liquid glass surfaces and morphing](docs/liquid-glass.md)
 - [Liquid Video Player implementation guide](docs/liquid-video-player.md)
 - [shadcn extension architecture](docs/shadcn-architecture.md)
 - [Publishing the registry and docs](docs/publishing.md)
@@ -43,7 +44,7 @@ This project is not affiliated with Apple or Aave Labs and contains no proprieta
 
 ### 1. Quiet at rest
 
-Liquid Glass is an interaction material, not a permanent decoration. Resting controls should remain familiar, legible, and visually lightweight. The stronger lens, lighting, and deformation appear when the person engages the control.
+Controls should remain familiar, legible, and visually lightweight at rest. Their stronger lens, lighting, and deformation appear when the person engages them. Floating surfaces (toolbars, panels, and `glass` buttons) are glass at rest, because they sit over content and the material is what separates them from it.
 
 ### 2. Material and motion are one system
 
@@ -70,17 +71,15 @@ Every component must remain semantic, keyboard accessible, touch friendly, and u
 
 ## Material anatomy
 
-Each interactive element uses four layers:
+Each interactive element has three parts:
 
-| Layer | Purpose | Web implementation |
+| Part | Purpose | Web implementation |
 | --- | --- | --- |
-| State surface | Communicates value and provides stable geometry | Solid or tinted background |
-| Adaptive lens | Reveals content and color beneath the active element | Translucency, `backdrop-filter`, saturation, brightness |
-| Specular rim | Defines the glass silhouette against any background | Inset highlights, subtle border, adaptive shadow |
-| Interaction light | Connects the material to the pointer or finger | Pointer-positioned radial gradient |
-| Refraction target | Supplies intentional component pixels to the lens | Synchronized track or selection copy filtered by a generated displacement map |
+| Surface | Carries the component's real content and state | The root, track, labels, or button surface |
+| Lens | The glass body that moves and reshapes | Thumb, indicator, or button body; opaque at rest, clear while engaged |
+| Refraction | Bends the surface's own pixels under the lens and lights the rim | SVG filter with a generated displacement map, applied in place only while engaged |
 
-These layers belong to one component surface. Avoid applying independent glass effects to every inner child.
+The rim highlight, shade, and glass shadow are baked into the displacement map, so the lens itself needs no extra layers. See the [displacement renderer](docs/liquid-displacement.md).
 
 ## Interaction state machine
 
@@ -108,7 +107,7 @@ rest
 - Begin immediately on pointer down, not after a completed click.
 - Lift the interactive element beyond the resting surface.
 - Increase width and height together.
-- Reveal translucency, rim light, and interaction light.
+- Turn the lens into clear glass and ramp in refraction and rim light.
 - Use a smooth ease-out curve so the response feels direct but not abrupt.
 
 ### Hold
@@ -382,10 +381,9 @@ apps/
 packages/
 └── liquid-ui/             # Private source workspace for the registry
     └── src/
-        ├── components/ui/ # Liquid Switch, Slider, Tabs, and Video Player
-        ├── hooks/         # Motion, displacement, and video refraction
-        ├── lib/           # Shared utilities
-        └── styles/        # Installable material and motion system
+        ├── components/ui/ # Button, Switch, Slider, Tabs, Glass, Toolbar, Menu, Video Player
+        ├── hooks/         # Motion, control displacement, glass surfaces, video refraction
+        └── lib/           # Shared utilities
 registry.json              # Public shadcn registry source
 ```
 

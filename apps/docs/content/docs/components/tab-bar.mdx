@@ -1,0 +1,71 @@
+---
+title: "Liquid Tab Bar"
+description: "The iOS 26 tab bar, floating glass with a droplet you drag between tabs."
+---
+
+<ComponentPreview name="tab-bar" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-tab-bar.json
+```
+
+## Usage
+
+```tsx
+import { LiquidTabBar, LiquidTabBarButton, LiquidTabBarItem } from "@/components/ui/liquid-tab-bar"
+
+<LiquidTabBar
+  value={tab}
+  onValueChange={setTab}
+  minimized={scrolledDown}
+  accessory={
+    <LiquidTabBarButton aria-label="Search">
+      <SearchIcon />
+    </LiquidTabBarButton>
+  }
+>
+  <LiquidTabBarItem value="library" icon={<ImagesIcon />}>Library</LiquidTabBarItem>
+  <LiquidTabBarItem value="albums" icon={<AlbumsIcon />}>Albums</LiquidTabBarItem>
+  <LiquidTabBarItem value="shared" icon={<UsersIcon />} badge={2}>Shared</LiquidTabBarItem>
+</LiquidTabBar>
+```
+
+The selection is a droplet. Press it and it grows into a lens that bends the icons under it, drag across the bar to change tabs. Set `minimized` while the page scrolls down and the bar folds to the current tab, then opens again on the way back up. The accessory is its own glass, so it stays separate from the bar and resizes with it.
+
+Any glass works as the accessory. In the example, search is one `LiquidGlass` that stretches from a circle into a field while the bar minimizes, so the two shapes morph together. The bar doesn't place itself, put it where you want, usually `fixed` at the bottom centre.
+
+## Examples
+
+### Over a photo
+
+<ComponentPreview name="tab-bar-badges" />
+
+```tsx
+<LiquidTabBarItem value="shared" icon={<UsersIcon />} badge={2}>
+  Shared
+</LiquidTabBarItem>
+```
+
+The bar refracts and frosts whatever is under it. `badge` puts a count on the icon.
+
+## API
+
+`LiquidTabBar`
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `value` | `string` | none |
+| `defaultValue` | `string` | none |
+| `onValueChange` | `(value: string) => void` | none |
+| `minimized` | `boolean` | `false` |
+| `accessory` | `ReactNode` | none |
+| `glass` | `LiquidGlassOptions` | none |
+| `lens` | `LiquidLensOptions` | none |
+
+`LiquidTabBarItem` takes `value`, `icon` and `badge`. Set `--tab-bar-tint` to change the selected colour.
+
+## Keyboard
+
+The bar is one tab stop. Arrow keys move between tabs and select them, like Radix Tabs.

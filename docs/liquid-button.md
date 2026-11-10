@@ -8,7 +8,7 @@ The button must remain a familiar semantic button at rest while feeling like a n
 
 - Its layout box and content stay fixed.
 - Its internal capsule expands beyond the resting bounds without reflowing nearby UI.
-- Refraction, lens, rim, and pointer light remain quiet at rest and appear together on engagement.
+- Refraction, rim light, glass shadow, and pointer light remain quiet at rest and appear together on engagement.
 - The displaced color target fills the capsule; it must never read as a smaller bar or rail behind the label.
 - Pointer movement changes only the light position. It never drags, stretches from velocity, skews, or changes the button's location.
 - A quick click preserves the shared `380ms` minimum material pulse.
@@ -18,12 +18,9 @@ The button must remain a familiar semantic button at rest while feeling like a n
 ## Anatomy
 
 ```text
-native button (stable layout and semantics)
-├── fixed tracker body
-│   ├── state surface
-│   ├── displaced state-color target
-│   ├── adaptive lens
-│   ├── specular rim
+native button (stable layout and semantics; the refraction surface)
+├── state surface      (stays at the resting bounds)
+├── tracker body       (the lens: expands past the surface while pressed)
 │   └── pointer light
 └── label and icon
 ```
@@ -54,14 +51,14 @@ This distinction is essential. Growing the native button's padding or height cau
 
 - Render one stable, opaque state surface.
 - Use compact, conventional button geometry and a quiet one-pixel inset boundary; keep Ghost and Link borderless.
-- Keep refraction, adaptive lens, specular rim, and interaction light at zero opacity.
+- Keep refraction and pointer light off; the filter is not applied at rest.
 - Use the same quiet tracker shadow as Slider and Switch.
 
 ### Press and hold
 
 - Expand the internal body immediately.
 - Replace the opaque surface with its translucent active material.
-- Reveal the displaced state-color target, lens, rim, and pointer light together.
+- Ramp in refraction: the button magnifies its own surface so it swells to fill the expanded body, with one lit rim.
 - Keep the enlarged material visible for the entire hold.
 - Move the radial light toward the held pointer without moving the capsule.
 
@@ -71,11 +68,11 @@ This distinction is essential. Growing the native button's padding or height cau
 - A held press settles as soon as the pulse requirement is satisfied.
 - Body inset, surface, refraction, rim, light, and shadow settle together.
 
-The Button uses the stronger Switch displacement preset because its filtered target is decorative state color rather than value-bearing text or a slider rail. The real label stays above the refracted layer and remains crisp.
+The Button preset uses negative `scale`, which magnifies instead of compressing. That way the resting surface swells into the larger lens rather than shrinking inside it, which would read as two borders. The label sits in the lens's flat center, so it stays crisp.
 
 ## Variants
 
-Variants change the stable state surface and the color copied into the refraction target; they do not create separate motion systems.
+Variants change the stable state surface; they do not create separate motion systems.
 
 - `default`: conventional neutral secondary treatment
 - `primary`: blue emphasized action
@@ -103,7 +100,7 @@ The `status` variant is application-controlled. Loading disables repeated activa
 - Don't animate padding or height on the native layout box.
 - Don't keep chromatic refraction permanently visible at rest.
 - Don't make the resting button look like a glass tracker; the material is interaction feedback.
-- Don't render the refraction target as a short inner strip; Button has no rail anatomy.
+- Don't give the expanded body an opaque fill or its own box-shadow while pressed; the filter draws the glass.
 - Don't use heavy backdrop blur as a replacement for displacement.
 - Don't move the label when the material expands.
 - Don't let variants fork the motion or accessibility contract.

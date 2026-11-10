@@ -1,0 +1,49 @@
+---
+title: "Liquid Tooltip"
+description: "A small glass capsule that springs out to name a control."
+---
+
+<ComponentPreview name="tooltip" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-tooltip.json
+```
+
+## Usage
+
+```tsx
+import {
+  LiquidTooltip,
+  LiquidTooltipContent,
+  LiquidTooltipProvider,
+  LiquidTooltipShortcut,
+  LiquidTooltipTrigger,
+} from "@/components/ui/liquid-tooltip"
+
+<LiquidTooltipProvider>
+  <LiquidTooltip>
+    <LiquidTooltipTrigger asChild>
+      <LiquidButton aria-label="Bold"><BoldIcon /></LiquidButton>
+    </LiquidTooltipTrigger>
+    <LiquidTooltipContent>
+      Bold <LiquidTooltipShortcut>⌘B</LiquidTooltipShortcut>
+    </LiquidTooltipContent>
+  </LiquidTooltip>
+</LiquidTooltipProvider>
+```
+
+Wrap the app, or a toolbar, in one provider. The first tooltip waits half a second, after that moving to the next control shows its tooltip at once, the way macOS does. The capsule springs out of the trigger and only its scale animates, so the glass keeps refracting the page behind it.
+
+A tooltip names a control, don't put anything in it that people need to act on.
+
+## API
+
+| Component | Props |
+| --- | --- |
+| `LiquidTooltipProvider` | `delayDuration` (`500`), `skipDelayDuration` (`300`) |
+| `LiquidTooltipContent` | `side`, `align`, `sideOffset` (`8`), `lens` |
+| `LiquidTooltipShortcut` | any `kbd` prop |
+
+It opens on hover and on keyboard focus, and `Escape` closes it.

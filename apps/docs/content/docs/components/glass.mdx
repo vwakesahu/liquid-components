@@ -1,0 +1,74 @@
+---
+title: Liquid Glass
+description: A glass surface that refracts whatever sits behind it, and glass groups that flow together like liquid.
+---
+
+<ComponentPreview name="glass" />
+
+## Installation
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-glass.json
+```
+
+## Usage
+
+```tsx
+import { LiquidGlass } from "@/components/ui/liquid-glass"
+
+export function NowPlaying() {
+  return (
+    <LiquidGlass className="rounded-[28px] p-6 text-white">
+      Liquid glass
+    </LiquidGlass>
+  )
+}
+```
+
+`LiquidGlass` is a surface, not a control. It stays glass at rest and bends, frosts and lights whatever is behind it, whether that's images, video, text or other components. Size and round it with ordinary utilities, the glass follows the element's box and border radius as they change.
+
+## Merging glass
+
+<ComponentPreview name="glass-group" />
+
+Put several `LiquidGlass` shapes inside a `LiquidGlassGroup` and they render as one continuous material. Shapes closer than `merge` pixels flow together through a liquid bridge and pull apart again as they separate. Moves, resizes and CSS transitions are all followed frame by frame.
+
+```tsx
+import { LiquidGlass, LiquidGlassGroup } from "@/components/ui/liquid-glass"
+
+<LiquidGlassGroup merge={22} className="relative h-14 w-[420px]">
+  <LiquidGlass className="absolute left-0 h-14 w-36 rounded-full transition-[translate] duration-700" style={{ translate: joined ? "112px 0" : "0 0" }} />
+  <LiquidGlass className="absolute left-[268px] h-14 w-36 rounded-full" />
+</LiquidGlassGroup>
+```
+
+## Tint
+
+`--liquid-glass-tint` sets the body colour of the glass. `--liquid-glass-solid` sets the opaque surface it switches to when someone turns on reduced transparency.
+
+```tsx
+<LiquidGlass className="[--liquid-glass-tint:rgba(255,255,255,.4)] dark:[--liquid-glass-tint:rgba(20,20,24,.5)]" />
+```
+
+## Optics
+
+Pass `lens` to tune the material.
+
+```tsx
+<LiquidGlass lens={{ refraction: 14, bezel: 20, frost: 4, chroma: 0.4 }} />
+```
+
+| Option | Meaning |
+| --- | --- |
+| `refraction` | Strongest offset at the rim, in pixels. Negative magnifies. |
+| `bezel` | Width of the bending edge, in pixels. |
+| `frost` | Backdrop blur inside the glass, in pixels. |
+| `saturation` | Backdrop saturation inside the glass. |
+| `chroma` | Colour dispersion at the rim, 0 to 1. |
+| `edgeHighlight`, `depth`, `glow`, `specularAngle` | Rim lighting, shade, inner glow and light direction. |
+| `shadow` | Opacity of the soft shadow the glass casts. |
+| `merge` | Distance at which shapes in a group fuse, group only. |
+
+## Browser support
+
+Chromium does true refraction of the backdrop. Safari and Firefox don't support SVG filters inside `backdrop-filter`, so they get frosted glass with the same rim lighting, tint, shadow and merging shapes. With reduced transparency on, the glass becomes an opaque surface.
