@@ -569,8 +569,9 @@ figure.shiki > div:first-child,
   --accent-soft: rgb(105 215 255 / 0.2);
   /* The components read this, so every demo carries the same blue as the site. */
   --liquid-accent: var(--accent-ink);
-  --cta-bg: #69d7ff;
-  --cta-ink: #04141d;
+  /* The logo blue, deep enough that white text reads and the eye lands on it. */
+  --cta-bg: #0a7fc2;
+  --cta-ink: #ffffff;
   --ink: #0b0b0c;
   --grey: #5f5f66;
   --grey-light: #9a9aa2;
@@ -586,6 +587,8 @@ figure.shiki > div:first-child,
   --accent-ink: #69d7ff;
   --accent-soft: rgb(105 215 255 / 0.14);
   --liquid-accent: var(--accent-ink);
+  --cta-bg: #69d7ff;
+  --cta-ink: #04141d;
   --ink: #f5f5f7;
   --grey: #a2a2aa;
   --grey-light: #6e6e76;
@@ -1251,7 +1254,8 @@ figure.shiki,
 /* Overview: a landing page. */
 .home-hero { display: grid; justify-items: center; padding: 2.25rem 0 0; text-align: center; }
 .docs-layout .home-hero__title {
-  max-width: 13ch;
+  max-width: 15ch;
+  text-wrap: balance;
   margin: 0;
   color: var(--ink);
   font-family: var(--font-display);
@@ -1353,3 +1357,10 @@ figure.shiki,
 
 .home-try { padding: 5rem 0 0; }
 .home-try .home-stage { margin-top: 2rem; }
+
+/* Long commands keep clear of the copy button: on phones code wraps instead of sliding under it. */
+figure.shiki pre, figure:has(.shiki) pre { padding-right: 3rem; }
+@media (max-width: 640px) {
+  figure.shiki pre, figure:has(.shiki) pre { width: 100% !important; }
+  figure.shiki pre code, figure:has(.shiki) pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+}

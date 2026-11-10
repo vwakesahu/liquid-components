@@ -40,7 +40,8 @@ export default async function Page({
     <DocsPage
       toc={data.toc}
       full={data.full ?? landing}
-      tableOfContent={{ style: "clerk" }}
+      tableOfContent={{ enabled: !landing, style: "clerk" }}
+      tableOfContentPopover={{ enabled: !landing }}
       breadcrumb={{ enabled: !landing }}
     >
       {!landing && <DocsTitle className="docs-title">{data.title}</DocsTitle>}
