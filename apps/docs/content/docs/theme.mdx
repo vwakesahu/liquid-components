@@ -8,7 +8,7 @@ full: true
 
 ## How it works
 
-Liquid UI components read a few CSS variables. `--liquid-accent` tints switches, sliders, tabs, the tab bar and progress. `--liquid-panel-tint`, `--liquid-chrome-tint` and `--liquid-fill-tint` set how much white or dark is mixed into the three glass materials, so Clear lets more of the page through and Frosted lets less.
+Liquid UI components read a few CSS variables. `--liquid-accent` fills buttons, sliders, progress and the tab bar's selected tab, and colours every focus ring. Switches stay iOS green unless you pass `tint="var(--liquid-accent)"`. `--liquid-panel-tint`, `--liquid-chrome-tint` and `--liquid-fill-tint` set how much white or dark is mixed into the three glass materials, so Clear lets more of the page through and Frosted lets less.
 
 Set them in `:root` for light mode and `.dark` for dark mode. Anything you don't set falls back to the defaults, so you can change only the accent.
 

@@ -25,6 +25,16 @@ npx shadcn@latest add @liquid/liquid-slider
 
 There's no stylesheet to import. The styles are Tailwind classes in the source you just installed, and pointer position, geometry and refraction are CSS variables set at runtime. Change a component with `className`, its `data-slot` attributes or those variables. The reduced motion and reduced transparency fallbacks sit next to the layers they change, so they come along with the component.
 
+## Use it with AI
+
+AI can build a frontend fast, it just tends to look like every other AI frontend. The Liquid UI skill teaches your assistant which component fits which screen, where glass works, how to fix it when it looks wrong and which edge cases to check.
+
+```
+npx skills add vwakesahu/liquid-components
+```
+
+Or copy [`skills/liquid-ui`](skills/liquid-ui) into your project's `.claude/skills/`. More on the [AI skill page](https://liquidcomponents.xyz/docs/skill).
+
 ## Components
 
 Each one links to its page on the site, with a live demo.
