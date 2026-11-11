@@ -120,10 +120,13 @@ export function BrowserToolbarPreview() {
       <div
         ref={frame}
         className="browser-demo"
-        onPointerEnter={() => setAutoplay(false)}
+        // A mouse pauses the tour while it's over the window. A finger takes over for
+        // good: on touch, pointerleave fires as the finger lifts and would fight the scroll.
+        onPointerEnter={(event) => event.pointerType === "mouse" && setAutoplay(false)}
+        onPointerDown={() => setAutoplay(false)}
         onWheel={() => setAutoplay(false)}
         onTouchStart={() => setAutoplay(false)}
-        onPointerLeave={() => setAutoplay(true)}
+        onPointerLeave={(event) => event.pointerType === "mouse" && setAutoplay(true)}
       >
         <div className="browser-demo__bar">
           <span className="browser-demo__lights" aria-hidden="true">

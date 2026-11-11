@@ -2,440 +2,120 @@
 
 [![CI](https://github.com/vwakesahu/liquid-components/actions/workflows/ci.yml/badge.svg)](https://github.com/vwakesahu/liquid-components/actions/workflows/ci.yml)
 
-Liquid UI is an independent React component study that translates the observable behavior of Apple’s Liquid Glass design language to the web.
+Liquid UI is Apple's iOS 26 Liquid Glass, rebuilt as React components. They ship as a shadcn registry, so the shadcn CLI copies the source straight into your project and there's no package to depend on. Every component has a live demo at https://liquidcomponents.xyz.
 
-The project is not an Apple rendering clone. Apple’s Liquid Glass renderer is proprietary and supplied automatically by system frameworks. This project uses browser-native layers, pointer input, and motion to recreate the important design qualities in reusable web components.
+Apple's renderer is closed, so all of this is worked out from what you can see it do and redone with SVG filters, canvas and WebGL. Most components sit on Radix, the headless primitives that own roles, focus and keyboard. Liquid UI adds the glass, the refraction, the pointer physics and the springs on top.
 
-The current components are `LiquidButton`, `LiquidSwitch`, `LiquidSlider`, `LiquidTabs`, `LiquidGlass` (with `LiquidGlassGroup`), `LiquidToolbar`, `LiquidMenu`, and `LiquidVideoPlayer`. The same material and interaction system will be reused for QR interactions next.
+## Install a component
 
-Detailed engineering context:
+You need React 18 or 19 and a project already set up for shadcn, that's Tailwind plus a `components.json`. If you don't have that yet, follow the [shadcn/ui installation guide](https://ui.shadcn.com/docs/installation). Any package manager works.
 
-- [Liquid Button implementation guide](docs/liquid-button.md)
-- [Liquid Slider implementation guide](docs/liquid-slider.md)
-- [Liquid Switch implementation guide](docs/liquid-switch.md)
-- [Liquid Tabs implementation guide](docs/liquid-tabs.md)
-- [Liquid displacement renderer](docs/liquid-displacement.md)
-- [Liquid glass surfaces and morphing](docs/liquid-glass.md)
-- [Liquid Video Player implementation guide](docs/liquid-video-player.md)
-- [shadcn extension architecture](docs/shadcn-architecture.md)
-- [Publishing the registry and docs](docs/publishing.md)
-
-## Documentation site
-
-The public docs live in `apps/docs`. They use the same foundation as the current shadcn site—Next.js, Tailwind CSS, and Fumadocs—with a dark-first shell adapted from the Erebuz docs app.
-
-```bash
-bun run docs:dev
-bun run docs:build
+```
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-switch.json
 ```
 
-The component pages import the same `@liquid-ui/core` source workspace used to build the registry, so a docs build also checks that the Switch, Slider, Tabs, and Video Player work across a Next.js client boundary.
+The item name is `liquid-` plus the component, so the tab bar is `liquid-tab-bar`. The CLI copies in the component, the hooks and utilities it needs and a copy of the license, then installs the npm dependencies. Read the diff and commit it, those files are part of your app now.
+
+To install by name instead of pasting the URL, register the registry once as `@liquid`.
+
+```
+npx shadcn@latest registry add '@liquid=https://liquidcomponents.xyz/r/{name}.json'
+npx shadcn@latest add @liquid/liquid-slider
+```
+
+There's no stylesheet to import. The styles are Tailwind classes in the source you just installed, and pointer position, geometry and refraction are CSS variables set at runtime. Change a component with `className`, its `data-slot` attributes or those variables. The reduced motion and reduced transparency fallbacks sit next to the layers they change, so they come along with the component.
+
+## Components
+
+Each one links to its page on the site, with a live demo.
+
+- [Button](https://liquidcomponents.xyz/docs/components/button). An ordinary button at rest that turns to glass while you press it, plus a `glass` variant for over photos and video.
+- [Switch](https://liquidcomponents.xyz/docs/components/switch). A Radix switch with a glass tracker you can drag.
+- [Slider](https://liquidcomponents.xyz/docs/components/slider). A Radix slider with a refractive tracker, ranges and multiple thumbs.
+- [Stepper](https://liquidcomponents.xyz/docs/components/stepper). The iOS minus and plus stepper, in glass.
+- [Wheel picker](https://liquidcomponents.xyz/docs/components/wheel-picker). The iOS wheel picker you set an alarm with, and a glass lens magnifies the row passing through it.
+- [Tabs](https://liquidcomponents.xyz/docs/components/tabs). Radix tabs with one glass indicator that measures each tab and drags between them.
+- [Tab bar](https://liquidcomponents.xyz/docs/components/tab-bar). The iOS 26 tab bar, floating glass with a droplet you drag between tabs, and it folds to the current tab while the page scrolls.
+- [Page control](https://liquidcomponents.xyz/docs/components/page-control). Page dots in a glass capsule, with a pill that glides and stretches between them.
+- [Progress](https://liquidcomponents.xyz/docs/components/progress). The iOS progress bar, the App Store download ring and the activity indicator.
+- [Glass](https://liquidcomponents.xyz/docs/components/glass). A glass surface that bends whatever sits behind it, and groups whose shapes flow together like liquid.
+- [Toolbar](https://liquidcomponents.xyz/docs/components/toolbar). A floating glass toolbar whose groups fuse into one capsule and split apart again.
+- [Menu](https://liquidcomponents.xyz/docs/components/menu). A glass dropdown that springs out of its trigger, with one lens that glides between the items.
+- [Context menu](https://liquidcomponents.xyz/docs/components/context-menu). Press and hold to lift a copy of the content above a blurred backdrop, with a glass menu beside it.
+- [Popover](https://liquidcomponents.xyz/docs/components/popover). A glass panel that springs out of its trigger.
+- [Tooltip](https://liquidcomponents.xyz/docs/components/tooltip). A small glass capsule that springs out to name a control.
+- [Toast](https://liquidcomponents.xyz/docs/components/toast). Glass notifications that stack like Sonner's, render `LiquidToaster` once and call `toast()` from anywhere.
+- [Drawer](https://liquidcomponents.xyz/docs/components/drawer). A floating glass drawer that grows out of its button and morphs its height between views, after the one in Family, the wallet app.
+- [Alert](https://liquidcomponents.xyz/docs/components/alert). The iOS alert, a centred glass card that asks one question.
+- [Search field](https://liquidcomponents.xyz/docs/components/search-field). The iOS 26 search field, and a round glass close button flows out of it while it's focused.
+- [Island](https://liquidcomponents.xyz/docs/components/island). A Dynamic Island that morphs between compact and expanded.
+- [Video player](https://liquidcomponents.xyz/docs/components/video-player). A native `<video>` with glass controls, WebGL only draws the refraction around them and the player still works without it.
+
+## How it works
+
+Glass here is something you touch, not decoration. A control looks ordinary at rest and turns to glass while you press or drag it. A panel that floats over the page is glass all the time, because the glass is what separates it from what's under it.
+
+Controls bend their own pixels in place. An SVG `feDisplacementMap` with a generated lens map pulls the track, rail or label under the lens into its rim and paints the rim light and shadow. Nothing is sampled from behind the glass, so there's no copy of the content to keep in sync, and at rest the filter comes off completely so an idle control costs nothing.
+
+Panels and groups, anything built on `LiquidGlass`, go through the glass engine instead. It measures every shape in a group each frame while something moves, joins them into one smooth field and paints that as a backdrop filter, so two shapes that come close grow a liquid bridge and snap apart as they separate. Chromium bends the backdrop through an SVG filter, Safari and Firefox get the blur and saturation without the bend.
+
+Video goes through WebGL with the same lens maps, one per control, because Safari won't pass live video pixels through an SVG filter.
+
+None of this touches input or accessibility. Roles, focus and keyboard come from Radix or native elements, so a component still works where a renderer doesn't. With reduced transparency the refraction never turns on and lenses stay opaque, with reduced motion the springs and deformation go and the state stays.
+
+Anything with an accent reads `--liquid-accent`, set it once on `:root` and the primary button, the slider fill, the tab bar, progress and every focus ring follow. Without it they fall back to iOS blue, `#0a84ff`. The switch stays iOS green unless you pass `tint`.
+
+The glass tint comes from three materials exported from `liquid-glass.tsx`. `liquidPanelMaterial` is for anything that floats over the page, `liquidChromeMaterial` for bars over content and `liquidFillMaterial` for controls inside content. They're Tailwind class strings with a light and a dark tint, put one on your own `LiquidGlass` and it matches the menus and drawers. Each reads a theme variable first, so setting `--liquid-panel-tint`, `--liquid-chrome-tint` or `--liquid-fill-tint` in `:root` and `.dark` retunes all the glass of that kind at once.
+
+Every component moves on one spring, `liquidSpring` in `lib/utils.ts`, a CSS `linear()` easing that overshoots a little and settles. Use it for your own motion so it matches.
+
+The long versions are in [`docs/liquid-displacement.md`](docs/liquid-displacement.md) and [`docs/liquid-glass.md`](docs/liquid-glass.md).
+
+## Working on the repo
+
+`packages/liquid-ui/` is the source, a private workspace called `@liquid-ui/core`. `registry.json` at the root says which of its files go into each registry item. Components are in `src/components/ui`, the motion, displacement, glass and video hooks in `src/hooks`.
+
+`apps/docs/` is the site, Next.js 16 and Tailwind 4, with Fumadocs turning the MDX in `content/docs` into pages. It imports the same source, so a docs build also checks the components across a Next.js client boundary.
+
+`apps/playground/` is a Vite sandbox to build components against. `studio.html` in there is a dev-only stage for recording the hero film on the docs home page, it isn't part of the build.
+
+`apps/teaser/` renders the switch teaser video, `scripts/capture.mjs` steps it frame by frame in headless Chrome.
+
+`public/r` and `apps/docs/public/r` are the built registry, the first for checking locally and the second is what the site serves. Don't edit them by hand. Change the source, run `bun run registry:build` and commit what it writes, CI fails if they're out of date.
+
+[`docs/`](docs) has the engineering notes, one per renderer, one each for the button, switch, slider, tabs and video player, and how publishing works.
+
+Development runs on Bun 1.3.10, pinned in `package.json`. Install with that exact version through `bunx` so a newer Bun doesn't rewrite the lockfile. The components themselves don't need Bun.
+
+```
+bunx bun@1.3.10 install
+bun run dev
+bun run docs:dev
+```
+
+`dev` starts the playground on port 5173 and `docs:dev` starts the site on port 3000. `bun run check` type-checks the package and the playground. `bun run ci` runs the type checks, registry validation and both builds, the same gate GitHub Actions runs, so run it before you push.
+
+## Deploy
+
+The site deploys with the Vercel CLI straight from the working tree. The project isn't connected to Git, which keeps Git authorship separate from the Vercel account. Its root directory is `apps/docs` with files outside it included, so Next.js can read `packages/liquid-ui`. Run `bun run ci` first, then follow [`docs/publishing.md`](docs/publishing.md) for the deploy, the domain and the checks to run after.
 
 ## Credits
 
-Liquid UI is an independent project inspired by Apple's Liquid Glass design language and informed by Aave Labs' published cross-browser glass research.
+Apple designed Liquid Glass, and its controls, materials, lensing and accessibility guidance are the reference for everything here. We worked from the [Liquid Glass technology overview](https://developer.apple.com/documentation/technologyoverviews/liquid-glass), the Human Interface Guidelines on [Materials](https://developer.apple.com/design/human-interface-guidelines/materials) and [Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles), [Applying Liquid Glass to custom views](https://developer.apple.com/documentation/swiftui/applying-liquid-glass-to-custom-views), and three WWDC25 sessions, [Meet Liquid Glass](https://developer.apple.com/videos/play/wwdc2025/219/), [Get to know the new design system](https://developer.apple.com/videos/play/wwdc2025/356/) and [Build a SwiftUI app with the new design](https://developer.apple.com/videos/play/wwdc2025/323/). There's no Apple framework code in here and it doesn't claim pixel-identical rendering.
 
-- Apple design references: [Liquid Glass](https://developer.apple.com/documentation/technologyoverviews/liquid-glass), [Materials HIG](https://developer.apple.com/design/human-interface-guidelines/materials), and the WWDC25 Liquid Glass sessions.
-- Aave engineering reference: [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web), including the work credited there to Abhijeet Singh, Lochie Axon, Alex Vanderzon, Ana Howard, and the wider Aave Labs team.
+Aave Labs published [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web), and it was the main engineering reference for the cross-browser refraction. The generated displacement maps, the rounded rectangle computed by quadrants, fresh filter IDs for Safari and WebGL for live video all come from studying it. The article credits Abhijeet Singh for leading research and development, Lochie Axon for writing, Alex Vanderzon and Ana Howard for design direction, and the wider Aave Labs team for testing and refinement. Thank you to them for publishing it. The code here was written independently, it isn't an Aave release.
 
-This project is not affiliated with Apple or Aave Labs and contains no proprietary Apple framework code. See the full [credits and references page](apps/docs/content/docs/credits.mdx).
+The drawer follows the one in [Family](https://family.co), designed by Benji Taylor and the Family team. It's an independent build in Liquid Glass and isn't affiliated with Family.
 
-## Design principles
+- [shadcn/ui](https://ui.shadcn.com). The open code registry model these components ship through.
+- [Radix Primitives](https://www.radix-ui.com/primitives). The accessible behaviour under the switch, slider, tabs, tab bar, toolbar, menus, popover, tooltip, drawer and alert.
+- [Vaul](https://vaul.emilkowal.ski) by Emil Kowalski. The drawer's drag feel and easing curve.
+- [Notionists](https://heyzoish.gumroad.com/l/notionists) by Zoish (CC0), generated with [DiceBear](https://www.dicebear.com). The avatars in the examples.
 
-### 1. Quiet at rest
+The photos in the examples are from [Unsplash](https://unsplash.com), served through [Lorem Picsum](https://picsum.photos) and used under the Unsplash License. Every photographer is named on the [credits page](https://liquidcomponents.xyz/docs/credits).
 
-Controls should remain familiar, legible, and visually lightweight at rest. Their stronger lens, lighting, and deformation appear when the person engages them. Floating surfaces (toolbars, panels, and `glass` buttons) are glass at rest, because they sit over content and the material is what separates them from it.
-
-### 2. Material and motion are one system
-
-Do not animate position separately from shape and light. When a control moves:
-
-- Its lens follows the pointer or finger.
-- Its body stretches in the direction of movement.
-- Its height compresses slightly as velocity increases.
-- Its highlight moves toward the interaction point.
-- Its shadow and rim strengthen as the material lifts.
-- All properties settle together after release.
-
-### 3. Preserve component anatomy
-
-Liquid motion can deform a component without changing what the component is. A capsule remains a capsule throughout idle, press, hold, drag, and release states. Avoid transformations that accidentally turn a tracker into a circle or an irregular blob.
-
-### 4. Glass belongs to the functional layer
-
-Use the material for controls, navigation, selection indicators, and transient interactions. Avoid placing glass on every content surface, and avoid stacking one glass element directly on another.
-
-### 5. Behavior before visual fidelity
-
-Every component must remain semantic, keyboard accessible, touch friendly, and understandable without transparency or animation. The optical treatment enhances the control; it never defines its meaning.
-
-## Material anatomy
-
-Each interactive element has three parts:
-
-| Part | Purpose | Web implementation |
-| --- | --- | --- |
-| Surface | Carries the component's real content and state | The root, track, labels, or button surface |
-| Lens | The glass body that moves and reshapes | Thumb, indicator, or button body; opaque at rest, clear while engaged |
-| Refraction | Bends the surface's own pixels under the lens and lights the rim | SVG filter with a generated displacement map, applied in place only while engaged |
-
-The rim highlight, shade, and glass shadow are baked into the displacement map, so the lens itself needs no extra layers. See the [displacement renderer](docs/liquid-displacement.md).
-
-## Interaction state machine
-
-All Liquid UI components should use the same state model.
-
-```text
-rest
-  └─ pointer down / key press → engage
-       ├─ hold → energized
-       ├─ pointer movement → drag
-       │    └─ release → settle
-       └─ quick release → pulse → settle
-                                └─ rest
-```
-
-### Rest
-
-- Use stable component geometry.
-- Keep the lens mostly opaque or visually quiet.
-- Show state without depending only on color.
-- Avoid continuous decorative animation.
-
-### Engage
-
-- Begin immediately on pointer down, not after a completed click.
-- Lift the interactive element beyond the resting surface.
-- Increase width and height together.
-- Turn the lens into clear glass and ramp in refraction and rim light.
-- Use a smooth ease-out curve so the response feels direct but not abrupt.
-
-### Hold
-
-- Preserve the enlarged glass surface for as long as input remains active.
-- Keep the component’s defining shape. Capsules keep fully rounded ends.
-- Position the brightest light close to the active pointer or touch coordinate.
-
-### Drag
-
-- Back-sync movement with the semantic component value.
-- Follow the pointer without a noticeable start delay.
-- Stretch using filtered pointer velocity rather than raw frame-to-frame movement.
-- Lean toward the direction of travel.
-- Compress height slightly as horizontal stretch increases.
-- Smooth direction reversals to prevent jitter.
-
-### Settle
-
-- Start immediately after a drag release; never insert a paused frame.
-- Resolve position, shape, light, and shadow together.
-- Use a spring-like curve without excessive bounce.
-- For a quick click, preserve a minimum visible pulse before settling so the glass response can be perceived.
-
-## Motion tokens
-
-The current switch establishes the initial motion scale for the system.
-
-| Token | Value | Usage |
-| --- | ---: | --- |
-| `motion-pulse-min` | `380ms` | Minimum visible glass response for a quick click |
-| `motion-engage` | `300ms` | Expansion into the active glass shape |
-| `motion-drag-position` | `90ms` | Pointer-following position response |
-| `motion-drag-shape` | `140ms` | Stretch and compression response during drag |
-| `motion-settle-position` | `460ms` | Final spring-like position resolution |
-| `motion-settle-shape` | `300ms` | Return to resting geometry |
-
-Recommended curves:
-
-```css
---liquid-ease-out: cubic-bezier(.16, 1, .3, 1);
---liquid-follow: cubic-bezier(.2, .72, .25, 1);
-```
-
-Use the shorter follow curve only while dragging. Rest, engage, and settle should use the softer system curve.
-
-## Geometry tokens
-
-The switch uses a wide track and a capsule tracker in every state.
-
-| Size | Track | Idle tracker | Track inset |
-| --- | --- | --- | ---: |
-| Small | `50 × 26px` | `32 × 22px` | `2px` |
-| Regular | `64 × 32px` | `40 × 28px` | `2px` |
-| Large | `74 × 36px` | `46 × 32px` | `2px` |
-
-During engagement, the Switch and Slider tracker add `8px` to their base width and become `12px` taller than the track. Tabs uses a more expressive `16px` height increase and up to `20px` of velocity stretch.
-
-All track and tracker states use a full capsule radius:
-
-```css
-border-radius: 999px;
-```
-
-Do not interpolate to a circle-specific radius or an asymmetric organic border radius.
-
-## Pointer physics
-
-Raw pointer deltas are noisy. Filter both stretch and direction before applying them to the material.
-
-```ts
-const targetStretch = Math.min(
-  maximumStretch,
-  Math.abs(deltaX) * 0.75 + velocity * 18,
-)
-
-setShape((current) => ({
-  stretch: current.stretch * 0.62 + targetStretch * 0.38,
-  direction: current.direction * 0.58 + Math.sign(deltaX) * 0.42,
-}))
-```
-
-This low-pass filter preserves responsiveness while preventing twitching during slow movement and snapping during direction changes.
-
-Keep click and drag release behavior separate:
-
-- A drag settles immediately after pointer release.
-- A quick click completes its minimum visible pulse before settling.
-
-This avoids a pause after dragging without making click feedback too fast to see.
-
-## Optical tokens
-
-The current switch uses these starting values:
-
-```css
---liquid-tint-green: #34c759;
---liquid-tint-blue: #0a84ff;
---liquid-idle-surface: #e9e9eb;
---liquid-lens-fill: rgba(255, 255, 255, 0.18);
---liquid-lens-border: rgba(255, 255, 255, 0.7);
---liquid-lens-blur: 1.5px;
---liquid-lens-saturation: 2;
---liquid-lens-brightness: 1.18;
-```
-
-Treat these as material defaults rather than fixed brand colors. Components may expose tint, but tint should communicate state or emphasis rather than decoration.
-
-## React component contract
-
-`LiquidSwitch` supports controlled and uncontrolled usage.
-
-```tsx
-import { useState } from "react"
-import { LiquidSwitch } from "@/components/ui/liquid-switch"
-
-export function AutomaticUpdates() {
-  const [enabled, setEnabled] = useState(true)
-
-  return (
-    <LiquidSwitch
-      checked={enabled}
-      onCheckedChange={setEnabled}
-      aria-label="Automatic updates"
-    />
-  )
-}
-```
-
-Uncontrolled usage:
-
-```tsx
-<LiquidSwitch defaultChecked aria-label="Automatic updates" />
-```
-
-Form usage:
-
-```tsx
-<LiquidSwitch
-  name="automaticUpdates"
-  value="enabled"
-  defaultChecked
-  aria-label="Automatic updates"
-/>
-```
-
-### Props
-
-| Prop | Type | Default |
-| --- | --- | --- |
-| `checked` | `boolean` | — |
-| `defaultChecked` | `boolean` | `false` |
-| `onCheckedChange` | `(checked: boolean) => void` | — |
-| `size` | `"small" \| "regular" \| "large"` | `"regular"` |
-| `tint` | CSS color string | `#34c759` |
-| `disabled` | `boolean` | `false` |
-| `name` | `string` | — |
-| `value` | `string` | `"on"` |
-
-## Accessibility contract
-
-Every component added to this system must:
-
-- Use an appropriate native element or recognized ARIA role.
-- Expose its current value through semantic state.
-- Support keyboard interaction equivalent to pointer interaction.
-- Provide a visible focus indicator.
-- Maintain a comfortable pointer and touch target.
-- Remain understandable when transparency is reduced.
-- Respect `prefers-reduced-motion`.
-- Never rely only on color to communicate state.
-- Keep form behavior intact when the component represents form data.
-
-For the switch, the interactive element is a button with `role="switch"` and `aria-checked`. Space and Enter toggle its value.
-
-## Reduced motion and transparency
-
-Motion is supplemental feedback. Under reduced motion:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-
-Future components should also introduce a reduced-transparency mode that replaces backdrop filtering with a more opaque surface while preserving borders, state, and focus.
-
-## Building the next components
-
-Each component should reuse the same states and material layers, but adapt its geometry to its job.
-
-### Slider
-
-- Status: implemented as `LiquidSlider`.
-- Uses Radix Slider as the semantic and behavioral surface while Liquid layers decorate its track, range, and thumbs.
-- The glass tracker reveals the value underneath it.
-- The filled and unfilled rail is redrawn inside the active lens and bent by the shared generated displacement map rather than merely blurred.
-- Keep the tracker as a capsule at rest and during drag.
-- Use less optical distortion than the switch so values remain readable.
-- Movement must remain directly synchronized with the input value.
-- Do not delay settling after pointer release.
-
-```tsx
-import { LiquidSlider } from "@/components/ui/liquid-slider"
-
-<LiquidSlider
-  value={[volume]}
-  onValueChange={([next]) => setVolume(next)}
-  min={0}
-  max={100}
-  aria-label="Volume"
-/>
-```
-
-### Tabs and segmented controls
-
-- Status: implemented as `LiquidTabs`, `LiquidTabsList`, `LiquidTabsTrigger`, and `LiquidTabsContent`.
-- Use one shared glass selection indicator.
-- Morph or glide the indicator between items rather than recreating it.
-- Preserve label contrast while the lens moves underneath.
-- Use spring settling only after the selected index is known.
-- Support arrow-key navigation and selection semantics.
-
-### QR interaction
-
-- Keep the code itself high contrast and reliably scannable at rest.
-- Apply refraction only as a temporary tactile response.
-- Render distortion on canvas or WebGL when DOM filtering cannot manipulate the pixels safely.
-- Return to an undistorted QR immediately after feedback completes.
-
-### Media player
-
-- Status: implemented as `LiquidVideoPlayer` with a native video element and one WebGL renderer.
-- Treat controls as one coordinated glass family over the video.
-- Share interaction lighting and motion tokens between play, skip, volume, and scrubber controls.
-- Preserve control contrast over both bright and dark frames.
-- Use WebGL when browser compositing prevents live-video filtering.
-- Maintain native media semantics and keyboard shortcuts.
-
-## Component implementation checklist
-
-Before considering a component complete, verify:
-
-- [ ] The resting state is visually quiet.
-- [ ] Glass appears immediately on engagement.
-- [ ] Quick clicks produce visible feedback.
-- [ ] Dragging begins without a paused frame.
-- [ ] Shape responds to filtered velocity.
-- [ ] The component preserves its defining geometry.
-- [ ] Movement, light, shadow, and shape settle together.
-- [ ] Both controlled and uncontrolled usage work where applicable.
-- [ ] Pointer, touch, and keyboard behavior match.
-- [ ] Focus, disabled, dark, and reduced-motion states work.
-- [ ] The component remains legible over varied content.
-- [ ] The production TypeScript build passes.
-
-## Project structure
-
-```text
-apps/
-├── docs/                  # Next.js and Fumadocs documentation
-└── playground/            # Vite component study
-    └── src/
-        ├── App.tsx
-        ├── main.tsx
-        └── styles.css
-packages/
-└── liquid-ui/             # Private source workspace for the registry
-    └── src/
-        ├── components/ui/ # Button, Switch, Slider, Tabs, Glass, Toolbar, Menu, Video Player
-        ├── hooks/         # Motion, control displacement, glass surfaces, video refraction
-        └── lib/           # Shared utilities
-registry.json              # Public shadcn registry source
-```
-
-## Development
-
-Install dependencies and start the local server:
-
-```bash
-bun install
-bun run playground:dev
-bun run docs:dev
-```
-
-Create a production build:
-
-```bash
-bun run playground:build
-bun run docs:build
-```
-
-Run the complete local CI gate:
-
-```bash
-bun run ci
-```
-
-Validate and build the shadcn registry:
-
-```bash
-bun run registry:validate
-bun run registry:build
-```
-
-## Styling with or without Tailwind
-
-Liquid UI follows the shadcn styling model: the registry installs Tailwind-first component source with no standalone stylesheet import. Roots accept `className`, internal primitives expose stable `data-slot` attributes, and runtime component colors, geometry, pointer motion, and refraction values use CSS variables. Tabs also exposes `indicatorClassName` for direct utility-class customization.
-
-There is intentionally no second Tailwind-only implementation. This keeps the motion and glass rendering identical while allowing shadcn/Tailwind consumers to theme the public surfaces with utilities.
+Liquid UI isn't affiliated with, endorsed by or sponsored by Apple or Aave Labs. Apple, SwiftUI and Liquid Glass are trademarks or technologies of Apple Inc.
 
 ## License
 
-Liquid UI is available under the [MIT License](LICENSE). Copyright © 2026 Vivek Sahu.
-
-## References
-
-- [Meet Liquid Glass — WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/)
-- [Build a SwiftUI app with the new design — WWDC25](https://developer.apple.com/videos/play/wwdc2025/323/)
-- [Applying Liquid Glass to custom views](https://developer.apple.com/documentation/swiftui/applying-liquid-glass-to-custom-views)
-- [Apple Human Interface Guidelines: Materials](https://developer.apple.com/design/human-interface-guidelines/materials)
-- [Apple Human Interface Guidelines: Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles)
-- [Aave: Building Glass for the Web](https://aave.com/design/building-glass-for-the-web)
-
-## Disclaimer
-
-Liquid UI is an independent web implementation and is not affiliated with, endorsed by, or sponsored by Apple Inc. Apple, SwiftUI, and Liquid Glass are trademarks or technologies of Apple Inc.
+MIT, see [`LICENSE`](LICENSE). Copyright 2026 Vivek Sahu. Every component you install brings a copy of it along.

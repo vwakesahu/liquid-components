@@ -15,6 +15,7 @@ import type { MDXContent } from "mdx/types";
 import { ComponentPreview } from "../../../components/component-preview";
 import { ComponentGallery, HomeHero, HomePlayground } from "../../../components/home";
 import { DocsPager } from "../../../components/docs-pager";
+import { ThemeStudio } from "../../../components/theme/studio";
 import { siteConfig } from "../../../lib/site";
 import { source } from "../../../lib/source";
 
@@ -64,6 +65,7 @@ export default async function Page({
             ComponentGallery,
             HomeHero,
             HomePlayground,
+            ThemeStudio,
           }}
         />
       </DocsBody>

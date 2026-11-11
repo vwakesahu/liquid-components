@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { BrowserToolbarPreview } from "./previews/browser-toolbar";
 import { MenuDeletePreview } from "./previews/menu-delete";
+import { MaterialLensPreview, MaterialMergePreview, MaterialSpringPreview, MaterialTiersPreview } from "./previews/foundations";
 import {
   ContextMenuLinkPreview,
   ContextMenuPreview,
@@ -132,10 +133,14 @@ type PreviewName =
   | "progress-ring"
   | "spinner"
   | "page-control"
-  | "page-control-many";
+  | "page-control-many"
+  | "material-lens"
+  | "material-spring"
+  | "material-merge"
+  | "material-tiers";
 
 // Controls sit on a white stage; glass and full scenes sit straight on the grid.
-const bareNames = new Set<PreviewName>(["tab-bar", "tab-bar-badges", "context-menu", "context-menu-link", "tooltip", "progress-upload", "progress-ring", "spinner", "page-control", "page-control-many", "drawer", "drawer-required", "alert", "alert-stacked", "alert-input", "alert-async", "search-field", "search-scopes", "search-recents", "island", "island-music", "island-call", "island-connect", "stepper-cart", "stepper-settings", "toolbar", "menu", "popover", "toast", "video", "button-variants", "button-status", "glass", "glass-group", "button-glass"]);
+const bareNames = new Set<PreviewName>(["material-spring", "material-merge", "material-tiers", "tab-bar", "tab-bar-badges", "context-menu", "context-menu-link", "tooltip", "progress-upload", "progress-ring", "spinner", "page-control", "page-control-many", "drawer", "drawer-required", "alert", "alert-stacked", "alert-input", "alert-async", "search-field", "search-scopes", "search-recents", "island", "island-music", "island-call", "island-connect", "stepper-cart", "stepper-settings", "toolbar", "menu", "popover", "toast", "video", "button-variants", "button-status", "glass", "glass-group", "button-glass"]);
 
 // Glass needs a scene to bend, so these previews sit on a photograph (credited on the credits page).
 const photoCanvas: Partial<Record<PreviewName, string>> = {
@@ -144,6 +149,8 @@ const photoCanvas: Partial<Record<PreviewName, string>> = {
   "button-glass": "1036",
   tooltip: "1015",
   "page-control-many": "1036",
+  "material-merge": "1043",
+  "material-tiers": "1015",
 };
 
 function Stage({ bare, children }: { bare: boolean; children: React.ReactNode }) {
@@ -295,6 +302,10 @@ export function ComponentPreview({ name }: { name: PreviewName }) {
         {name === "spinner" && <SpinnerPreview />}
         {name === "page-control" && <PageControlPreview />}
         {name === "page-control-many" && <PageControlManyPreview />}
+        {name === "material-lens" && <MaterialLensPreview />}
+        {name === "material-spring" && <MaterialSpringPreview />}
+        {name === "material-merge" && <MaterialMergePreview />}
+        {name === "material-tiers" && <MaterialTiersPreview />}
         {name === "wheel-date" && <WheelDatePreview />}
         {name === "wheel-timer" && <WheelTimerPreview />}
         {name === "wheel-repeat" && <WheelRepeatPreview />}

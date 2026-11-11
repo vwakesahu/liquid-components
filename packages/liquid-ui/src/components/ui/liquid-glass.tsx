@@ -16,9 +16,14 @@ const LiquidGlassGroupContext = createContext(false);
  * and a drawer read as the same glass. Panel: anything that floats over the
  * page. Chrome: bars that sit over content. Fill: controls inside content.
  */
-export const liquidPanelMaterial = "[--liquid-glass-tint:rgba(255,255,255,.66)] dark:[--liquid-glass-tint:rgba(30,29,36,.68)]";
-export const liquidChromeMaterial = "[--liquid-glass-tint:rgba(255,255,255,.5)] dark:[--liquid-glass-tint:rgba(40,39,48,.52)]";
-export const liquidFillMaterial = "[--liquid-glass-tint:rgba(118,118,128,.14)] dark:[--liquid-glass-tint:rgba(118,118,128,.26)]";
+// Each reads a theme variable first, so a site can retune all its glass in one place:
+// set --liquid-panel-tint, --liquid-chrome-tint or --liquid-fill-tint in :root and .dark.
+export const liquidPanelMaterial =
+  "[--liquid-glass-tint:var(--liquid-panel-tint,rgba(255,255,255,.66))] dark:[--liquid-glass-tint:var(--liquid-panel-tint,rgba(30,29,36,.68))]";
+export const liquidChromeMaterial =
+  "[--liquid-glass-tint:var(--liquid-chrome-tint,rgba(255,255,255,.5))] dark:[--liquid-glass-tint:var(--liquid-chrome-tint,rgba(40,39,48,.52))]";
+export const liquidFillMaterial =
+  "[--liquid-glass-tint:var(--liquid-fill-tint,rgba(118,118,128,.14))] dark:[--liquid-glass-tint:var(--liquid-fill-tint,rgba(118,118,128,.26))]";
 
 /**
  * Starts a fresh glass scope. React context crosses portals, so a menu, popover,

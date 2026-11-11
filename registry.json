@@ -280,6 +280,11 @@
           "target": "hooks/use-liquid-displacement.tsx"
         },
         {
+          "path": "packages/liquid-ui/src/lib/presence.tsx",
+          "type": "registry:lib",
+          "target": "lib/presence.tsx"
+        },
+        {
           "path": "packages/liquid-ui/src/lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
@@ -328,6 +333,11 @@
           "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
           "type": "registry:hook",
           "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/presence.tsx",
+          "type": "registry:lib",
+          "target": "lib/presence.tsx"
         },
         {
           "path": "packages/liquid-ui/src/lib/utils.ts",
@@ -783,6 +793,11 @@
           "path": "packages/liquid-ui/src/hooks/use-liquid-displacement.tsx",
           "type": "registry:hook",
           "target": "hooks/use-liquid-displacement.tsx"
+        },
+        {
+          "path": "packages/liquid-ui/src/lib/presence.tsx",
+          "type": "registry:lib",
+          "target": "lib/presence.tsx"
         },
         {
           "path": "packages/liquid-ui/src/lib/utils.ts",

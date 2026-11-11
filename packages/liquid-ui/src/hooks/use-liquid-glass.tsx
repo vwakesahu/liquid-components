@@ -280,6 +280,8 @@ const GROUP_SELECTOR = "[data-liquid-glass-group]";
 
 type GlassLayers = {
   backdrop: HTMLSpanElement;
+  /** A second backdrop, so a new map can load out of sight before it replaces the shown one. */
+  spare: HTMLSpanElement;
   canvas: HTMLCanvasElement;
   svg: SVGSVGElement;
 };
@@ -343,6 +345,7 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
   let settleTimer = 0;
   let animatingUntil = 0;
   let signature = "";
+  let paintedResolution = 0;
   let revision = 0;
   let destroyed = false;
   let pendingUrl = "";
@@ -359,8 +362,12 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
     return shapes;
   };
 
+  // Two backdrop layers take turns. Swapping the mask on a visible layer shows
+  // nothing for a frame while the new image loads, which reads as a flicker.
+  const backdrops = [layers.backdrop, layers.spare];
+  let front = 0;
   const hide = () => {
-    layers.backdrop.style.display = "none";
+    for (const backdrop of backdrops) backdrop.style.display = "none";
     layers.canvas.style.display = "none";
   };
 
@@ -399,16 +406,18 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
       ? withinBudget(box, Math.min(2, window.devicePixelRatio || 1), PIXELS_SETTLED)
       : withinBudget(box, 1, PIXELS_MOVING);
     const tintValue = getComputedStyle(container).getPropertyValue("--liquid-glass-tint").trim() || "rgba(255,255,255,0.14)";
-    const nextSignature = [
+    const geometry = [
       shapes.map((shape) => `${shape.x.toFixed(1)},${shape.y.toFixed(1)},${shape.width.toFixed(1)},${shape.height.toFixed(1)},${shape.radius.toFixed(1)}`).join(";"),
-      resolution,
       tintValue,
       getComputedStyle(container).getPropertyValue("--liquid-glass-edge"),
       getComputedStyle(container).getPropertyValue("--liquid-glass-highlight"),
       reducedTransparency.matches,
     ].join("|");
-    if (nextSignature === signature) return;
-    signature = nextSignature;
+    // Same shapes already painted at least this sharp: nothing to do. This keeps a
+    // resize notification right after opening from swapping in a blurrier map.
+    if (geometry === signature && resolution <= paintedResolution) return;
+    signature = geometry;
+    paintedResolution = resolution;
 
     const solid = reducedTransparency.matches;
     const tint = solid ? parseColor(getComputedStyle(container).getPropertyValue("--liquid-glass-solid").trim() || "rgb(245,245,247)") : parseColor(tintValue);
@@ -431,8 +440,28 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
     context.putImageData(light, 0, 0);
 
     if (!map) {
-      layers.backdrop.style.display = "none";
+      hide();
       return;
+    }
+
+    // One shape (a drawer, a popover, a menu) needs no image mask: a rounded clip-path
+    // shapes the blur exactly, updates in this same frame as the tint, and has nothing
+    // to load, so a morphing panel never flickers. Fused groups still need the mask.
+    const single = shapes.length === 1 ? shapes[0]! : null;
+    if (single) {
+      const element = backdrops[front]!;
+      for (const backdrop of backdrops) if (backdrop !== element) backdrop.style.display = "none";
+      const style = element.style;
+      Object.assign(style, { display: "block", left: `${box.x}px`, top: `${box.y}px`, width: `${box.width}px`, height: `${box.height}px` });
+      const inset = [single.y - box.y, box.x + box.width - single.x - single.width, box.y + box.height - single.y - single.height, single.x - box.x];
+      style.setProperty("clip-path", `inset(${inset.map((v) => `${v.toFixed(1)}px`).join(" ")} round ${single.radius.toFixed(1)}px)`);
+      style.removeProperty("mask-image");
+      style.removeProperty("-webkit-mask-image");
+      if (!style.getPropertyValue("backdrop-filter")) {
+        const blur = `blur(${options.frost}px) saturate(${options.saturation})`;
+        style.setProperty("backdrop-filter", blur);
+        style.setProperty("-webkit-backdrop-filter", blur);
+      }
     }
     const token = (paintToken += 1);
     encode(map)
@@ -444,7 +473,10 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
         decoder.src = url;
         await decoder.decode().catch(() => undefined);
         if (destroyed || pendingUrl !== url) return URL.revokeObjectURL(url);
-        const style = layers.backdrop.style;
+        // A single shape keeps its layer and only takes the new refraction map.
+        const shown = backdrops[front]!;
+        const next = single ? shown : backdrops[1 - front]!;
+        const style = next.style;
         Object.assign(style, {
           display: "block",
           left: `${box.x}px`,
@@ -452,8 +484,11 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
           width: `${box.width}px`,
           height: `${box.height}px`,
         });
-        style.setProperty("mask-image", `url("${url}")`);
-        style.setProperty("-webkit-mask-image", `url("${url}")`);
+        if (!single) {
+          style.removeProperty("clip-path");
+          style.setProperty("mask-image", `url("${url}")`);
+          style.setProperty("-webkit-mask-image", `url("${url}")`);
+        }
         let backdrop = `blur(${options.frost}px) saturate(${options.saturation})`;
         if (filter && image) {
           image.setAttribute("href", url);
@@ -474,9 +509,17 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
           style.setProperty("backdrop-filter", backdrop);
           style.setProperty("-webkit-backdrop-filter", backdrop);
         }
-        // The previous map is no longer referenced by the mask or the filter.
-        if (shownUrl) URL.revokeObjectURL(shownUrl);
+        const retired = shownUrl;
         shownUrl = url;
+        if (!single) front = 1 - front;
+        window.requestAnimationFrame(() =>
+          window.requestAnimationFrame(() => {
+            if (retired) URL.revokeObjectURL(retired);
+            // A newer map took over in the meantime; it retires this layer itself.
+            if (single || destroyed || backdrops[front] !== next) return;
+            shown.style.display = "none";
+          }),
+        );
       });
   };
 
@@ -528,8 +571,11 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
   reducedTransparency.addEventListener("change", longAnimation);
   // Mount with a cheap paint so a sheet or menu can start its entrance at once,
   // then sharpen after the entrance has had time to finish.
-  paint(false);
-  settleTimer = window.setTimeout(() => paint(true), 650);
+  // Small panels (menus, popovers, tooltips) are cheap to paint sharp at once, so
+  // they never visibly sharpen after opening. Big surfaces start cheap.
+  const small = container.offsetWidth * container.offsetHeight < 140_000;
+  paint(small);
+  if (!small) settleTimer = window.setTimeout(() => paint(true), 650);
 
   return () => {
     destroyed = true;
@@ -557,6 +603,7 @@ function attachLiquidGlass(container: HTMLElement, layers: GlassLayers, id: stri
 export function useLiquidGlass<T extends HTMLElement>(lens?: LiquidGlassOptions, enabled = true) {
   const ref = useRef<T>(null);
   const backdropRef = useRef<HTMLSpanElement>(null);
+  const spareRef = useRef<HTMLSpanElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const id = `liquid-glass-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
@@ -567,16 +614,30 @@ export function useLiquidGlass<T extends HTMLElement>(lens?: LiquidGlassOptions,
   useLayoutEffect(() => {
     const container = ref.current;
     const backdrop = backdropRef.current;
+    const spare = spareRef.current;
     const canvas = canvasRef.current;
     const svg = svgRef.current;
-    if (!container || !backdrop || !canvas || !svg || !enabled) return;
-    return attachLiquidGlass(container, { backdrop, canvas, svg }, id, stableOptions);
+    if (!container || !backdrop || !spare || !canvas || !svg || !enabled) return;
+    return attachLiquidGlass(container, { backdrop, spare, canvas, svg }, id, stableOptions);
   }, [enabled, id, stableOptions]);
 
   const layers = !enabled ? null : (
     <>
       <span
         ref={backdropRef}
+        aria-hidden="true"
+        data-slot="liquid-glass-backdrop"
+        style={{
+          position: "absolute",
+          zIndex: -1,
+          display: "none",
+          pointerEvents: "none",
+          maskSize: "100% 100%",
+          WebkitMaskSize: "100% 100%",
+        }}
+      />
+      <span
+        ref={spareRef}
         aria-hidden="true"
         data-slot="liquid-glass-backdrop"
         style={{

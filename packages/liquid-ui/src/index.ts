@@ -7,6 +7,9 @@ export {
   LiquidGlass,
   LiquidGlassGroup,
   LiquidGlassScope,
+  liquidChromeMaterial,
+  liquidFillMaterial,
+  liquidPanelMaterial,
   type LiquidGlassGroupProps,
   type LiquidGlassProps,
 } from "./components/ui/liquid-glass";

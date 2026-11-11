@@ -9,7 +9,8 @@ import {
   useLiquidDisplacement,
   type LiquidLensOptions,
 } from "../../hooks/use-liquid-displacement";
-import { cn, liquidSpring } from "../../lib/utils";
+import { ExitProvider, useExitAnimation, useExitPresence } from "../../lib/presence";
+import { cn, composeRefs, liquidSpring } from "../../lib/utils";
 import { LiquidButton, type LiquidButtonProps } from "./liquid-button";
 import { LiquidGlass, LiquidGlassScope, liquidPanelMaterial } from "./liquid-glass";
 
@@ -19,20 +20,35 @@ import { LiquidGlass, LiquidGlassScope, liquidPanelMaterial } from "./liquid-gla
  * item labels underneath it while it moves. Radix owns menu semantics, focus,
  * typeahead, and keyboard navigation.
  */
-export const LiquidMenu = MenuPrimitive.Root;
+export function LiquidMenu({ open, defaultOpen, onOpenChange, ...props }: React.ComponentPropsWithoutRef<typeof MenuPrimitive.Root>) {
+  const presence = useExitPresence(open, defaultOpen, onOpenChange);
+  return (
+    <ExitProvider value={presence.state}>
+      <MenuPrimitive.Root open={presence.open} onOpenChange={presence.setOpen} {...props} />
+    </ExitProvider>
+  );
+}
 export const LiquidMenuGroup = MenuPrimitive.Group;
 
-export const LiquidMenuTrigger = forwardRef<HTMLButtonElement, LiquidButtonProps>(
-  ({ className, ...props }, forwardedRef) => (
-    <MenuPrimitive.Trigger asChild>
-      <LiquidButton
-        ref={forwardedRef}
-        data-slot="liquid-menu-trigger"
-        className={cn("liquid-menu__trigger", className)}
-        {...props}
-      />
-    </MenuPrimitive.Trigger>
-  ),
+/** A Liquid Button that opens the menu. Pass `asChild` to open it from your own element instead. */
+export const LiquidMenuTrigger = forwardRef<HTMLButtonElement, LiquidButtonProps & { asChild?: boolean }>(
+  ({ className, asChild, children, ...props }, forwardedRef) =>
+    asChild ? (
+      <MenuPrimitive.Trigger ref={forwardedRef} asChild data-slot="liquid-menu-trigger" className={className}>
+        {children}
+      </MenuPrimitive.Trigger>
+    ) : (
+      <MenuPrimitive.Trigger asChild>
+        <LiquidButton
+          ref={forwardedRef}
+          data-slot="liquid-menu-trigger"
+          className={cn("liquid-menu__trigger", className)}
+          {...props}
+        >
+          {children}
+        </LiquidButton>
+      </MenuPrimitive.Trigger>
+    ),
 );
 
 LiquidMenuTrigger.displayName = "LiquidMenuTrigger";
@@ -46,6 +62,11 @@ type LiquidMenuContentProps = React.ComponentPropsWithoutRef<typeof MenuPrimitiv
  * effects run after the menu is actually in the document.
  */
 function LiquidMenuList({ children, lens }: { children: React.ReactNode; lens?: LiquidLensOptions }) {
+  const exitRef = useExitAnimation<HTMLDivElement>((list) => {
+    const content = list.closest<HTMLElement>('[data-slot="liquid-menu-content"]');
+    content?.animate([{ transform: "none" }, { transform: "scale(.94)" }], { duration: 150, easing: "cubic-bezier(0.32, 0, 0.67, 0)", fill: "forwards" });
+    return list.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: "ease-in", fill: "forwards" });
+  });
   const displacement = useLiquidDisplacement<HTMLDivElement>({
     lens: { ...liquidLensPresets.tabs, scale: -0.24, chroma: 0.2, ...lens },
     lensSelector: '[data-slot="liquid-menu-indicator"]',
@@ -91,8 +112,8 @@ function LiquidMenuList({ children, lens }: { children: React.ReactNode; lens?: 
     // animates on the glass (opacity would cut it off from its backdrop).
     const content = list.closest<HTMLElement>('[data-slot="liquid-menu-content"]');
     if (content && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      content.animate([{ transform: "scale(.6)" }, { transform: "none" }], { duration: 620, easing: liquidSpring });
-      list.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, delay: 70, easing: "ease-out", fill: "backwards" });
+      content.animate([{ transform: "scale(.9)" }, { transform: "none" }], { duration: 520, easing: liquidSpring });
+      list.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, delay: 40, easing: "ease-out", fill: "backwards" });
     }
 
     return () => {
@@ -104,7 +125,7 @@ function LiquidMenuList({ children, lens }: { children: React.ReactNode; lens?: 
 
   return (
     <div
-      ref={displacement.ref}
+      ref={composeRefs(displacement.ref, exitRef)}
       data-slot="liquid-menu-list"
       className={cn("liquid-menu__list group/liquid-menu relative isolate [--menu-indicator-height:36px] [--menu-indicator-y:0px]", liquidLightTokens)}
     >
@@ -133,7 +154,7 @@ export const LiquidMenuContent = forwardRef<ElementRef<typeof MenuPrimitive.Cont
         sideOffset={sideOffset}
         data-slot="liquid-menu-content"
         className={cn(
-          "liquid-menu z-50 min-w-[220px] origin-[var(--radix-dropdown-menu-content-transform-origin)] text-[13px] text-[#18181b] outline-none dark:text-[#f4f4f6]",
+          "liquid-menu z-50 min-w-[220px] origin-[var(--radix-dropdown-menu-content-transform-origin)] select-none text-[13px] text-[#18181b] outline-none [-webkit-touch-callout:none] [-webkit-user-select:none] dark:text-[#f4f4f6]",
           className,
         )}
         {...props}

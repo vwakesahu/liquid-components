@@ -9,6 +9,10 @@ Glass in Liquid UI is something you interact with, not decoration that's always 
 
 Every component is two layers, a surface and a lens. The surface is the component's real content, the track, the rail, the labels or the button face. The lens is the glass body that moves and changes shape, it's opaque at rest and turns clear while engaged.
 
+<ComponentPreview name="material-lens" />
+
+Press and hold any of these. The switch, the slider and the tabs share the same lens, so they engage the same way.
+
 Refraction happens on the surface itself. While engaged, the surface is filtered in place, a generated lens map positioned at the lens bends the surface's own pixels into the rim and adds the rim highlight, shade, chromatic edge and glass shadow.
 
 Nothing is sampled from behind the glass, so there's no duplicate content to keep in sync. At rest the filter is removed completely.
@@ -16,6 +20,24 @@ Nothing is sampled from behind the glass, so there's no duplicate content to kee
 ## Interaction states
 
 The shared motion model goes from rest to engage, then hold or drag, then settle. Position, shape, light and shadow resolve together, and a capsule stays a capsule in every state.
+
+## The shared spring
+
+<ComponentPreview name="material-spring" />
+
+Every component moves on one spring, exported as `liquidSpring`, a CSS `linear()` easing sampled from a damped spring. It overshoots its target a little and settles, which is what makes a control feel like it has weight. Use it for your own motion so it matches.
+
+## Glass surfaces
+
+<ComponentPreview name="material-merge" />
+
+Panels, bars and groups are glass surfaces, they refract and frost whatever is behind them. Shapes in one `LiquidGlassGroup` fuse into one piece of glass when they come closer than `merge`, and pull apart again as they separate. Drag the slider to see it.
+
+## Three materials
+
+<ComponentPreview name="material-tiers" />
+
+Every component draws from one of three materials, so a menu, a popover and a drawer read as the same glass. Panel is for anything that floats over the page, chrome is for bars over content and fill is for controls inside content. They're exported as `liquidPanelMaterial`, `liquidChromeMaterial` and `liquidFillMaterial`.
 
 ## Two renderers
 

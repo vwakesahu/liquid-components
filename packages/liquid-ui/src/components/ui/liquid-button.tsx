@@ -174,6 +174,21 @@ export const LiquidButton = forwardRef<HTMLButtonElement, LiquidButtonProps>(
     });
     const glass = useLiquidGlass<HTMLButtonElement>({ refraction: 7, bezel: 11, frost: 3 }, isGlass);
 
+    // An error shakes the button the way iOS shakes a wrong passcode: a quick
+    // side-to-side that dies away. Only on the change into error, never on mount.
+    const previousStatus = useRef(currentStatus);
+    useEffect(() => {
+      const was = previousStatus.current;
+      previousStatus.current = currentStatus;
+      const element = rootRef.current;
+      if (currentStatus !== "error" || was === "error" || !element) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      element.animate(
+        [{ translate: "0 0" }, { translate: "-8px 0" }, { translate: "7px 0" }, { translate: "-5px 0" }, { translate: "3px 0" }, { translate: "-1px 0" }, { translate: "0 0" }],
+        { duration: 480, easing: "cubic-bezier(0.33, 1, 0.68, 1)" },
+      );
+    }, [currentStatus]);
+
     useEffect(() => {
       return () => {
         if (releaseTimer.current !== null) window.clearTimeout(releaseTimer.current);

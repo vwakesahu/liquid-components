@@ -1,4 +1,13 @@
 {
   "title": "Liquid UI",
-  "pages": ["index", "installation", "credits", "---Foundations---", "foundations", "---Components---", "components"]
+  "pages": [
+    "index",
+    "installation",
+    "theme",
+    "credits",
+    "---Foundations---",
+    "foundations",
+    "---Components---",
+    "components"
+  ]
 }

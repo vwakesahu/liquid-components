@@ -25,6 +25,7 @@ export const contents: Section[] = [
     list: [
       { title: "Overview", href: "/docs", icon: BookOpen },
       { title: "Installation", href: "/docs/installation", icon: MousePointer2 },
+      { title: "Theme", href: "/docs/theme", icon: Sparkles },
       { title: "Credits", href: "/docs/credits", icon: Heart },
     ],
   },

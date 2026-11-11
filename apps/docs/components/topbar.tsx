@@ -7,7 +7,7 @@ import Link from "next/link";
 import { siteConfig } from "../lib/site";
 import { GitHubIcon } from "./github-icon";
 import { toggleDocsMenu, useDocsMenu } from "./mobile-nav";
-import { ThemeToggle } from "./theme-toggle";
+import { ModeToggle } from "./theme/mode-toggle";
 
 /**
  * One quiet row: the mark on the left, search and the one call to action on the
@@ -18,7 +18,7 @@ export function Topbar() {
   const menuOpen = useDocsMenu();
 
   return (
-    <header className="topbar fixed inset-x-0 top-0 z-40 flex h-(--landing-topbar-height) items-center justify-between gap-3 border-b border-[var(--line)] bg-background/85 px-4 backdrop-blur-xl lg:px-5">
+    <header className="topbar fixed inset-x-0 top-0 z-40 flex h-(--landing-topbar-height) items-center justify-between gap-3 border-b border-[var(--line)] bg-background px-4 lg:bg-background/85 lg:px-5 lg:backdrop-blur-xl">
       <Link href="/docs" className="flex items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
         <span className="liquid-logo-mark" aria-hidden="true" />
         <span className="text-[15px] font-semibold tracking-[-0.01em] text-[var(--ink)]">{siteConfig.name}</span>
@@ -57,11 +57,17 @@ export function Topbar() {
           </LiquidTooltipTrigger>
           <LiquidTooltipContent side="bottom">Source on GitHub</LiquidTooltipContent>
         </LiquidTooltip>
+        <Link
+          href="/docs/theme"
+          className="hidden h-9 items-center rounded-full px-3 text-[13px] font-medium text-[var(--grey)] transition-colors hover:bg-[var(--fill)] hover:text-[var(--ink)] md:inline-flex"
+        >
+          Theme
+        </Link>
         <LiquidTooltip>
           <LiquidTooltipTrigger asChild>
-            <div className="[&_button]:size-9 [&_button]:rounded-full [&_button:hover]:bg-[var(--fill)]">
-              <ThemeToggle />
-            </div>
+            <span className="inline-flex">
+              <ModeToggle />
+            </span>
           </LiquidTooltipTrigger>
           <LiquidTooltipContent side="bottom">Light or dark</LiquidTooltipContent>
         </LiquidTooltip>

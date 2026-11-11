@@ -21,6 +21,16 @@ const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matc
 const ease = { in: "cubic-bezier(0.32, 0, 0.67, 0)", out: "cubic-bezier(0.33, 1, 0.68, 1)" };
 const HOLD_MS = 480;
 
+// iOS turns a long press into a text selection; while a hold or the menu is live, it can't.
+let selectionBlocks = 0;
+const stopSelection = (event: Event) => event.preventDefault();
+function blockSelection() {
+  if (selectionBlocks++ === 0) document.addEventListener("selectstart", stopSelection, true);
+  return () => {
+    if (--selectionBlocks === 0) document.removeEventListener("selectstart", stopSelection, true);
+  };
+}
+
 /**
  * The iOS context menu: press and hold (or right-click) to lift a preview of
  * the content above a blurred backdrop, with a glass menu beside it. The menu
@@ -67,7 +77,7 @@ export const LiquidContextMenuTrigger = forwardRef<HTMLDivElement, LiquidContext
     forwardedRef,
   ) => {
     const menu = useContext(ContextMenuContext);
-    const hold = useRef<{ x: number; y: number; timer: number; squeeze?: Animation } | null>(null);
+    const hold = useRef<{ x: number; y: number; timer: number; squeeze?: Animation; unblock: () => void } | null>(null);
     const swallowClick = useRef(false);
     // The release after a hold usually lands on the backdrop, so clear the flag on close.
     useEffect(() => {
@@ -80,6 +90,7 @@ export const LiquidContextMenuTrigger = forwardRef<HTMLDivElement, LiquidContext
       if (!current) return;
       window.clearTimeout(current.timer);
       current.squeeze?.cancel();
+      current.unblock();
       hold.current = null;
     };
     const open = () => {
@@ -95,7 +106,7 @@ export const LiquidContextMenuTrigger = forwardRef<HTMLDivElement, LiquidContext
         data-slot="liquid-context-menu-trigger"
         data-state={menu.open ? "open" : "closed"}
         aria-haspopup="menu"
-        className={cn("liquid-context-menu__trigger relative select-none [-webkit-touch-callout:none]", className)}
+        className={cn("liquid-context-menu__trigger relative select-none [-webkit-touch-callout:none] [-webkit-user-select:none]", className)}
         // While the preview is lifted, the original hides so there is only one of it.
         style={{ ...style, ...(menu.lifted ? { visibility: "hidden" } : {}) }}
         onContextMenu={(event) => {
@@ -109,6 +120,7 @@ export const LiquidContextMenuTrigger = forwardRef<HTMLDivElement, LiquidContext
           if (disabled || event.button !== 0 || event.defaultPrevented) return;
           const element = event.currentTarget;
           hold.current = {
+            unblock: blockSelection(),
             x: event.clientX,
             y: event.clientY,
             timer: window.setTimeout(() => {
@@ -172,7 +184,10 @@ function LiftedPreview() {
   const backdrop = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (menu.open) setShown(true);
+    if (!menu.open) return;
+    setShown(true);
+    window.getSelection()?.removeAllRanges();
+    return blockSelection();
   }, [menu.open]);
 
   useLayoutEffect(() => {
@@ -234,7 +249,7 @@ function LiftedPreview() {
         ref={layer}
         data-slot="liquid-context-menu-preview"
         aria-hidden="true"
-        className="pointer-events-none fixed z-[49] shadow-[0_18px_48px_rgba(0,0,0,.18)] dark:shadow-[0_18px_48px_rgba(0,0,0,.5)]"
+        className="pointer-events-none fixed z-[49] select-none shadow-[0_18px_48px_rgba(0,0,0,.18)] [-webkit-user-select:none] dark:shadow-[0_18px_48px_rgba(0,0,0,.5)]"
       />
     </>,
     document.body,

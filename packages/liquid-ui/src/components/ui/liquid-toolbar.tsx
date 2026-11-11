@@ -123,7 +123,7 @@ export const LiquidToolbarGroup = forwardRef<HTMLDivElement, LiquidToolbarGroupP
           data-slot="liquid-toolbar-track"
           className={cn(
             liquidLightTokens,
-            "group/toolbar-track relative isolate flex h-full touch-none items-center gap-0.5",
+            "group/toolbar-track relative isolate flex h-full touch-pan-y items-center gap-0.5",
             "[--toolbar-indicator-x:0px] [--toolbar-indicator-width:36px] [--toolbar-indicator-height:36px] [--toolbar-engaged-scale:1.3]",
             "[--toolbar-indicator-tint:rgba(118,118,128,.16)] dark:[--toolbar-indicator-tint:rgba(255,255,255,.12)]",
           )}
