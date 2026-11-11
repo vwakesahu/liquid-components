@@ -1463,3 +1463,4 @@ figure.shiki pre, figure:has(.shiki) pre { padding-right: 3rem; }
 @keyframes theme-copy-check { from { scale: 0.3; opacity: 0; } }
 @keyframes theme-copy-shake { 20% { translate: -6px 0; } 40% { translate: 5px 0; } 60% { translate: -3px 0; } 80% { translate: 2px 0; } }
 @media (prefers-reduced-motion: reduce) { .theme-studio__copy, .theme-studio__check { transition: none; animation: none; } }
+.theme-studio__card > * { min-width: 0; }

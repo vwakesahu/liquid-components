@@ -44,7 +44,7 @@ export const LiquidSearchField = forwardRef<HTMLInputElement, LiquidSearchFieldP
         data-slot="liquid-search-field"
         data-active={active || undefined}
         className={cn(
-          "liquid-search group/search flex h-11 w-full items-center text-[#18181b] dark:text-[#f4f4f6]",
+          "liquid-search group/search flex h-11 w-full min-w-0 items-center text-[#18181b] dark:text-[#f4f4f6]",
           liquidFillMaterial,
           className,
         )}
@@ -61,7 +61,7 @@ export const LiquidSearchField = forwardRef<HTMLInputElement, LiquidSearchFieldP
             value={value}
             placeholder={placeholder}
             aria-label={props["aria-label"] ?? placeholder}
-            className="min-w-0 flex-1 bg-transparent text-[16px] outline-none placeholder:text-current placeholder:opacity-45 [&::-webkit-search-cancel-button]:hidden"
+            className="w-0 min-w-0 flex-1 bg-transparent text-[16px] outline-none placeholder:text-current placeholder:opacity-45 [&::-webkit-search-cancel-button]:hidden"
             onChange={(event) => set(event.target.value)}
             onFocus={(event) => {
               setActive(true);
