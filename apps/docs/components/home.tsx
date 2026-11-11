@@ -3,6 +3,11 @@
 import {
   AlarmClock,
   ArrowRight,
+  Check,
+  Copy,
+  LayoutGrid,
+  ListChecks,
+  Wrench,
   Bell,
   Droplet,
   Ellipsis,
@@ -28,7 +33,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import Link from "next/link";
-import { LiquidGlass, LiquidSlider, LiquidSwitch, LiquidTabBar, LiquidTabBarItem } from "@liquid-ui/core";
+import { LiquidGlass, LiquidSlider, LiquidSwitch, LiquidTabBar, LiquidTabBarItem, LiquidTabs, LiquidTabsList, LiquidTabsTrigger } from "@liquid-ui/core";
 import { useEffect, useRef, useState } from "react";
 import { contents } from "./sidebar-content";
 
@@ -193,6 +198,78 @@ export function ComponentGallery() {
           );
         })}
       </ul>
+    </section>
+  );
+}
+
+/* Use it with AI ------------------------------------------------------------ */
+
+const SKILL_INSTALLS = [
+  { value: "shadcn", label: "shadcn", command: "npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-ui-skill.json" },
+  { value: "skills", label: "skills CLI", command: "npx skills add vwakesahu/liquid-components" },
+];
+const SKILL_POINTS = [
+  { icon: LayoutGrid, title: "Picks the component", text: "Tab bar or toolbar, drawer or alert. It knows which one fits the screen." },
+  { icon: Wrench, title: "Fixes glass that looks off", text: "Grey boxes, no bending in Safari, hydration errors, each with its cause." },
+  { icon: ListChecks, title: "Checks the edge cases", text: "Empty, loading, long text, small screens, dark mode and the keyboard." },
+];
+
+/** The skill for AI assistants, with the command to install it one tap away. */
+export function SkillSection() {
+  const [method, setMethod] = useState("shadcn");
+  const [copied, setCopied] = useState(false);
+  const timer = useRef(0);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+  const command = SKILL_INSTALLS.find((entry) => entry.value === method)!.command;
+  const copy = () => {
+    navigator.clipboard?.writeText(command).then(
+      () => {
+        setCopied(true);
+        window.clearTimeout(timer.current);
+        timer.current = window.setTimeout(() => setCopied(false), 1800);
+      },
+      () => undefined,
+    );
+  };
+  return (
+    <section className="home-skill not-prose" id="skill">
+      <h2 className="home-gallery__title">Use it with AI</h2>
+      <p className="home-gallery__lead">AI can build your frontend. The skill keeps it from looking like AI did.</p>
+      <div className="home-skill__card">
+        <div className="home-skill__install">
+          <LiquidTabs value={method} onValueChange={(value) => { setMethod(value); setCopied(false); }} className="w-auto">
+            <LiquidTabsList aria-label="Install with" size="small">
+              {SKILL_INSTALLS.map((entry) => (
+                <LiquidTabsTrigger key={entry.value} value={entry.value}>
+                  {entry.label}
+                </LiquidTabsTrigger>
+              ))}
+            </LiquidTabsList>
+          </LiquidTabs>
+          <div className="home-skill__command">
+            <code>{command}</code>
+            <button type="button" className="home-skill__copy" data-copied={copied || undefined} onClick={copy} aria-label={copied ? "Copied" : "Copy command"}>
+              {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+            </button>
+          </div>
+          <p className="home-skill__note">
+            It lands in <code>.claude/skills/liquid-ui</code>, where Claude Code, Cursor and other agents that read skills pick it up.
+          </p>
+        </div>
+        <ul className="home-skill__points">
+          {SKILL_POINTS.map((point) => (
+            <li key={point.title}>
+              <point.icon aria-hidden="true" />
+              <strong>{point.title}</strong>
+              <span>{point.text}</span>
+            </li>
+          ))}
+        </ul>
+        <Link href="/docs/skill" className="home-skill__more">
+          How the skill works
+          <ArrowRight aria-hidden="true" />
+        </Link>
+      </div>
     </section>
   );
 }

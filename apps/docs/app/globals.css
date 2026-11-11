@@ -1477,3 +1477,30 @@ figure.shiki pre, figure:has(.shiki) pre { padding-right: 3rem; }
 .dark .not-found__video--dark { display: block; }
 .not-found__title { margin: 8px 0 0; font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.04em; }
 .not-found__lead { max-width: 30rem; margin: 14px 0 0; color: var(--grey); font-size: 1.05rem; line-height: 1.55; }
+
+/* Use it with AI: install the skill, and what it teaches. */
+.home-skill { padding: 5rem 0 1rem; }
+.home-skill__card { display: grid; gap: 22px; margin: 2rem auto 0; padding: 22px; border: 1px solid var(--line); border-radius: 22px; background: var(--background); }
+.home-skill__install { display: grid; justify-items: start; gap: 12px; }
+.home-skill__command { display: flex; align-items: center; gap: 8px; width: 100%; min-width: 0; padding: 6px 6px 6px 16px; border-radius: 14px; background: var(--fill); }
+.home-skill__command code { flex: 1; min-width: 0; overflow-x: auto; color: var(--ink); font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: 13px; letter-spacing: -0.01em; white-space: nowrap; scrollbar-width: none; }
+.home-skill__command code::-webkit-scrollbar { display: none; }
+.home-skill__copy { display: grid; place-items: center; width: 36px; height: 36px; flex: none; padding: 0; border: 0; border-radius: 10px; background: var(--background); color: var(--ink); cursor: pointer; transition: background-color 0.15s, color 0.15s; }
+.home-skill__copy svg { width: 16px; height: 16px; }
+.home-skill__copy[data-copied] { background: #1f8a4c; color: #fff; }
+.home-skill__copy:focus-visible, .home-skill__more:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-ink) 40%, transparent); outline-offset: 2px; }
+.home-skill__note { margin: 0; color: var(--grey); font-size: 13px; line-height: 1.5; }
+.home-skill__note code { font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: 12px; color: var(--ink); }
+.home-skill__points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--line); list-style: none; }
+.home-skill__points li { display: grid; gap: 4px; margin: 0; padding: 0; }
+.home-skill__points svg { width: 18px; height: 18px; margin-bottom: 6px; color: var(--accent-ink); }
+.home-skill__points strong { color: var(--ink); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.home-skill__points span { color: var(--grey); font-size: 14px; line-height: 1.5; }
+.home-skill__more { display: inline-flex; align-items: center; gap: 6px; justify-self: start; color: var(--accent-ink) !important; font-size: 14px; font-weight: 500; text-decoration: none !important; }
+.home-skill__more svg { width: 15px; height: 15px; }
+@media (max-width: 720px) {
+  .home-skill__card { padding: 16px; }
+  .home-skill__points { grid-template-columns: 1fr; gap: 14px; }
+  /* The command scrolls on phones; the fade says there's more. */
+  .home-skill__command code { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+}

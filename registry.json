@@ -405,7 +405,7 @@
       "type": "registry:ui",
       "author": "Vivek Sahu <viveksahu1762@gmail.com>",
       "title": "Liquid Stepper",
-      "description": "The iOS − / + stepper in liquid glass.",
+      "description": "The iOS \u2212 / + stepper in liquid glass.",
       "dependencies": [
         "clsx",
         "tailwind-merge"
@@ -923,6 +923,25 @@
           "path": "LICENSE",
           "type": "registry:file",
           "target": "@ui/liquid-ui.LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "liquid-ui-skill",
+      "type": "registry:item",
+      "author": "Vivek Sahu <viveksahu1762@gmail.com>",
+      "title": "Liquid UI skill",
+      "description": "A skill for AI assistants: which component fits which screen, how to fix glass that looks wrong and the edge cases to check.",
+      "files": [
+        {
+          "path": "skills/liquid-ui/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/liquid-ui/SKILL.md"
+        },
+        {
+          "path": "skills/liquid-ui/references/components.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/liquid-ui/references/components.md"
         }
       ]
     }

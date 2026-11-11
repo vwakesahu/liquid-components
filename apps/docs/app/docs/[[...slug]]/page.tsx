@@ -13,7 +13,7 @@ import { notFound } from "next/navigation";
 import type { TOCItemType } from "fumadocs-core/toc";
 import type { MDXContent } from "mdx/types";
 import { ComponentPreview } from "../../../components/component-preview";
-import { ComponentGallery, HomeHero, HomePlayground } from "../../../components/home";
+import { ComponentGallery, HomeHero, HomePlayground, SkillSection } from "../../../components/home";
 import { DocsPager } from "../../../components/docs-pager";
 import { ThemeStudio } from "../../../components/theme/studio";
 import { siteConfig } from "../../../lib/site";
@@ -65,6 +65,7 @@ export default async function Page({
             ComponentGallery,
             HomeHero,
             HomePlayground,
+            SkillSection,
             ThemeStudio,
           }}
         />

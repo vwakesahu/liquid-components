@@ -7,7 +7,15 @@ AI can write a frontend in a minute now. It usually looks like every other AI fr
 
 ## Install
 
-With the [skills CLI](https://github.com/vercel-labs/skills), for Claude Code, Cursor and other agents that read skills:
+With the shadcn CLI you already use for the components. It drops the skill into `.claude/skills/liquid-ui` at your project's root:
+
+```npm
+npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-ui-skill.json
+```
+
+If you registered the registry as `@liquid`, that's `npx shadcn@latest add @liquid/liquid-ui-skill`.
+
+Or with the [skills CLI](https://github.com/vercel-labs/skills), for Claude Code, Cursor and other agents that read skills:
 
 ```bash
 npx skills add vwakesahu/liquid-components
