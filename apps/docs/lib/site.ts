@@ -4,7 +4,7 @@ export const siteConfig = {
     "Liquid Glass components and interaction primitives for React and shadcn/ui.",
   url: "https://liquidcomponents.xyz",
   docsUrl: "https://liquidcomponents.xyz/docs",
-  ogImage: "/opengraph-image",
+  ogImage: "/og.jpg",
   repository: "https://github.com/vwakesahu/liquid-components",
   xHandle: "@vwakesahu",
   author: {

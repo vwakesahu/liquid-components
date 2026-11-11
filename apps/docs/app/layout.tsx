@@ -4,6 +4,7 @@ import { liquidSpring } from "@liquid-ui/core";
 import { Geist, Geist_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import { MobileNav } from "../components/mobile-nav";
+import { NoImageDrag } from "../components/no-image-drag";
 import { ThemeSync } from "../components/theme/sync";
 import { Topbar } from "../components/topbar";
 import { siteConfig } from "../lib/site";
@@ -91,6 +92,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
           <MobileNav />
           <ThemeSync />
+          <NoImageDrag />
         </RootProvider>
       </body>
     </html>

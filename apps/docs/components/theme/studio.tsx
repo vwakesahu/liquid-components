@@ -27,6 +27,7 @@ import {
   LiquidToolbar,
   LiquidToolbarButton,
   LiquidToolbarGroup,
+  liquidPanelMaterial,
 } from "@liquid-ui/core";
 import { Bold, Check, ChevronLeft, ChevronRight, Droplet, Images, Italic, Monitor, Moon, RotateCcw, Share, Shuffle, SquareStack, Sun, Underline, Users, X } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -133,7 +134,7 @@ function Preview() {
       </section>
 
       <section className="theme-studio__card theme-studio__card--photo" style={{ backgroundImage: "url(/photos/wide/49.webp)" }}>
-        <LiquidGlass className="theme-studio__panel-sample">
+        <LiquidGlass className={`theme-studio__panel-sample ${liquidPanelMaterial}`}>
           <strong>Panel glass</strong>
           <small>Menus, popovers, alerts and drawers use this.</small>
         </LiquidGlass>
@@ -153,6 +154,10 @@ export function ThemeStudio() {
   const [settings, setSettings] = useState<ThemeSettings>(DEFAULT_THEME);
   const [codeOpen, setCodeOpen] = useState(false);
   const [copy, setCopy] = useState<"idle" | "copied" | "failed">("idle");
+  // The saved mode is only known in the browser. Until then no segment is active, so the
+  // server HTML matches and the indicator lands on the right mode without sliding.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const copyTimer = useRef(0);
   useEffect(() => () => window.clearTimeout(copyTimer.current), []);
   const copyCss = () => {
@@ -199,7 +204,7 @@ export function ThemeStudio() {
         {/* Three choices, one tap: a segmented control, so nothing is animating when the page changes mode. */}
         <div className="theme-studio__mode">
           <small>Mode</small>
-          <LiquidTabs value={theme ?? "light"} onValueChange={setTheme} className="w-auto">
+          <LiquidTabs value={mounted ? (theme ?? "system") : ""} onValueChange={setTheme} className="w-auto">
             <LiquidTabsList aria-label="Mode" size="small" className="w-full min-w-0">
               <LiquidTabsTrigger value="light" aria-label="Light">
                 <Sun aria-hidden="true" />

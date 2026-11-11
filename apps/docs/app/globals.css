@@ -601,7 +601,8 @@ figure.shiki > div:first-child,
 }
 
 body { font-family: var(--font-sans); letter-spacing: -0.006em; }
-::selection { background: color-mix(in srgb, var(--accent-ink) 28%, transparent); color: inherit; }
+img { -webkit-user-drag: none; user-select: none; }
+::selection { background: var(--accent-ink); color: var(--cta-ink); }
 
 .component-preview {
   position: relative;
@@ -1436,6 +1437,7 @@ figure.shiki pre, figure:has(.shiki) pre { padding-right: 3rem; }
 .theme-studio__pager { color: #fff; --page-control-tint: rgb(0 0 0 / 0.22); }
 .theme-studio__panel-sample { display: grid; gap: 4px; width: min(100%, 260px); padding: 16px 18px; border-radius: 22px; color: #18181b; }
 .dark .theme-studio__panel-sample { color: #f4f4f6; }
+.dark .theme-studio__panel-sample small { opacity: 0.78; }
 .theme-studio__panel-sample strong { font-size: 15px; font-weight: 600; }
 .theme-studio__panel-sample small { font-size: 12px; opacity: 0.65; }
 .theme-studio__code-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
@@ -1464,3 +1466,14 @@ figure.shiki pre, figure:has(.shiki) pre { padding-right: 3rem; }
 @keyframes theme-copy-shake { 20% { translate: -6px 0; } 40% { translate: 5px 0; } 60% { translate: -3px 0; } 80% { translate: 2px 0; } }
 @media (prefers-reduced-motion: reduce) { .theme-studio__copy, .theme-studio__check { transition: none; animation: none; } }
 .theme-studio__card > * { min-width: 0; }
+
+/* 404: the glass lens looking for the page, then the way back. */
+.not-found { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; padding: 48px 16px 72px; text-align: center; }
+.not-found__film { width: min(640px, 100%); aspect-ratio: 1280 / 560; }
+/* The clip's edges fade into the page, so it never shows a seam against the background. */
+.not-found__video { width: 100%; height: 100%; object-fit: cover; -webkit-mask-image: radial-gradient(75% 90% at 50% 50%, #000 70%, transparent 100%); mask-image: radial-gradient(75% 90% at 50% 50%, #000 70%, transparent 100%); }
+.not-found__video--dark { display: none; }
+.dark .not-found__video--light { display: none; }
+.dark .not-found__video--dark { display: block; }
+.not-found__title { margin: 8px 0 0; font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.04em; }
+.not-found__lead { max-width: 30rem; margin: 14px 0 0; color: var(--grey); font-size: 1.05rem; line-height: 1.55; }
