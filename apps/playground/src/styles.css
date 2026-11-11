@@ -231,3 +231,6 @@ footer > span:last-child { text-align: right; }
 @media (prefers-reduced-transparency: reduce) {
   .liquid-video__controls, .liquid-video__button, .liquid-video__center-play { background: rgba(28,28,30,.94); }
 }
+
+/* Phone scenes: a tab's content settles in when the tab changes. */
+@keyframes phone-fade { from { opacity: 0; translate: 0 6px; } }
