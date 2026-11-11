@@ -1,38 +1,18 @@
 ---
 title: AI skill
-description: Teach your AI assistant to build with Liquid UI, so what it makes doesn't look generated.
+description: Teach your AI to build with Liquid UI.
 ---
 
-AI can write a frontend in a minute now. It usually looks like every other AI frontend: the same gradient, the same cards, placeholder everything. The Liquid UI skill gives your assistant the components and the judgement that goes with them, which one fits the screen, where glass works and where it doesn't, and what to check before it calls the work done.
+The skill tells your AI which component fits, where glass works and what to check, so the result doesn't look generated.
 
 ## Install
-
-With the shadcn CLI you already use for the components. It drops the skill into `.claude/skills/liquid-ui` at your project's root:
 
 ```npm
 npx shadcn@latest add https://liquidcomponents.xyz/r/liquid-ui-skill.json
 ```
 
-If you registered the registry as `@liquid`, that's `npx shadcn@latest add @liquid/liquid-ui-skill`.
-
-Or with the [skills CLI](https://github.com/vercel-labs/skills), for Claude Code, Cursor and other agents that read skills:
-
-```bash
-npx skills add vwakesahu/liquid-components
-```
-
-Or copy it by hand. Put the [`skills/liquid-ui`](https://github.com/vwakesahu/liquid-components/tree/main/skills/liquid-ui) folder from the repo into your project's `.claude/skills/`, or into `~/.claude/skills/` to use it in every project.
-
-## What's in it
-
-- How to think about a screen before writing any code, starting from what the iOS app would do.
-- Which component fits which job, and which one doesn't.
-- The habits that make AI frontends look generated, and what to do instead.
-- Theming with the CSS variables.
-- A symptom, cause and fix table for when glass looks wrong, like a grey box, no bending in Safari or a hydration mismatch.
-- The edge cases to walk: empty, loading, errors, long text, many items, small screens, dark mode and the keyboard.
-- Every component's parts, props and a working example.
+Or with the skills CLI: `npx skills add vwakesahu/liquid-components`.
 
 ## Use it
 
-Ask for the screen the way you'd describe it to a designer, for example "a photo library with a tab bar, and a drawer to share an album". The assistant picks the components, installs them with the shadcn CLI, fills them with real content and walks the states before it hands the screen back.
+Ask for a screen, like "a photo library with a tab bar and a share drawer".
